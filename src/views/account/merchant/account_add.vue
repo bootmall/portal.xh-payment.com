@@ -44,36 +44,36 @@
                         <el-form-item label="结算单笔限额" prop="recharge_quota_pertime" class="el-form-item-input">
                             <el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.recharge_quota_pertime"></el-input>
                         </el-form-item>
-                        <el-form-item label="允许接口收款" prop="status">
-                            <el-radio-group v-model="commonForm.allow_api_recharge" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="允许接口结算" prop="allow_api_remit">
-                            <el-radio-group v-model="commonForm.allow_api_remit" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="允许后台手工充值" prop="allow_manual_recharge">
-                            <el-radio-group v-model="commonForm.allow_manual_recharge" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="允许后台手工出款" prop="allow_manual_remit">
-                            <el-radio-group v-model="commonForm.allow_manual_remit" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="接口结算不需审核" prop="allow_api_fast_remit">
-                            <el-radio-group v-model="commonForm.allow_api_fast_remit" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
+                        <!--<el-form-item label="允许接口收款" prop="status">-->
+                            <!--<el-radio-group v-model="commonForm.allow_api_recharge" size="small">-->
+                                <!--<el-radio label="1">允许</el-radio>-->
+                                <!--<el-radio label="0">不允许</el-radio>-->
+                            <!--</el-radio-group>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="允许接口结算" prop="allow_api_remit">-->
+                            <!--<el-radio-group v-model="commonForm.allow_api_remit" size="small">-->
+                                <!--<el-radio label="1">允许</el-radio>-->
+                                <!--<el-radio label="0">不允许</el-radio>-->
+                            <!--</el-radio-group>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="允许后台手工充值" prop="allow_manual_recharge">-->
+                            <!--<el-radio-group v-model="commonForm.allow_manual_recharge" size="small">-->
+                                <!--<el-radio label="1">允许</el-radio>-->
+                                <!--<el-radio label="0">不允许</el-radio>-->
+                            <!--</el-radio-group>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="允许后台手工出款" prop="allow_manual_remit">-->
+                            <!--<el-radio-group v-model="commonForm.allow_manual_remit" size="small">-->
+                                <!--<el-radio label="1">允许</el-radio>-->
+                                <!--<el-radio label="0">不允许</el-radio>-->
+                            <!--</el-radio-group>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="接口结算不需审核" prop="allow_api_fast_remit">-->
+                            <!--<el-radio-group v-model="commonForm.allow_api_fast_remit" size="small">-->
+                                <!--<el-radio label="1">允许</el-radio>-->
+                                <!--<el-radio label="0">不允许</el-radio>-->
+                            <!--</el-radio-group>-->
+                        <!--</el-form-item>-->
                     </div>
                 </el-col>
             </el-row>
