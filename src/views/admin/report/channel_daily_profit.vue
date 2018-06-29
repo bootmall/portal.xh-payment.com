@@ -1,0 +1,175 @@
+<template>
+    <div class="components-container">
+        <div class="filter-container">
+            <!--渠道名称-->
+            <!--<el-input style="width: 200px;" class="filter-item" v-model="listQuery.username"></el-input>-->
+            开始时间：
+            <el-date-picker class="filter-item"
+                            v-model="listQuery.dateStart"
+                            align="right"
+                            type="date"
+                            placeholder="开始日期"
+                            value-format="yyyy-MM-dd"
+                            :picker-options="pickerOptions">
+            </el-date-picker>
+            结束时间
+            <el-date-picker class="filter-item"
+                            v-model="listQuery.dateEnd"
+                            align="right"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="结束日期"
+                            :picker-options="pickerOptions">
+            </el-date-picker>
+            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+        </div>
+
+        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%">
+
+
+            <el-table-column label="通道">
+                <template slot-scope="scope">
+                    <span>{{scope.row.channel_account_name}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column label="收款利润">
+                <template slot-scope="scope">
+                    <span>{{scope.row.recharge_amount}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="收款笔数">
+                <template slot-scope="scope">
+                    <span>{{scope.row.recharge_count}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="收款总额">
+                <template slot-scope="scope">
+                    <span>{{scope.row.recharge_total}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="结算利润">
+                <template slot-scope="scope">
+                    <span>{{scope.row.remit_amount}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="结算笔数">
+                <template slot-scope="scope">
+                    <span>{{scope.row.remit_count}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="结算总额">
+                <template slot-scope="scope">
+                    <span>{{scope.row.remit_total}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="日期">
+                <template slot-scope="scope">
+                    <span>{{scope.row.date}}</span>
+                </template>
+            </el-table-column>
+
+        </el-table>
+        <div v-show="!listLoading" class="pagination-container">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+        </div>
+    </div>
+</template>
+
+<script>
+  import waves from '@/directive/waves/index.js' // 水波纹指令
+  import {parseTime} from '@/utils'
+  import axios from '@/utils/http'
+  import common from '@/utils/common'
+
+  export default {
+    name: 'vue_channel_account_trade_profit',
+    components: {waves},
+    directives: {
+      waves
+    },
+    data() {
+      return {
+        list: null,
+        tableKey: 0,
+        total: null,
+        listLoading: true,
+        statusOptions: [],
+        listQuery: {
+          page: 1,
+          limit: 15,
+          user_id: '',
+          username: '',
+          sort: '',
+          dateStart: null,//.getDateStr(-1),
+          dateEnd: null,//.getDateStr(-1),
+        },
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          },
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
+      }
+    },
+    created() {
+      this.getInitData()
+    },
+    methods: {
+      getInitData() {
+        var self = this
+        self.listLoading = true
+        axios.post('/admin/report/channel-daily-profit', self.listQuery).then(
+          res => {
+            self.listLoading = false
+            if (res.code == 0) {
+              self.list = res.data.data
+              self.total = res.data.pagination.total
+            }
+          }
+        )
+      },
+      handleFilter() {
+        this.listQuery.page = 1
+        this.getInitData()
+      },
+      handleSizeChange(val) {
+        this.listQuery.limit = val
+        this.getInitData()
+      },
+      handleCurrentChange(val) {
+        this.listQuery.page = val
+        this.getInitData()
+      },
+    }
+  }
+</script>
+
+<style scoped>
+    .editor-content {
+        margin-top: 20px;
+    }
+</style>
+
+

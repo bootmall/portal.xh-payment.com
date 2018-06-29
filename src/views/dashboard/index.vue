@@ -1,0 +1,274 @@
+<template>
+    <div>
+        <el-dialog
+                title="公告"
+                :visible.sync="noticeVisible"
+                width="50%">
+            <el-container v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%;font-size: 12px">
+                <el-aside width="200px">
+                    <p  style="border-bottom:1px solid #ececec;cursor:pointer;" v-for="(item,key) in notice" v-text="item.title" @click="content = item.content"></p>
+                </el-aside>
+                <el-main border v-html="content" style="border:1px solid #ececec;margin-left: 5px"></el-main>
+            </el-container>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="noticeVisible = false">关闭</el-button>
+            </span>
+        </el-dialog>
+        <div style="width: 90%;margin-left: 50px"><order-census></order-census></div>
+        <div style="width: 90%;margin-left: 50px" v-if="user.group_id != 10 ">
+            <el-row :gutter="10">
+                <el-col :span="2" align="right">
+                    <span>出款费率</span>
+                </el-col>
+                <el-col :span="2" v-for="(item,key) in rate" :key="key" v-text="item.name" align="center">
+                </el-col>
+                <el-col :span="2"></el-col>
+            </el-row>
+            <el-row :gutter="10">
+                <el-col :span="2" align="right">
+                    <span>{{remit_fee}}</span>
+                </el-col>
+                <el-col :span="2" v-for="(item,key) in rate" :key="key" align="center">
+                    {{item.rate}}
+                </el-col>
+                <el-col :span="2"></el-col>
+            </el-row>
+        </div>
+        <el-row :gutter="20" style="margin-left: 50px;background-color:#c5c9cf;line-height: 60px;width: 90%">
+            <el-col :span="6" align="center">最后登陆时间</el-col>
+            <el-col :span="6">{{user.last_login_time}}</el-col>
+            <el-col :span="6" align="center">最后登陆IP</el-col>
+            <el-col :span="6">{{user.last_login_ip}}</el-col>
+        </el-row>
+    </div>
+</template>
+
+<script>
+  //import PanelGroup from './components/PanelGroup'
+  import OrderCensus from './components/OrderCensus'
+  // import LineChart from './components/LineChart'
+  // import RaddarChart from './components/RaddarChart'
+  // import PieChart from './components/PieChart'
+  // import BarChart from './components/BarChart'
+  // import BoxCard from './components/BoxCard'
+  import { mapGetters } from 'vuex'
+  import axios from '@/utils/http'
+  import common from '@/utils/common'
+
+  const lineChartData = {
+    orderCountData: [],
+    orderMoneyData: [],
+    xAxis: []
+  }
+  const lineChartOrderCountData = {
+    line: [],
+    xAxis:[],
+    legend: '近7天订单金额',
+  }
+  const lineChartOrderMoneyData = {
+    line: [],
+    xAxis:[],
+    legend: '近7天订单数量',
+  }
+
+  export default {
+    name: 'dashboardIndex',
+    components: {
+      //PanelGroup,
+        OrderCensus
+      // LineChart,
+      // RaddarChart,
+      // PieChart,
+      // BarChart,
+      // BoxCard
+    },
+    data() {
+      return {
+        groupPanel:{},
+        onExamineInfoShow: true,
+          listLoading:false,
+        company:{
+          id:0,
+          type:0
+        },
+        companyExame:{},
+        companyExameStr:'',
+        exameHistory:[],
+        companyExameStepNow: 1,
+        lineChartOrderCountData: lineChartOrderCountData,
+        lineChartOrderMoneyData: lineChartOrderMoneyData,
+        notice: {},
+        noticeVisible: false,
+        content: null,
+        user: {},
+        rate: [],
+        remit_fee: null,
+      }
+    },
+    methods: {
+      go(path) {
+        this.$router.push({path: path});
+      },
+      onExamineInfoClose(type) {
+        this.onExamineInfoShow = false
+      },
+      handleSetLineChartData(type) {
+        //return
+        this.lineChartData = lineChartData[type]
+      },
+      getInitData() {
+        let self = this
+        self.listLoading = true
+        axios.post('/dashboard/index').then(
+          res => {
+            self.listLoading = false
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              self.groupPanel = res.data.groupPanel
+              self.company = res.data.company
+              self.user = res.data.user
+              self.notice = res.data.notice
+              if (self.notice.length > 0){
+                self.noticeVisible = true
+                self.content = self.notice[0].content
+              }
+              self.rate = res.data.rate
+              self.remit_fee = res.data.remit_fee
+            }
+          },
+          res => {
+            self.$message.error({message:res.message})
+          }
+        )
+      },
+    },
+    created(){
+      this.getInitData()
+    }
+  }
+</script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+    .el-row {
+        margin-bottom: 20px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    .el-col {
+        border-radius: 4px;
+    }
+    .bg-purple-dark {
+        background: #99a9bf;
+    }
+    .bg-purple {
+        background: #d3dce6;
+    }
+    .bg-purple-light {
+        background: #e5e9f2;
+    }
+    .grid-content {
+        border-radius: 4px;
+        min-height: 36px;
+    }
+    .row-bg {
+        padding: 10px 0;
+        background-color: #f9fafc;
+    }
+  .dashboard-editor-container {
+      padding: 32px;
+      background-color: rgb(240, 242, 245);
+      .chart-wrapper {
+          background: #fff;
+          padding: 16px 16px 0;
+          margin-bottom: 32px;
+      }
+
+      .authorised_amount {
+          padding: 5px 10px;
+          background-color: #ecf8ff;
+          border-radius: 4px;
+          border-left: 5px solid #50bfff;
+      }
+    .authorised_amount span,.authorised_amount b{
+      display: inline-block;padding-left: 5px;
+    }
+      .authorised_amount b{
+        color: #F56C6C;
+      }
+  }
+
+  .panel-group {
+    margin-top: 18px;
+    .card-panel-col{
+      margin-bottom: 32px;
+    }
+    .card-panel {
+      height: 108px;
+      cursor: pointer;
+      font-size: 12px;
+      position: relative;
+      overflow: hidden;
+      color: #666;
+      background: #fff;
+      box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+      border-color: rgba(0, 0, 0, .05);
+      &:hover {
+        .card-panel-icon-wrapper {
+          color: #fff;
+        }
+        .icon-people {
+          background: #40c9c6;
+        }
+        .icon-message {
+          background: #36a3f7;
+        }
+        .icon-money {
+          background: #f4516c;
+        }
+        .icon-shoppingCard {
+          background: #34bfa3
+        }
+      }
+      .icon-people {
+        color: #40c9c6;
+      }
+      .icon-message {
+        color: #36a3f7;
+      }
+      .icon-money {
+        color: #f4516c;
+      }
+      .icon-shoppingCard {
+        color: #34bfa3
+      }
+      .card-panel-icon-wrapper {
+        float: left;
+        margin: 14px 0 0 14px;
+        padding: 16px;
+        transition: all 0.38s ease-out;
+        border-radius: 6px;
+      }
+      .card-panel-icon {
+        float: left;
+        font-size: 48px;
+      }
+      .card-panel-description {
+        float: right;
+        font-weight: bold;
+        margin: 26px;
+        margin-left: 0px;
+        .card-panel-text {
+          line-height: 18px;
+          color: rgba(0, 0, 0, 0.45);
+          font-size: 16px;
+          margin-bottom: 12px;
+        }
+        .card-panel-num {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+</style>

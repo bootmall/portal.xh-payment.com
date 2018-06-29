@@ -1,0 +1,863 @@
+<template>
+    <div class="dashboard-editor-container" style="margin-left: 50px;font-size:12px" v-loading="listLoading" element-loading-text="数据加载中，请稍候...">
+        <span><h4>商户基本信息</h4></span>
+        <el-row :gutter="20">
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>商户编号：</span><span>{{userInfo.id}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>登陆名：</span><span>{{userInfo.username}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>商户类型：</span><span>{{userInfo.group_name}}</span>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>邮箱：</span><span>{{userInfo.email}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>创建时间：</span><span>{{userInfo.created_at}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>状态：</span><span>{{userInfo.status_name}}</span>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>支持API下发：</span><span>{{userInfo.allow_api_remit}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>支持后台下发：</span><span>{{userInfo.allow_manual_remit}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>出款费率(元/笔)：</span><span>{{userInfo.remit_fee | numberFormat}}</span>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>下发总额度：</span><span>{{userInfo.remit_quota_perday | numberFormat}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>收款总额度：</span><span>{{userInfo.recharge_quota_perday | numberFormat}}</span>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>总资产：</span><span>{{userInfo.asset | numberFormat}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>冻结资产：</span><span>{{userInfo.frozen_balance | numberFormat}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>可用余额：</span><span>{{userInfo.balance | numberFormat}}</span>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>资金密码设置：</span><span>{{userInfo.is_financial}}</span>
+                </div>
+            </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>安全令牌绑定：</span><span>{{userInfo.is_key_2fa}}</span>
+                </div>
+            </el-col>
+        </el-row>
+        <span v-if="userInfo.agent">
+            <h4>代理</h4>
+            <el-row :gutter="20">
+                <el-col :span="24" v-text="userInfo.agent"></el-col>
+            </el-row>
+        </span>
+        <span><h4>支付类型--费率</h4></span>
+        <el-row :gutter="20">
+            <el-col :span="2" align="right">
+                <span>支付类型</span>
+            </el-col>
+            <el-col :span="1" v-for="(item,key) in methods.name" :key="key" v-text="item" align="center">
+            </el-col>
+        </el-row>
+        <el-row :gutter="20" >
+            <el-col :span="2" align="right">
+                <span>收款费率</span>
+            </el-col>
+            <el-col :span="1" v-for="(item,key) in methods.rate" :key="key" align="center">
+                {{item | numberFormat}}
+            </el-col>
+        </el-row>
+        <el-row :gutter="20" >
+            <el-col :span="2" align="right">
+                <span>类型状态</span>
+            </el-col>
+            <el-col :span="1" v-for="(item,key) in methods.status_name" :key="key" align="center">
+                {{item}}
+            </el-col>
+        </el-row>
+
+        <span><h4>基本信息相关权限</h4></span>
+
+        <el-row>
+            <el-button type="primary" @click="handleResetLoginPass">重置登录密码</el-button>
+            <el-button type="primary" @click="handleClearPass">清除资金密码</el-button>
+            <el-button type="primary" @click="handleUnbind">解绑安全令牌</el-button>
+            <el-button type="primary" @click="handleSetRate">设置费率</el-button>
+            <el-button type="primary" @click="handleBindIp">绑定API接口IP</el-button>
+            <el-button type="primary" @click="apiVisible=true">收款出款接口开关</el-button>
+        </el-row>
+        <el-row>
+            <el-button type="primary" @click="handleUserStatus">修改商户状态</el-button>
+            <!--<el-button type="primary" @click="handleQuota">修改商户额度</el-button>-->
+            <el-button type="primary" @click="handleAgent">切换上级代理</el-button>
+            <!--<el-button type="primary" @click="handleClearPass">系统调账</el-button>-->
+            <el-button type="primary" @click="handleUpdateUserEmail">修改商户邮箱</el-button>
+            <!--<el-button type="primary">修改登录IP</el-button>-->
+        </el-row>
+        <el-dialog title="设置费率" :visible.sync="rateVisible" width="53%" >
+            <el-form :model="rateForm">
+                <el-form-item label="出款手续费(元/每笔)：" label-width="180px">
+                    <el-input size="small" v-model="rateForm.remit_fee" style="width: 200px"></el-input>
+                    <span style="margin-left: 20px;">可填区间</span>
+                    <span v-text="userInfo.parent_remit_fee"></span> ~
+                    <span v-if="userInfo.lower_remit_fee > 0 " v-text="userInfo.lower_remit_fee"></span>
+                    <span v-else></span>
+                </el-form-item>
+                <el-form-item label-width="180px" v-for="(item,key) in payMethodsOptions" :key="key" :label="item+'：'">
+                    <el-input size="small" style="width: 200px" @change="checkRate(rateForm.pay_methods[key],key)" v-model="rateForm.pay_methods[key]"></el-input>
+                    <el-switch style="margin-left: 20px"
+                       v-model="methodStatus[key]"
+                       active-text="启用"
+                       inactive-text="停用"
+                       active-color="#13ce66"
+                       inactive-color="#ff4949"
+                       active-value="1"
+                       inactive-value="0"
+                       @change="onMethodStatusChange(key)"
+                    >
+                    </el-switch>
+                    <span style="margin-left: 5px;">可填区间</span>
+                    <span v-text="methods.min_rate[key]"></span> ~
+                    <span v-if="methods.max_rate[key] > 0 " v-text="methods.max_rate[key]"></span>
+                    <span v-else></span>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="small" @click="rateVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="updateRate">提交</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog
+                title="修改商户状态"
+                :visible.sync="statusVisible"
+                width="40%">
+            <template>
+                <el-radio v-for="(item,key) in userStatusOptions" :key="key" v-model="statusForm.newStatus" :label="key">{{item}}</el-radio>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                    <el-button @click="statusVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="updateUserStatus">确 定</el-button>
+                </span>
+        </el-dialog>
+        <el-dialog
+                title="修改商户额度"
+                :visible.sync="quotaVisible"
+                width="40%">
+            <template>
+                <el-form :model="quotaForm">
+                    <el-form-item label="单日提款限额：" label-width="180px">
+                        <el-input size="small" v-model="quotaForm.remit_quota_perday" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="单日充值限额：" label-width="180px">
+                        <el-input size="small" v-model="quotaForm.recharge_quota_perday" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="单次提款限额：" label-width="180px">
+                        <el-input size="small" v-model="quotaForm.remit_quota_pertime" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="单次充值限额：" label-width="180px">
+                        <el-input size="small" v-model="quotaForm.recharge_quota_pertime" style="width: 200px"></el-input>
+                    </el-form-item>
+                </el-form>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="quotaVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateQuota">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                title="修改API开关"
+                :visible.sync="apiVisible"
+                width="40%">
+            <template>
+                <el-form :model="apiForm">
+                    <el-form-item label="支持api接口不审核快速出款：" label-width="180px">
+                        <el-switch style="margin-left: 20px"
+                                   v-model="apiForm.allow_api_fast_remit"
+                                   active-text="启用"
+                                   inactive-text="停用"
+                                   active-color="#13ce66"
+                                   inactive-color="#ff4949"
+                                   active-value="1"
+                                   inactive-value="0">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item label="支持接口充值：" label-width="180px">
+                        <el-switch style="margin-left: 20px"
+                                   v-model="apiForm.allow_api_recharge"
+                                   active-text="启用"
+                                   inactive-text="停用"
+                                   active-color="#13ce66"
+                                   inactive-color="#ff4949"
+                                   active-value="1"
+                                   inactive-value="0">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item label="支持接口提款：" label-width="180px">
+                        <el-switch style="margin-left: 20px"
+                                   v-model="apiForm.allow_api_remit"
+                                   active-text="启用"
+                                   inactive-text="停用"
+                                   active-color="#13ce66"
+                                   inactive-color="#ff4949"
+                                   active-value="1"
+                                   inactive-value="0">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item label="支持手工充值：" label-width="180px">
+                        <el-switch style="margin-left: 20px"
+                                   v-model="apiForm.allow_manual_recharge"
+                                   active-text="启用"
+                                   inactive-text="停用"
+                                   active-color="#13ce66"
+                                   inactive-color="#ff4949"
+                                   active-value="1"
+                                   inactive-value="0">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item label="支持手工提款：" label-width="180px">
+                        <el-switch style="margin-left: 20px"
+                                   v-model="apiForm.allow_manual_remit"
+                                   active-text="启用"
+                                   inactive-text="停用"
+                                   active-color="#13ce66"
+                                   inactive-color="#ff4949"
+                                   active-value="1"
+                                   inactive-value="0">
+                        </el-switch>
+                    </el-form-item>
+                </el-form>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="apiVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateApi">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                title="修改商户邮箱"
+                :visible.sync="emailVisible"
+                width="40%">
+            <template>
+                <el-form :model="quotaForm">
+                    <el-form-item label="邮箱：" label-width="180px">
+                        <el-input size="small" type="email" v-model="emailForm.newEmail" style="width: 200px"></el-input>
+                    </el-form-item>
+                </el-form>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="emailVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateEmail">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                title="修改商户邮箱"
+                :visible.sync="ipVisible"
+                width="40%">
+            <template>
+                <el-form :model="ipForm">
+                    <p style="color: red">提示：IP，域名有多个 以英文符号分号(;) 分隔</p>
+                    <el-form-item label="API接口IP地址：" label-width="180px">
+                        <el-input size="small" type="textarea" :rows="3" v-model="ipForm.app_server_ips" style="width: 300px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="API接口域名：" label-width="180px">
+                        <el-input size="small" type="textarea" :rows="3" v-model="ipForm.app_server_domains" style="width: 300px"></el-input>
+                    </el-form-item>
+                </el-form>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="ipVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateIps">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                title="切换上级代理"
+                :visible.sync="agentVisible"
+                width="25%">
+            <template>
+                <el-select v-model="agentId" filterable placeholder="请选择">
+                    <el-option
+                            v-for="(item,key) in agentOptions"
+                            :key="key"
+                            :label="item"
+                            :value="key">
+                    </el-option>
+                </el-select>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                    <el-button @click="agentVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="handleCheangeAgent">确 定</el-button>
+                </span>
+        </el-dialog>
+    </div>
+
+</template>
+
+<script>
+    import axios from '@/utils/http'
+    export default {
+        name: "vue_merchant_detail",
+        data() {
+            return {
+                userInfo:{},
+                methods:{},
+                listLoading: true,
+                merchantId:null,
+                rateVisible:false,
+                statusVisible:false,
+                quotaVisible:false,
+                emailVisible:false,
+                ipVisible:false,
+                agentVisible:false,
+                methodStatus:{},
+                payMethodsOptions:{},
+                agentOptions:[],
+                company:{
+                    // id:0,
+                    type:0
+                },
+                rateForm:{
+                    channel_id:null,
+                    remit_channel_id:null,
+                    parent_agent_id:null,
+                    remit_fee:0,
+                    pay_methods:{},
+                },
+                quotaForm:{
+                    remit_quota_perday:0,
+                    recharge_quota_perday:0,
+                    remit_quota_pertime:0,
+                    recharge_quota_pertime:0,
+                },
+                userStatusOptions:{},
+                statusForm:{
+                    oldStatus:null,
+                    newStatus:null
+                },
+                emailForm:{
+                    oldEmail:null,
+                    newEmail:null
+                },
+                ipForm:{
+                    app_server_ips:null,
+                    app_server_domains:null
+                },
+              apiVisible: false,
+              apiForm:{
+                allow_api_fast_remit:"1",
+                allow_api_recharge:"1",
+                allow_api_remit:"1",
+                allow_manual_recharge:"1",
+                allow_manual_remit:"1",
+              },
+                agentId:null,
+                channelOptions:{},
+            }
+        },
+        created(){
+            this.getInitData()
+        },
+        filters:{
+            numberFormat:function(value){
+                if (!value) value = 0
+                value = Number(value).toFixed(6);
+                return value;
+            }
+        },
+        methods:{
+            getInitData() {
+                let self = this
+                self.listLoading = true
+                self.merchantId = this.$route.query.merchantId;
+                axios.post('/admin/user/detail',{merchantId:self.merchantId}).then(
+                    res => {
+                        self.listLoading = false
+                      if (res.code != 0) {
+                        self.$message.error({message: res.message})
+                      } else {
+                        self.userInfo = res.data.userInfo
+                        self.methods = res.data.methods
+                        self.channelOptions = res.data.channelOptions
+                        self.userStatusOptions = res.data.userStatusOptions
+                        self.agentOptions = res.data.agentOptions
+                        self.payMethodsOptions = res.data.payMethodsOptions
+
+                        let methodStatus = {}
+                        for (let index in res.data.methods.status) {
+                          methodStatus[index] = res.data.methods.status[index].toString()
+                        }
+                        self.methodStatus = methodStatus
+
+                        self.apiForm.user_id = self.userInfo.id
+                        self.apiForm.allow_api_fast_remit = self.userInfo.allow_api_fast_remit + ''
+                        self.apiForm.allow_api_recharge = self.userInfo.allow_api_recharge + ''
+                        self.apiForm.allow_api_remit = self.userInfo.allow_api_remit + ''
+                        self.apiForm.allow_manual_recharge = self.userInfo.allow_manual_recharge + ''
+                        self.apiForm.allow_manual_remit = self.userInfo.allow_manual_remit + ''
+                      }
+                    },
+                )
+            },
+            handleResetLoginPass(){
+              let self = this
+              self.$confirm('此操作将重置用户密码, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+
+                let data = {
+                  merchantId:this.userInfo.id,
+                  type:5
+                };
+                axios.post('/admin/user/clear-unbind-update',data).then(
+                  res=>{
+                    if(res.code == 0){
+                      self.$message.success({message:'登录密码重置成功'});
+                    }else{
+                      self.$message.error({message:res.message});
+                      self.getInitData()
+                    }
+                  }
+                )
+
+              }).catch(() => {
+                self.$message({
+                  type: 'warning',
+                  message: '已取消操作'
+                });
+              });
+
+            },
+            handleClearPass(){
+                if(this.userInfo.financial_password_hash_len <= 0){
+                    this.$message.error({message:'该商户还没有设置资金密码'});
+                    return;
+                }
+
+              let self = this
+              self.$confirm('此操作将清除资金密码, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+
+                let data = {
+                  merchantId:this.userInfo.id,
+                  type:1
+                };
+                axios.post('/admin/user/clear-unbind-update',data).then(
+                  res=>{
+                    if(res.code == 0){
+                      self.$message.success({message:'资金密码已清除'});
+                    }else{
+                      self.$message.error({message:res.message});
+                      self.getInitData()
+                    }
+                  }
+                )
+
+              }).catch(() => {
+                self.$message({
+                  type: 'warning',
+                  message: '已取消操作'
+                });
+              });
+            },
+            handleUnbind(){
+                if(this.userInfo.key_2fa_len <= 0){
+                    this.$message.error({message:'该商户还没有绑定安全令牌'});
+                    return;
+                }
+
+              let self = this
+              self.$confirm('此操作将清解绑安全令牌, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+
+                let data = {
+                  merchantId:this.userInfo.id,
+                  type:2
+                };
+                axios.post('/admin/user/clear-unbind-update',data).then(
+                  res=>{
+                    if(res.code == 0){
+                      this.$message.success({message:'安全令牌已解绑'});
+                    }else{
+                      this.$message.error({message:res.message});
+                      this.getInitData()
+                    }
+                  }
+                )
+
+              }).catch(() => {
+                self.$message({
+                  type: 'warning',
+                  message: '已取消操作'
+                });
+              });
+
+            },
+            handleSetRate(){
+                this.rateForm.remit_fee = this.userInfo.remit_fee;
+                this.rateForm.channel_id = this.userInfo.channel_account_id;
+                this.rateForm.remit_channel_id = this.userInfo.remit_channel_account_id;
+                this.rateForm.parent_agent_id = this.userInfo.parent_agent_id;
+                for(let key in this.methods.rate){
+                    this.rateForm.pay_methods[key] = this.methods.rate[key];
+                }
+                this.rateVisible = true;
+            },
+            updateRate(){
+                let self = this;
+                if(self.rateForm.remit_fee < self.userInfo.parent_remit_fee){
+                    this.$message.error({message:'出款费率不能小于上级'});
+                    return
+                }
+                if(self.userInfo.lower_remit_fee > 0 && self.rateForm.remit_fee > self.userInfo.lower_remit_fee){
+                    this.$message.error({message:'出款费率不能大于下级'});
+                    return
+                }
+                let payMethods = []
+                let status = 0
+                for (let i in self.rateForm.pay_methods) {
+                    let rate = self.rateForm.pay_methods[i];
+                    if(self.methodStatus[i] == '1' && !self.checkRate(rate,i)){
+                        status = 1;
+                    }
+                    payMethods.push({id: i, rate: rate, status:self.methodStatus[i]})
+                }
+                if(status == 1 ){
+                    self.$message.error({message:'有收款费率错误！请检查'});
+                    return;
+                }
+                if(payMethods.length==0){
+                    self.$message.error({message:'请填写收款费率！'});
+                    return;
+                }
+                let data = {
+                    merchantId:self.userInfo.id,
+                    channelId:self.rateForm.channel_id,
+                    remitChannelId:self.rateForm.remit_channel_account_id,
+                    parent_agent_id:self.rateForm.parent_agent_id,
+                    remit_fee:self.rateForm.remit_fee,
+                    appSecrets:self.rateForm.app_secrets,
+                    pay_methods:payMethods,
+                    remitQuotaPerday:self.rateForm.remit_quota_perday,
+                    rechargeQuotaPerday:self.rateForm.recharge_quota_perday,
+                    rechargeQuotaPertime:self.rateForm.recharge_quota_pertime,
+                    remitQuotaPertime:self.rateForm.remit_quota_pertime
+                };
+                axios.post('/admin/user/update-rate', data).then(
+                    res => {
+                        if (res.code != 0) {
+                            self.$message.error({message: res.message})
+                        } else {
+                            self.getInitData();
+                            self.$message.success({message:'编辑成功'});
+                            self.rateVisible = false;
+                        }
+                    },
+                )
+            },
+          updateApi(){
+            let self = this
+            axios.post('/admin/user/update-api', self.apiForm).then(
+              res => {
+                if (res.code != 0) {
+                  self.$message.error({message: res.message})
+                } else {
+                  self.$message.success({message:'更新成功'});
+                  self.rateVisible = false;
+                }
+              },
+            )
+          },
+            handleBindIp(){
+                this.ipVisible = true;
+                this.ipForm.app_server_ips = this.userInfo.app_server_ips;
+                this.ipForm.app_server_domains = this.userInfo.app_server_domains;
+            },
+            updateIps(){
+                let self = this
+                if(self.ipForm.app_server_ips.length < 1 || self.ipForm.app_server_domains.length < 1){
+                    self.$message.error({message:'ip,或者域名不能为空'});
+                    return false;
+                }
+                if(self.ipForm.app_server_ips.length > 0 ){
+                    var tmpIp = self.ipForm.app_server_ips.split(';');
+                    let regIp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+                    for(let i = 0; i< tmpIp.length; i++){
+                        if(!regIp.test(tmpIp[i])){
+                            self.$message.error({message:'有IP地址格式不正确，请检查'});
+                            return false;
+                        }
+                    }
+                }
+                if(self.ipForm.app_server_domains.length > 0){
+                    let regUrl = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
+                    var tmpUrl = self.ipForm.app_server_domains.split(';');
+                    for(let i = 0; i< tmpUrl.length; i++){
+                        if(!regUrl.test(tmpUrl[i])){
+                            self.$message.error({message:'有域名格式不正确，请检查'});
+                            return false;
+                        }
+                    }
+                }
+                let data = {
+                    merchantId:self.userInfo.id,
+                    channelId:self.userInfo.channel_account_id,
+                    app_server_ips:tmpIp,
+                    app_server_domains:tmpUrl,
+                }
+                axios.post('/admin/user/bind-ips', data).then(
+                    res => {
+                        if (res.code != 0) {
+                            self.$message.error({message: res.message})
+                        } else {
+                            self.$message.success({message:'修改状态成功'});
+                            self.getInitData()
+                            self.ipVisible = false;
+                        }
+                    },
+                )
+            },
+            handleAgent(){
+                let self = this
+                if(self.agentOptions.length == 0){
+                    self.$message.error({message:'没有上级代理可切换'});
+                    return
+                }
+                self.agentVisible = true
+            },
+            handleCheangeAgent(){
+                let self = this
+                if(self.agentId == null){
+                    self.$message.error({message:'没有选择代理'})
+                    return
+                }
+                let payMethods = []
+                for(let key in self.methods.rate){
+                    payMethods.push({id: key, rate: self.methods.rate[key], status:self.methodStatus[key]})
+                }
+                let data = {
+                    merchantId:self.userInfo.id,
+                    agentId: self.agentId,
+                    pay_methods:payMethods,
+                    remit_fee:self.userInfo.remit_fee,
+                    channelId:self.userInfo.channel_account_id,
+                }
+                axios.post('/admin/user/change-agent', data).then(
+                    res => {
+                        if (res.code != 0) {
+                            self.$message.error({message: res.message})
+                        } else {
+                            self.$message.success({message:'切换成功'});
+                            self.getInitData()
+                            self.agentId = null;
+                            self.agentVisible = false;
+                        }
+                    },
+                )
+            },
+            handleUserStatus(){
+                this.statusVisible = true
+                this.statusForm.oldStatus = this.statusForm.newStatus = this.userInfo.status.toString()
+            },
+            updateUserStatus(){
+                var self = this;
+                if(self.statusForm.newStatus == self.statusForm.oldStatus){
+                    return self.statusVisible = false;
+                }
+                let data = {
+                    status:self.statusForm.newStatus,
+                    merchantId:self.userInfo.id,type:3
+                }
+                axios.post('/admin/user/clear-unbind-update', data).then(
+                    res => {
+                        if (res.code != 0) {
+                            self.$message.error({message: res.message})
+                        } else {
+                            self.$message.success({message:'修改状态成功'});
+                            self.getInitData()
+                            self.statusVisible = false;
+                        }
+                    },
+                )
+            },
+            handleQuota(){
+                let self = this;
+                self.quotaForm.remit_quota_perday = self.userInfo.remit_quota_perday;
+                self.quotaForm.recharge_quota_perday = self.userInfo.recharge_quota_perday;
+                self.quotaForm.remit_quota_pertime = self.userInfo.remit_quota_pertime;
+                self.quotaForm.recharge_quota_pertime = self.userInfo.recharge_quota_pertime;
+                self.quotaVisible = true;
+            },
+            updateQuota(){
+                let self = this;
+                if(self.quotaForm.remit_quota_pertime > self.quotaForm.remit_quota_perday){
+                    self.$message.error({message:'单次提款额度不能大于单日提款额度'});
+                    return
+                }
+                if(self.quotaForm.recharge_quota_pertime > self.quotaForm.recharge_quota_perday){
+                    self.$message.error({message:'单次充值额度不能大于单日充值额度'});
+                    return
+                }
+                let data = {
+                    merchantId:self.userInfo.id,
+                    remit_quota_perday:self.quotaForm.remit_quota_perday,
+                    recharge_quota_perday:self.quotaForm.recharge_quota_perday,
+                    remit_quota_pertime:self.quotaForm.remit_quota_pertime,
+                    recharge_quota_pertime:self.quotaForm.recharge_quota_pertime,
+                    channel_account_id:self.userInfo.channel_account_id
+                };
+                axios.post('/admin/user/update-quota', data).then(
+                    res => {
+                        if (res.code != 0) {
+                            self.$message.error({message: res.message})
+                        } else {
+                            self.$message.success({message:'修改额度成功'});
+                            self.getInitData()
+                            self.quotaVisible = false;
+                        }
+                    },
+                )
+            },
+            handleUpdateUserEmail(){
+                this.emailVisible = true
+                this.emailForm.oldEmail = this.emailForm.newEmail = this.userInfo.email
+            },
+            updateEmail(){
+                let self = this;
+                let regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+                if(self.emailForm.newEmail != null && !regEmail.test(self.emailForm.newEmail)){
+                    self.$message.error({message: '邮箱格式错误'})
+                    return false;
+                }
+                if(self.emailForm.oldEmail == self.emailForm.newEmail){
+                    return self.emailVisible = false;
+                }
+                let data = {
+                    email:self.emailForm.newEmail,
+                    merchantId:self.userInfo.id,type:4
+                }
+                axios.post('/admin/user/clear-unbind-update', data).then(
+                    res => {
+                        if (res.code != 0) {
+                            self.$message.error({message: res.message})
+                        } else {
+                            self.$message.success({message: '修改状态成功'});
+                            self.getInitData()
+                            self.statusVisible = false;
+                        }
+                    },
+                )
+            },
+          onMethodStatusChange(key){
+          },
+          checkRate(rate, method_id) {
+            let self = this
+            if (rate > 0) {
+              this.methodStatus[method_id] = "1"
+            } else {
+              this.methodStatus[method_id] = "0"
+            }
+
+            if (rate < self.methods.min_rate[method_id] && self.methodStatus[method_id] == '1') {
+              self.$message.error({message: self.methods.name[method_id] + '费率小于上级'});
+              return;
+            }
+            if (self.methods.max_rate[method_id] > 0 && rate > self.methods.max_rate[method_id] && self.methodStatus[method_id] == '1') {
+              self.$message.error({message: self.methods.name[method_id] + '费率大于下级'});
+              return;
+            }
+
+
+            return true;
+          }
+        }
+
+    }
+</script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+    .dashboard-editor-container {
+        padding: 32px;
+        //background-color: rgb(240, 242, 245);
+        .chart-wrapper {
+            background: #fff;
+            padding: 16px 16px 0;
+            margin-bottom: 32px;
+        }
+        .authorised_amount {
+            padding: 5px 10px;
+            background-color: #ecf8ff;
+            border-radius: 4px;
+            border-left: 5px solid #50bfff;
+        }
+        .authorised_amount span,.authorised_amount b{
+            display: inline-block;padding-left: 5px;
+        }
+        .authorised_amount b{
+            color: #F56C6C;
+        }
+        .el-row {
+            margin-bottom: 20px;
+            &:last-child {
+                 margin-bottom: 0;
+             }
+        }
+        .el-col {
+            border-radius: 4px;
+        }
+    }
+
+</style>

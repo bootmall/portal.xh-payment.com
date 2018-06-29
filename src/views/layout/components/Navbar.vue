@@ -1,0 +1,483 @@
+<template>
+    <el-menu class="navbar" mode="horizontal">
+        <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+
+        <breadcrumb class="breadcrumb-container"></breadcrumb>
+
+        <div class="right-menu">
+            <el-dropdown trigger="click" v-if="group_id != 10">
+            <span class="el-dropdown-link" @click="getInitData">
+                {{asset}}
+            </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item divided>
+                        <span style="display:block;">账户余额：{{asset}}</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item divided>
+                        <span style="display:block;">冻结金额：{{frozen_balance}}</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item divided>
+                        <span style="display:block;">可提现金额：{{balance}}</span>
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+
+            <el-dropdown class="avatar-container right-menu-item">
+                <div class="avatar-wrapper">
+                    欢迎您:
+                    <router-link to="/">{{nickname_dis}}</router-link>
+                    <i class="el-icon-caret-bottom"></i>
+                    <audio src="/static/mp3/6005.mp3" controls="controls" preload id="remind" hidden></audio>
+                </div>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item divided>
+                        <span @click="editPassDialog" style="display:block;">修改密码</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item divided v-if="group_id != 10">
+                        <span @click="handleAuthKey" style="display:block;">修改商户KEY</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item divided>
+                        <span @click="getGoogleCode" style="display:block;">安全令牌</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item divided v-if="group_id != 10">
+                        <span @click="handleFinancial" style="display:block;">设置/修改资金密码</span>
+                    </el-dropdown-item>
+
+                    <el-dropdown-item divided>
+                        <span @click="logout" style="display:block;">退出登录</span>
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </div>
+        <el-dialog title="修改密码" :visible.sync="editPassVisible" width="30%">
+            <el-form :model="editPassForm">
+                <dd style="color: red;">提示：密码必须包含一个大写字母，一个小字母，一个数字；长度（6-16）</dd>
+                <el-form-item label="旧密码：" label-width="120px">
+                    <el-input size="small" type="password" v-model="editPassForm.oldPass" style="width: 200px"></el-input>
+                </el-form-item>
+                <el-form-item label="新密码：" label-width="120px">
+                    <el-input size="small" type="password" v-model="editPassForm.newPass" style="width: 200px"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码：" label-width="120px">
+                    <el-input size="small" type="password" v-model="editPassForm.confirmPass" style="width: 200px"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="small" @click="editPassVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="editPassHandle">提交</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="绑定安全令牌" :visible.sync="googleCodeVisible" width="50%">
+            <el-form :model="editPassForm">
+                <div>
+                  <span style="float: left;width: 200px;height: 260px">
+                      <!--<img :src="googleCode" />-->
+                      <vue-qr :text="googleCode" height="200" width="200"></vue-qr>
+                      <el-input size="small" v-model="key_2fa" style="width: 180px"></el-input>
+                  </span>
+                    <span style="height: 260px">
+                      <p style="height: 20px;">1. 造访 App Store</p>
+                      <p style="height: 20px;">2. 搜寻 「Google Authenticator」 或 「谷歌身份验证器」</p>
+                      <p style="height: 20px;">3. 下载并安装应用程式</p>
+                      <p style="height: 20px;">4. 用谷歌身份验证器扫描二维码（QR CODE）</p>
+                      <p style="height: 20px;">5. 输入谷歌身份验证器产生的验证码</p>
+                      <p style="height: 20px;">6. 提交后将本账号绑定谷歌身份验证器</p>
+                      <p style="height: 20px;">7. 绑定后，本账号登录时，必须输入验证器产生的验证码，方可登录</p>
+                  </span>
+                </div>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="small" @click="googleCodeVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="setGoogleCode">提交</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="修改密码" :visible.sync="authKeyVisible" width="30%">
+            <el-form>
+                <el-form-item label="商户KEY：" label-width="120px">
+                    <dd style="color: red;">提示：商户Key必须包含一个大写字母，一个小字母，一个数字；长度（8-50）</dd>
+                    <el-input size="small" type="textarea" :rows="3" v-model="auth_key" style="width: 200px"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="small" @click="authKeyVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="editAuthKey">提交</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="设置/修改资金密码" :visible.sync="editFinancialPassVisible" width="30%">
+            <el-form :model="editFinancialPassForm">
+                <dd style="color: red;">提示：密码必须包含一个大写字母，一个小字母，一个数字；长度（6-16）</dd>
+                <el-form-item label="旧资金密码：" label-width="120px" v-if="editFinancialPassForm.is_financial == 1">
+                    <el-input size="small" type="password" v-model="editFinancialPassForm.oldPass" style="width: 200px"></el-input>
+                </el-form-item>
+                <el-form-item label="资金密码：" label-width="120px">
+                    <el-input size="small" type="password" v-model="editFinancialPassForm.newPass" style="width: 200px"></el-input>
+                </el-form-item>
+                <el-form-item label="确认资金密码：" label-width="120px" v-if="editFinancialPassForm.is_financial == 1">
+                    <el-input size="small" type="password" v-model="editFinancialPassForm.confirmPass" style="width: 200px"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="small" @click="editFinancialPassVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="editFinancialPassHandle">提交</el-button>
+            </div>
+        </el-dialog>
+    </el-menu>
+
+</template>
+
+<script>
+  import {mapGetters} from 'vuex'
+  import Breadcrumb from '@/components/Breadcrumb'
+  import Hamburger from '@/components/Hamburger'
+  import ThemePicker from '@/components/ThemePicker'
+  import Screenfull from '@/components/Screenfull'
+  // import ErrorLog from '@/components/ErrLog'
+  import common from '@/utils/common'
+
+  import axios from '@/utils/http'
+  import VueQr from 'vue-qr'
+
+  export default {
+    components: {
+      Breadcrumb,
+      Hamburger,
+      ThemePicker,
+      // ErrorLog,
+      Screenfull,
+      VueQr,
+    },
+    data() {
+      return {
+        constTrue: true,
+        nickname_dis: '',
+        constFalse: false,
+        group_id: null,
+        asset: null,
+        frozen_balance: null,
+        balance: null,
+        // log: errLogStore.state.errLog,
+        shoppingCartVisible: false,
+        orderFormVisible: false,
+        googleCodeVisible: false,
+        authKeyVisible: false,
+        editFinancialPassVisible: false,
+        googleCode: null,
+        key_2fa: null,
+        auth_key: null,
+        old_auth_key: null,
+        editPassVisible: false,
+        editPassForm: {
+          oldPass: null,
+          newPass: null,
+          confirmPass: null,
+        },
+        editFinancialPassForm: {
+          is_financial: null,
+          oldPass: null,
+          newPass: null,
+          confirmPass: null,
+        }
+
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'sidebar',
+        'nickname',
+        'username',
+        'user',
+        'avatar',
+        'language',
+      ]),
+    },
+    created() {
+      this.getInitData()
+      this.nickname_dis = this.nickname
+      if (this.nickname_dis == '') this.nickname_dis = this.username
+
+      let siteInfo = common.getStorage('siteInfo')
+      if(typeof siteInfo.siteName != 'undefined'){
+        document.title =  siteInfo.siteName
+      }
+    },
+    mounted() {
+      //设置定时器，每30秒刷新一次
+      this.checkRemitStatus();
+      // setInterval(this.checkRemitStatus,30 * 1000)
+    },
+    methods: {
+      getInitData() {
+        let self = this
+        axios.post('/user/user-check').then(
+          res => {
+            if (res.code == 0) {
+              self.editFinancialPassForm.is_financial = res.data.is_financial;
+              self.group_id = res.data.group_id;
+              self.asset = res.data.asset;
+              self.frozen_balance = res.data.frozen_balance;
+              self.balance = res.data.balance;
+            } else {
+              self.$message.error({message: res.message})
+            }
+          }
+        );
+      },
+      getGoogleCode() {
+        let self = this
+        axios.post('/user/get-google-code').then(
+          res => {
+            if (res.code == 0) {
+              self.googleCode = res.data;
+              self.googleCodeVisible = true;
+            } else {
+              self.$message.error({message: res.message})
+            }
+          }
+        );
+      },
+      toggleSideBar() {
+        this.$store.dispatch('toggleSideBar')
+      },
+      handleSetLanguage(lang) {
+        this.$i18n.locale = lang
+        this.$store.dispatch('setLanguage', lang)
+        this.$message({
+          message: 'switch language success',
+          type: 'success'
+        })
+      },
+      logout() {
+        this.$store.dispatch('LogOut').then(() => {
+          location.reload()// 为了重新实例化vue-router对象 避免bug
+        })
+      },
+      editPassHandle() {
+        let self = this
+        let reg = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
+        if (!reg.test(self.editPassForm.newPass) || !reg.test(self.editPassForm.confirmPass)) {
+          self.$message.error({message: '密码格式错误'})
+          return false;
+        }
+        if (self.editPassForm.newPass != self.editPassForm.confirmPass) {
+          self.$message.error({message: '新密码与确认密码不一致'})
+          return false;
+        }
+        let data = {
+          oldPass: self.editPassForm.oldPass,
+          newPass: self.editPassForm.newPass,
+          confirmPass: self.editPassForm.confirmPass,
+        }
+        axios.post('/user/edit-pass', data).then(
+          res => {
+            if (res.code == 0) {
+              self.$message.success({message: '密码修改成功'})
+              self.editPassVisible = false;
+            } else {
+              self.$message.error({message: res.message})
+            }
+          }
+        );
+      },
+      editPassDialog() {
+        this.editPassVisible = true;
+        this.editPassForm = {
+          oldPass: null,
+          newPass: null,
+          confirmPass: null,
+        }
+      },
+      setGoogleCode() {
+        let self = this
+        let data = {
+          key_2fa: self.key_2fa
+        }
+        axios.post('/user/set-google-code', data).then(
+          res => {
+            self.key_2fa = null;
+            if (res.code == 0) {
+              self.$message.success({message: '设置成功'})
+              self.googleCodeVisible = false;
+            } else {
+              self.$message.error({message: res.message})
+            }
+          }
+        );
+      },
+      handleAuthKey() {
+        let self = this
+        axios.post('/user/get-auth-key').then(
+          res => {
+            if (res.code == 0) {
+              self.auth_key = res.data;
+              self.old_auth_key = res.data;
+              self.authKeyVisible = true;
+            }
+          }
+        );
+      },
+      editAuthKey() {
+        let self = this
+        let reg = /^.*(?=.{8,50})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
+        if (!reg.test(self.auth_key)) {
+          self.$message.error({message: '商户Key值不符合规范'})
+          return
+        }
+        if (self.auth_key == self.old_auth_key) {
+          this.$message.error({message: '商户Key值没有做任何修改'})
+          this.authKeyVisible = false;
+          return
+        }
+        let data = {
+          authKey: self.auth_key
+        }
+        axios.post('/user/edit-auth-key', data).then(
+          res => {
+            if (res.code == 0) {
+              self.authKeyVisible = false;
+              self.$message.success({message: '商户Key值修改成功'})
+            } else {
+              self.$message.error({message: '验证码获取错误'})
+            }
+          }
+        );
+      },
+      handleFinancial() {
+        this.editFinancialPassVisible = true;
+      },
+      editFinancialPassHandle() {
+        let self = this
+        let data = {};
+        let reg = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
+
+        if (self.editFinancialPassForm.is_financial == 1) {
+          if (!reg.test(self.editFinancialPassForm.newPass) || !reg.test(self.editFinancialPassForm.confirmPass)) {
+            self.$message.error({message: '密码格式错误'})
+            return false;
+          }
+          if (self.editFinancialPassForm.newPass != self.editFinancialPassForm.confirmPass) {
+            self.$message.error({message: '新密码与确认密码不一致'})
+            return false;
+          }
+          data = {
+            oldPass: self.editFinancialPassForm.oldPass,
+            newPass: self.editFinancialPassForm.newPass,
+            confirmPass: self.editFinancialPassForm.confirmPass,
+          }
+        } else {
+          if (!reg.test(self.editFinancialPassForm.newPass)) {
+            self.$message.error({message: '密码格式错误'})
+            return false;
+          }
+          data = {
+            newPass: self.editFinancialPassForm.newPass,
+          }
+        }
+        axios.post('/user/edit-financial-pass', data).then(
+          res => {
+            if (res.code == 0) {
+              self.$message.success({message: '密码修改成功'})
+              self.editFinancialPassVisible = false;
+            } else {
+              self.$message.error({message: res.message})
+            }
+          }
+        );
+      },
+      checkRemitStatus() {
+        if (this.group_id == 10) {
+          axios.post('/admin/remit/remind').then(
+            res => {
+              if (res.code == 0 && res.data.length > 0) {
+                let audio = document.getElementById('remind')
+                if (audio !== null) {
+                  audio.currentTime = 1;
+                  audio.play();
+                }
+              }
+            }
+          );
+        }
+      }
+    }
+  }
+</script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+    .navbar {
+        height: 50px;
+        line-height: 50px;
+        border-radius: 0px !important;
+        .nickname {
+            display: inline-block;
+            font-size: 14px;
+            line-height: 50px;
+            margin-right: 10px;
+            float: left;
+            color: #606266;
+        }
+        .nickname a {
+            color: #409EFF;
+        }
+        .hamburger-container {
+            line-height: 58px;
+            height: 50px;
+            float: left;
+            padding: 0 10px;
+        }
+        .breadcrumb-container {
+            float: left;
+        }
+        .errLog-container {
+            display: inline-block;
+            vertical-align: top;
+        }
+        .right-menu {
+            float: right;
+            height: 100%;
+            &:focus {
+                outline: none;
+            }
+            .right-menu-item {
+                display: inline-block;
+                margin: 0 8px;
+            }
+            .screenfull {
+                height: 20px;
+            }
+            .international {
+                vertical-align: top;
+                .international-icon {
+                    font-size: 20px;
+                    cursor: pointer;
+                    vertical-align: -5px;
+                }
+            }
+            .theme-switch {
+                vertical-align: 15px;
+            }
+            .avatar-container {
+                height: 50px;
+                margin-right: 30px;
+                .avatar-wrapper {
+                    cursor: pointer;
+                    margin-top: 5px;
+                    position: relative;
+                    .user-avatar {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 10px;
+                    }
+                    .el-icon-caret-bottom {
+                        position: absolute;
+                        right: -20px;
+                        top: 25px;
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+
+
