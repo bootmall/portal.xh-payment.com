@@ -26,7 +26,7 @@
                 <el-input class="el-captcha" label="图片验证码" v-model="loginForm.captchaCode"></el-input>
                 <img @click="refreshCaptcha" v-if="captchaBase64" :src="captchaBase64" style="margin-top: 2px;margin-left: 10px;" />
 
-                <a v-if="captchaBase64" @click="refreshCaptcha">刷新</a>
+                <a v-if="captchaBase64" @click="refreshCaptcha" style="color: #1e70bf">刷新</a>
             </el-form-item>
             <el-row :gutter="20">
                 <el-col :span="12" :offset="6">
