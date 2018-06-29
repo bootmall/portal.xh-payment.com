@@ -2,8 +2,3 @@
 node_modules/
 build/Release/
 *.log
-vendor/
-runtime/cache/
-runtime/cache.data/
-runtime/log/
-runtime/debug/
