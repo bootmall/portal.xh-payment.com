@@ -37,13 +37,13 @@
                             <el-input v-model="commonForm.remit_fee"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="收款单笔限额" prop="remit_quota_pertime" class="el-form-item-input">
-                            <el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.remit_quota_pertime"></el-input>
-                        </el-form-item>
+                        <!--<el-form-item label="收款单笔限额" prop="remit_quota_pertime" class="el-form-item-input">-->
+                            <!--<el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.remit_quota_pertime"></el-input>-->
+                        <!--</el-form-item>-->
 
-                        <el-form-item label="结算单笔限额" prop="recharge_quota_pertime" class="el-form-item-input">
-                            <el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.recharge_quota_pertime"></el-input>
-                        </el-form-item>
+                        <!--<el-form-item label="结算单笔限额" prop="recharge_quota_pertime" class="el-form-item-input">-->
+                            <!--<el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.recharge_quota_pertime"></el-input>-->
+                        <!--</el-form-item>-->
                         <!--<el-form-item label="允许接口收款" prop="status">-->
                             <!--<el-radio-group v-model="commonForm.allow_api_recharge" size="small">-->
                                 <!--<el-radio label="1">允许</el-radio>-->
