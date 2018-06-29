@@ -295,6 +295,11 @@
             width: 400px;
             padding: 35px 35px 15px 35px;
             margin: 120px auto;
+            margin-right: 200px;
+            background-color:#000000;/* IE6和部分IE7内核的浏览器(如QQ浏览器)下颜色被覆盖 */
+            background-color:rgba(0,0,0,0.2); /* IE6和部分IE7内核的浏览器(如QQ浏览器)会读懂，但解析为透明 */
+            border-radius:10px;
+            -moz-border-radius:10px;
         }
         .el-form-item {
             border: 1px solid rgba(255, 255, 255, 0.1);

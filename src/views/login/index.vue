@@ -1,6 +1,39 @@
 <template>
     <div class="login-container">
+        <h1></h1>
+        <el-form class="card-box login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+            <h3 class="title">{{siteInfo.siteName}}登录</h3>
 
+            <el-form-item prop="username">
+                <span class="svg-container svg-container_login">
+                  <svg-icon icon-class="user"/>
+                </span>
+                <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名"/>
+            </el-form-item>
+
+            <el-form-item prop="password">
+                <span class="svg-container">
+                  <svg-icon icon-class="password"/>
+                </span>
+                <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
+                          placeholder="密码"/>
+                <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye"/></span>
+            </el-form-item>
+            <el-form-item class="item-captcha" prop="captchaCode">
+                <span class="svg-container">
+                  <svg-icon icon-class="documentation"/>
+                </span>
+                <el-input class="el-captcha" label="图片验证码" v-model="loginForm.captchaCode"></el-input>
+                <img @click="refreshCaptcha" v-if="captchaBase64" :src="captchaBase64" style="margin-top: 2px;margin-left: 10px;" />
+
+                <a v-if="captchaBase64" @click="refreshCaptcha">刷新</a>
+            </el-form-item>
+            <el-row :gutter="20">
+                <el-col :span="12" :offset="6">
+                    <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
+                </el-col>
+            </el-row>
+        </el-form>
         <el-dialog title="安全令牌" :visible.sync="keyVisible" width="30%">
             令牌码：
             <el-input style="border: 1px solid #5a5e66;height: 26px;" class="key_2fa" v-model="key_2fa"></el-input>
@@ -9,40 +42,6 @@
                 <el-button type="primary" :loading="loadingKey" @click="handleKey">确 定</el-button>
             </div>
         </el-dialog>
-
-        <el-container>
-            <el-header class="head-logo"><img src="../../assets/imgs/logo.png"/></el-header>
-            <el-main>
-                <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-                    <h3 class="title">会员登录</h3>
-
-                    <el-form-item prop="username">
-                        <el-input prefix-icon="el-icon-goods" name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入用户名"/>
-                    </el-form-item>
-
-                    <el-form-item prop="password">
-                        <el-input prefix-icon="el-icon-setting" name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-                                  placeholder="请输入密码"/>
-                        <!--<span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye"/></span>-->
-                    </el-form-item>
-                    <el-form-item class="item-captcha" prop="captchaCode">
-                        <el-input prefix-icon="el-icon-tickets" class="el-captcha" placeholder="请输入图片验证码" v-model="loginForm.captchaCode"></el-input>
-                        <img @click="refreshCaptcha" v-if="captchaBase64" :src="captchaBase64"/>
-
-                        <a v-if="captchaBase64" @click="refreshCaptcha">刷新</a>
-                    </el-form-item>
-                    <el-row :gutter="20">
-                        <el-col :span="12" :offset="6">
-                            <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
-                        </el-col>
-                    </el-row>
-                </el-form>
-
-            </el-main>
-            <el-footer>
-            </el-footer>
-        </el-container>
-
     </div>
 </template>
 
@@ -139,8 +138,8 @@
           if (res.code == 0) {
             common.setStorage('siteInfo',res.data)
             if(typeof res.data.siteName != 'undefined'){
-                document.title =  res.data.siteName
-                this.siteInfo.siteName = res.data.siteName
+              document.title =  res.data.siteName
+              this.siteInfo.siteName = res.data.siteName
             }
           }
         })
@@ -227,18 +226,34 @@
 
     .login-container {
         @include relative;
-        background-color:#eeeeee;
+        background:url(../../assets/imgs/login-bg.jpg)no-repeat;
         width:100%;
         height:100%;
-
+        background-size:100% 100%;
+        position:absolute;
+        filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../../assets/imgs/login-bg.jpg',sizingMethod='scale');
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus
+        input:-webkit-autofill,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover
+        textarea:-webkit-autofill:focus,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus {
+            -webkit-text-fill-color: $dark_gray;
+            -webkit-box-shadow: 0 0 0px 1000px #FFFAFA inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }
         .el-input__inner {
             border: solid 1px #eee;
         }
         input {
-            /*background-color:rgba(0, 0, 0, 0.4);*/
+            background-color:rgba(0, 0, 0, 0.1);
             border: 0px;
             -webkit-appearance: none;
-            border-radius: 5px;
+            border-radius: 0px;
             padding: 12px 5px 12px 15px;
             color: $bg;
             height: 47px;
@@ -246,65 +261,66 @@
         }
 
         .el-input {
-            /*display: inline-block;*/
-            /*height: 47px;*/
+            display: inline-block;
+            height: 47px;
             width: 85%;
-            border-radius: 2px;
-            margin-left: 30px;
         }
         .tips {
             font-size: 14px;
             color: #fff;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .svg-container {
-            padding: 6px 5px 5px 5px;
-            color: #fff;
+            padding: 6px 5px 6px 15px;
+            color: $dark_gray;
             vertical-align: middle;
             width: 30px;
             display: inline-block;
-            font-size: 20px;
             &_login {
-                font-size: 25px;
+                font-size: 20px;
             }
         }
-        .login-form .title {
-            font-size: 30px;
+        .title {
+            font-size: 26px;
             font-weight: 400;
-            color: #dddeee;
-            margin: 20px auto 20px auto;
+            color: #1e70bf;
+            margin: 0px auto 40px auto;
             text-align: center;
             font-weight: bold;
-            height: 50px;
-            line-height: 50px;
         }
         .login-form {
+            position: absolute;
+            left: 0;
+            right: 0;
             width: 400px;
-            height: 350px;
-            margin-top: 50px;
-            margin-bottom: 50px;
-            float: right;
-            margin-right: 200px;
+            padding: 35px 35px 15px 35px;
+            margin: 120px auto;
+            margin-right: 600px;
             background-color:#000000;/* IE6和部分IE7内核的浏览器(如QQ浏览器)下颜色被覆盖 */
             background-color:rgba(0,0,0,0.2); /* IE6和部分IE7内核的浏览器(如QQ浏览器)会读懂，但解析为透明 */
             border-radius:10px;
             -moz-border-radius:10px;
         }
-
         .el-form-item {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /*background: rgba(0, 0, 0, 0.1);*/
             border-radius: 5px;
             color: #454545;
-            margin-bottom: 20px !important;
         }
         .show-pwd {
             position: absolute;
-            margin-right: 15px;
+            right: 10px;
             top: 7px;
             font-size: 16px;
             color: $dark_gray;
             cursor: pointer;
             user-select: none;
             right: 20px !important;
+        }
+        .el-form-ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
         .item-captcha a{
@@ -317,9 +333,8 @@
         .item-captcha img{
             vertical-align: middle;
             display: inline-block;
-            margin-top: -2px;
-            margin-left: 10px;
-            border-radius: 5px;
+            margin-top: -2px !important;
+            margin-left: 10px !important;
         }
         .item-captcha .el-captcha{
             width: 45% !important;
@@ -337,35 +352,6 @@
             height: 24px;
             color: #000000;
         }
-        .head-logo{
-            height: 114px !important;
-            margin: 0;
-            width: 100%;
-        }
-        .head-logo{
-            margin: 0;
-        }
-        .head-logo img{
-            /*height: 114px;*/
-            /*width: 242px;*/
-            float: left;
-            margin-left: 150px;
-        }
-        .el-main{
-            background:url(../../assets/imgs/login-main-bg.png)no-repeat;
-            background-size:100% 100%;
-            margin: 0;
-            min-height: 500px;
-        }
-        .el-footer{
-            background:url(../../assets/imgs/login-banks.png) center center no-repeat;
-            height: 120px !important;
-        }
 
-        .el-form-item__error{
-            padding-left: 40px;
-            font-weight: bolder;
-            color: #F56C6C;
-        }
     }
 </style>
