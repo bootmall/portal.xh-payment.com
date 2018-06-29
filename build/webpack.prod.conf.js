@@ -20,9 +20,9 @@ function resolveApp(relativePath) {
 // process.exit()
 var webPackssetsRoot = path.resolve(__dirname, '../dist/'+process.env.env_config)
 if(process.env.env_config=='sit'){
-  webPackssetsRoot = path.resolve(__dirname, '../../test-static.portal.pub-payment.com')
+  webPackssetsRoot = path.resolve(__dirname, '../../test-static.portal.xh-payment.com')
 }else if(process.env.env_config=='prod'){
-  webPackssetsRoot = path.resolve(__dirname, '../../static.portal.pub-payment.com')
+  webPackssetsRoot = path.resolve(__dirname, '../../static.portal.xh-payment.com')
 }
 
 var webpackConfig = merge(baseWebpackConfig, {

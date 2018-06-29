@@ -1,4 +1,4 @@
-let api = '"http://dev.portal-api.pub-payment.com/api/v1"'
+let api = '"http://dev.portal-api.xh-payment.com/api/v1"'
 if (process.argv[2]) api = '"'+process.argv[2]+'"'
 
 module.exports = {
