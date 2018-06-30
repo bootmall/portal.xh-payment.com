@@ -15,26 +15,30 @@
             </span>
         </el-dialog>
         <div style="width: 90%;margin-left: 50px"><order-census></order-census></div>
-        <div style="width: 90%;margin-left: 50px" v-if="user.group_id != 10 ">
+        <div style="width: 90%;margin-left: 50px;margin-bottom: 20px;" v-if="user.group_id != 10 " class="rate-list">
+            <el-alert
+                    title="费率列表"
+                    type="success"
+                    :closable="false"
+                    style="margin-bottom: 10px;"
+            >
+            </el-alert>
+            <!--<el-row :gutter="10">-->
+                <!--<el-col :span="2" align="right">-->
+                    <!--<span>出款费率</span>-->
+                <!--</el-col>-->
+                <!--<el-col :span="2" v-for="(item,key) in rate" :key="key" v-text="item.name" align="center">-->
+                <!--</el-col>-->
+                <!--<el-col :span="2"></el-col>-->
+            <!--</el-row>-->
             <el-row :gutter="10">
-                <el-col :span="2" align="right">
-                    <span>出款费率</span>
+                <el-col :span="24" align="center">
+                    <el-button type="success"><span class="rate-list-name">出款费率</span>:{{remit_fee}}</el-button>
+                    <el-button v-for="(item,key) in rate" :key="key" type="info"><span class="rate-list-name">{{item.name}}</span>:{{item.rate}}</el-button>
                 </el-col>
-                <el-col :span="2" v-for="(item,key) in rate" :key="key" v-text="item.name" align="center">
-                </el-col>
-                <el-col :span="2"></el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="2" align="right">
-                    <span>{{remit_fee}}</span>
-                </el-col>
-                <el-col :span="2" v-for="(item,key) in rate" :key="key" align="center">
-                    {{item.rate}}
-                </el-col>
-                <el-col :span="2"></el-col>
             </el-row>
         </div>
-        <el-row :gutter="20" style="margin-left: 50px;background-color:#c5c9cf;line-height: 60px;width: 90%">
+        <el-row :gutter="20" style="margin-left: 50px;line-height: 60px;width: 90%;background-color: #eee;color: #333;">
             <el-col :span="6" align="center">最后登陆时间</el-col>
             <el-col :span="6">{{user.last_login_time}}</el-col>
             <el-col :span="6" align="center">最后登陆IP</el-col>
@@ -101,8 +105,9 @@
         noticeVisible: false,
         content: null,
         user: {},
-        rate: [],
+        rate: {},
         remit_fee: null,
+        payMethodOptions: {},
       }
     },
     methods: {
@@ -133,8 +138,16 @@
                 self.noticeVisible = true
                 self.content = self.notice[0].content
               }
+
+              for(let i in res.data.rate){
+                if(res.data.rate[i].rate==0){
+                  res.data.rate[i].rate = 0
+                }
+              }
               self.rate = res.data.rate
+
               self.remit_fee = res.data.remit_fee
+              self.payMethodOptions = res.data.payMethodOptions
             }
           },
           res => {
@@ -271,4 +284,19 @@
       }
     }
   }
+.rate-list{
+    .el-alert__title {
+        font-size: 18px !important;
+    }
+    .el-button--medium {
+        padding: 5px 10px;
+        color: #ccc;
+        margin-bottom: 10px;
+        margin-left: 10px;
+    }
+    .rate-list-name{
+        color: #ffffff;
+    }
+}
+
 </style>

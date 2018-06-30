@@ -82,7 +82,7 @@
                 statusOptions:[],
                 listQuery: {
                     page: 1,
-                    limit: 15,
+                    limit: 10,
                     importance: undefined,
                     title:null,
                     status: null,

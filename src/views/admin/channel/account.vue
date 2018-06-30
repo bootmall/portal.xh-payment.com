@@ -11,6 +11,11 @@
                     <span>{{scope.row.id}}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="center" label="渠道">
+                <template slot-scope="scope">
+                    <span>{{scope.row.parent_name}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="渠道号名称">
                 <template slot-scope="scope">
                     <span>{{scope.row.channel_name}}</span>

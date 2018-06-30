@@ -15,7 +15,7 @@
             <el-table-column align="center" prop="last_login_time" label="上次登陆时间" width="180"></el-table-column>
             <el-table-column align="center" prop="status_name" label="状态" width="80"></el-table-column>
             <el-table-column align="center" prop="created_at" label="创建时间" width="180"></el-table-column>
-            <el-table-column align="center" label="操作" class="action-btns">
+            <el-table-column align="center" label="操作" class="action-btns" width="16RemitController.php0px" fixed="right">
                 <template slot-scope="scope">
                     <el-button class="filter-item" v-if="scope.row.key_2fa" size="mini" type="primary" @click="handleclear(scope.row,1)" v-waves>清空安全令牌</el-button>
                     <el-button class="filter-item" v-if="scope.row.financial_password_hash" size="mini" type="primary" @click="handleclear(scope.row,2)" v-waves>清空资金密码</el-button>
@@ -287,5 +287,8 @@
         display: block;
         color: #3a8ee6;
         font-size: 16px;
+    }
+    .el-button--mini, .el-button--mini.is-round {
+        margin-top: 5px;
     }
 </style>

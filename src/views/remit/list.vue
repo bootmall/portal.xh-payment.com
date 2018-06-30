@@ -158,7 +158,7 @@
         uploadUrl: common.pageMap.baseDomain + '/upload/upload',
         listQuery: {
           page: 1,
-          limit: 15,
+          limit: 10,
           importance: undefined,
           dateStart: null,//.getDateStr(-3),
           dateEnd: null,

@@ -95,7 +95,7 @@
                     <span class="link-type">{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="操作" class="action-btns">
+            <el-table-column align="center" label="操作" class="action-btns" width="100px" fixed="right">
                 <template slot-scope="scope">
                     <el-button class="filter-item" size="mini" type="primary" icon="el-icon-document" @click="handleDetail(scope.row)" v-waves>详情</el-button>
                 </template>
@@ -133,7 +133,7 @@
                 listLoading: true,
                 listQuery: {
                     page: 1,
-                    limit: 15,
+                    limit: 10,
                     importance: undefined,
                     dateStart: null,
                     dateEnd: null,

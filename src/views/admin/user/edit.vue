@@ -4,7 +4,26 @@
             <h4 class="title"></h4>
             <el-row :gutter="20">
                 <el-col :span="22" :offset="1">
-                    <div class="grid-content bg-purple">
+                    <div class="grid-content">
+                        <!--<el-form-item label="账户类型" prop="group_id" class="el-form-item-input">-->
+                            <!--<el-input v-model="commonForm.group_id"></el-input>-->
+                        <!--</el-form-item>-->
+                        <el-form-item label="账户类型" prop="group_id">
+                            <el-radio-group v-model="commonForm.group_id" size="small">
+                                <el-radio
+                                        v-for="(item,key) in typeOptions"
+                                        :key="key"
+                                        :label="key"
+                                        :value="key"
+                                        border
+                                >{{item}}</el-radio>
+                            </el-radio-group>
+                            <div class="el_item_tips">账户类型为商户时必须指定上级代理</div>
+                        </el-form-item>
+                        <el-form-item label="上级商户帐号" prop="parentMerchantAccount" class="el-form-item-input">
+                            <el-input v-model="commonForm.parentMerchantAccount"></el-input>
+                        </el-form-item>
+
                         <el-form-item label="登录名" prop="username" class="el-form-item-input">
                             <el-input v-model="commonForm.username"></el-input>
                         </el-form-item>
@@ -23,62 +42,99 @@
                         <el-form-item label="结算手续费(元/笔)" prop="remit_fee" class="el-form-item-input">
                             <el-input v-model="commonForm.remit_fee"></el-input>
                         </el-form-item>
-                        <el-form-item :label="item" v-for="(item,key) in payTypeOptions" :key="key">
-                            <el-input style="width: 150px" prop="pay_method" v-model="commonForm.recharge_rate[key]" placeholder="请输入手续费率" @change="onRechargeRateChange(key)"></el-input>
-                            <el-switch style="margin-left: 20px"
-                                    v-model="methodStatus[key]"
-                                    active-text="启用"
-                                    inactive-text="停用"
-                                    active-color="#13ce66"
-                                    inactive-color="#ff4949"
-                                   active-value="1"
-                                   inactive-value="0"
-                            >
-                            </el-switch>
-                        </el-form-item>
-                        <el-form-item label="昵称" prop="nickname" class="el-form-item-input">
-                            <el-input v-model="commonForm.nickname"></el-input>
-                        </el-form-item>
-                        <el-form-item label="邮件地址" prop="email" class="el-form-item-input">
-                            <el-input v-model="commonForm.email"></el-input>
-                        </el-form-item>
-                        <el-form-item label="收款单笔限额" prop="remit_quota_pertime" class="el-form-item-input">
-                            <el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.remit_quota_pertime"></el-input>
-                        </el-form-item>
+                        <el-row class="bg-purple">
+                            <el-col :span="24">
+                                <el-form-item label="昵称" prop="nickname" class="el-form-item-input el_item_2col">
+                                    <el-input v-model="commonForm.nickname"></el-input>
+                                </el-form-item>
+                                <el-form-item label="邮件地址" prop="email" class="el-form-item-input el_item_2col">
+                                    <el-input v-model="commonForm.email"></el-input>
+                                </el-form-item>
+                                <el-form-item label="收款单笔限额" prop="remit_quota_pertime" class="el_item_2col el-form-item-input">
+                                    <el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.remit_quota_pertime"></el-input>
+                                </el-form-item>
 
-                        <el-form-item label="结算单笔限额" prop="recharge_quota_pertime" class="el-form-item-input">
-                            <el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.recharge_quota_pertime"></el-input>
-                        </el-form-item>
-                        <el-form-item label="允许接口收款" prop="status">
-                            <el-radio-group v-model="commonForm.allow_api_recharge" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="允许接口结算" prop="allow_api_remit">
-                            <el-radio-group v-model="commonForm.allow_api_remit" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="允许后台手工充值" prop="allow_manual_recharge">
-                            <el-radio-group v-model="commonForm.allow_manual_recharge" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="允许后台手工出款" prop="allow_manual_remit">
-                            <el-radio-group v-model="commonForm.allow_manual_remit" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="接口结算不需审核" prop="allow_api_fast_remit">
-                            <el-radio-group v-model="commonForm.allow_api_fast_remit" size="small">
-                                <el-radio label="1">允许</el-radio>
-                                <el-radio label="0">不允许</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
+                                <el-form-item label="结算单笔限额" prop="recharge_quota_pertime" class="el_item_2col el-form-item-input">
+                                    <el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.recharge_quota_pertime"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row class="bg-purple">
+                            <el-col :span="24">
+                                <el-form-item class="el_item_2col" :label="item" v-for="(item,key) in payTypeOptions" :key="key">
+                                    <el-input style="width: 150px" prop="pay_method" v-model="commonForm.recharge_rate[key]" placeholder="请输入手续费率" @change="onRechargeRateChange(key)"></el-input>
+                                    <el-switch style="margin-left: 20px"
+                                               v-model="methodStatus[key]"
+                                               active-text="启用"
+                                               inactive-text="停用"
+                                               active-color="#13ce66"
+                                               inactive-color="#ff4949"
+                                               active-value="1"
+                                               inactive-value="0"
+                                    >
+                                    </el-switch>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row class="bg-purple">
+                            <el-col :span="24">
+                            <el-form-item class="el_item_2col" label="允许接口收款" prop="allow_api_recharge">
+                                <el-switch style="margin-left: 20px"
+                                           v-model="commonForm.allow_api_recharge"
+                                           active-text="允许"
+                                           inactive-text="不允许"
+                                           active-color="#13ce66"
+                                           inactive-color="#ff4949"
+                                           active-value="1"
+                                           inactive-value="0"
+                                ></el-switch>
+                            </el-form-item>
+                            <el-form-item class="el_item_2col" label="允许接口结算" prop="allow_api_remit">
+                                <el-switch style="margin-left: 20px"
+                                           v-model="commonForm.allow_api_remit"
+                                           active-text="允许"
+                                           inactive-text="不允许"
+                                           active-color="#13ce66"
+                                           inactive-color="#ff4949"
+                                           active-value="1"
+                                           inactive-value="0"
+                                ></el-switch>
+                            </el-form-item>
+                            <el-form-item class="el_item_2col" label="允许后台手工充值" prop="allow_manual_recharge">
+                                <el-switch style="margin-left: 20px"
+                                           v-model="commonForm.allow_manual_recharge"
+                                           active-text="允许"
+                                           inactive-text="不允许"
+                                           active-color="#13ce66"
+                                           inactive-color="#ff4949"
+                                           active-value="1"
+                                           inactive-value="0"
+                                ></el-switch>
+                            </el-form-item>
+                            <el-form-item class="el_item_2col" label="允许后台手工出款" prop="allow_manual_remit">
+                                <el-switch style="margin-left: 20px"
+                                           v-model="commonForm.allow_manual_remit"
+                                           active-text="允许"
+                                           inactive-text="不允许"
+                                           active-color="#13ce66"
+                                           inactive-color="#ff4949"
+                                           active-value="1"
+                                           inactive-value="0"
+                                ></el-switch>
+                            </el-form-item>
+                            <el-form-item label="接口结算不需审核" prop="allow_api_fast_remit">
+                                <el-switch style="margin-left: 20px"
+                                           v-model="commonForm.allow_api_fast_remit"
+                                           active-text="允许"
+                                           inactive-text="不允许"
+                                           active-color="#13ce66"
+                                           inactive-color="#ff4949"
+                                           active-value="1"
+                                           inactive-value="0"
+                                ></el-switch>
+                            </el-form-item>
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-col>
             </el-row>
@@ -159,7 +215,7 @@
         channelList:[],
         statusOptions: [],
         typeOptions: [],
-          methodStatus: {},
+        methodStatus: {},
         payTypeOptions: [],
         payMethods:[],
         payMethodNames:[],
@@ -293,7 +349,7 @@
 
       onSubmit() {
         self = this
-        self.submitBtnDisableStatus = true
+
         this.$refs['commonForm'].validate((valid) => {
           if (valid) {
             var formData = self.commonForm
@@ -306,7 +362,12 @@
                   self.$message.error('请填写收款费率！');
                   return;
               }
+              if(formData.group_id==30 && formData.parentMerchantAccount==''){
+                  self.$message.error('商户帐号必须指定上级代理！');
+                  return;
+              }
               formData.pay_method = payMethods
+              self.submitBtnDisableStatus = true
               axios.post('/admin/user/edit', formData).then((res) => {
                   if (res.code == 0) {
                       self.$message.success(self.saveBtnTitle + '成功！')
@@ -357,7 +418,11 @@
         padding-bottom: 20px;
     }
     .bg-purple {
-        /*background: #eef1f6;*/
+        border-radius: 6px;
+        min-height: 36px;
+        background: #F8F8FF;
+        padding: 15px 0;
+        margin-top: 10px;
     }
 
     .input-tips{
@@ -374,5 +439,19 @@
 
     .pay_type_radio .el-radio--small.is-bordered {
         margin-top: 5px;
+    }
+
+    .el_item_2col{
+        width: 45%;
+        display: inline-block;
+    }
+    .el_item_tips{
+        display: inline-block;
+        margin-left: 20px;
+        color: #909399;
+        font-size: 12px;
+    }
+    .el-form-item__content {
+        margin-bottom: 5px;
     }
 </style>

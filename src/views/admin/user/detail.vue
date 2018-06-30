@@ -100,6 +100,15 @@
             </el-row>
         </span>
         <span><h4>支付类型--费率</h4></span>
+        <!--<el-row :gutter="10" class="rate-list">-->
+            <!--<el-col :span="24" align="left">-->
+                <!--&lt;!&ndash;<el-button type="success"><span class="rate-list-name">出款费率</span>:{{remit_fee}}</el-button>&ndash;&gt;-->
+                <!--&lt;!&ndash;<el-button v-for="(item,key) in rate" :key="key" type="info">:{{item.rate}}</el-button>&ndash;&gt;-->
+                <!--<el-button  type="info" v-for="(item,key) in methods.rate" :key="key" align="center">-->
+                    <!--<span class="rate-list-name">{{methods.name[key]}}</span>:{{item | numberFormat}}-->
+                <!--</el-button>-->
+            <!--</el-col>-->
+        <!--</el-row>-->
         <el-row :gutter="20">
             <el-col :span="2" align="right">
                 <span>支付类型</span>
@@ -859,5 +868,18 @@
             border-radius: 4px;
         }
     }
-
+    .rate-list{
+        .el-alert__title {
+            font-size: 18px !important;
+        }
+        .el-button--medium {
+            padding: 5px 10px;
+            color: #ccc;
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+        .rate-list-name{
+            color: #ffffff;
+        }
+    }
 </style>
