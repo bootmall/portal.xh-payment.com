@@ -7,7 +7,7 @@
         <div class="right-menu">
             <el-dropdown trigger="click" v-if="group_id != 10">
             <span class="el-dropdown-link" @click="getInitData">
-                {{asset}}
+                账户余额：{{asset}}
             </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item divided>
@@ -91,11 +91,11 @@
                 <el-button size="small" type="primary" @click="setGoogleCode">提交</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="修改密码" :visible.sync="authKeyVisible" width="30%">
+        <el-dialog title="修改商户KEY" :visible.sync="authKeyVisible" width="30%">
             <el-form>
                 <el-form-item label="商户KEY：" label-width="120px">
-                    <dd style="color: red;">提示：商户Key必须包含一个大写字母，一个小字母，一个数字；长度（8-50）</dd>
                     <el-input size="small" type="textarea" :rows="3" v-model="auth_key" style="width: 200px"></el-input>
+                    <dd style="color: red;line-height: 20px;margin-left: 0;">提示：商户Key必须包含一个大写字母，一个小字母，一个数字；长度（8-50）</dd>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
