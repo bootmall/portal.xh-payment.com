@@ -78,15 +78,15 @@
             <el-table-column prop="bak" label="备注" width="100"></el-table-column>
             <el-table-column prop="created_at" label="建立时间" width="160"></el-table-column>
 
-            <el-table-column align="center" label="操作" class="action-btns" fixed="right" width="250px">
+            <el-table-column align="center" label="操作" class="action-btns" fixed="right" width="200px" class-name="op-column">
                 <template slot-scope="scope">
                     <el-button class="filter-item" size="mini" v-if="[10,20,30,60].indexOf(scope.row.status) !== -1" icon="el-icon-warning" type="warning"
                                @click="setFail(scope.row)" v-waves>退款
                     </el-button>
-                    <el-button class="filter-item" size="mini" v-if="[30,20,60].indexOf(scope.row.status) !== -1" type="success" icon="el-icon-check"
+                    <el-button class="filter-item" size="mini" v-if="[10,20,30,60].indexOf(scope.row.status) !== -1" type="success" icon="el-icon-check"
                                @click="setSuccess(scope.row)" v-waves>成功
                     </el-button>
-                    <el-button class="filter-item" size="mini" v-if="[0].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
+                    <el-button class="filter-item" size="mini" v-if="[0,20].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
 " @click="setChecked(scope.row.id)" v-waves>审核
                     </el-button>
                     <el-button class="filter-item" size="mini" icon="el-icon-edit" type="danger" v-if="scope.row.track == 0" @click="handleTrack(scope.row)" v-waves>录入</el-button>
@@ -471,6 +471,10 @@
     }
 
     .el-table td, .el-table th {
-        padding: 5px 0 !important;
+        padding: 0 0 !important;
+    }
+
+    .el-table__row button{
+        margin-top: 5px;
     }
 </style>
