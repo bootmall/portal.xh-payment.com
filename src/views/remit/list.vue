@@ -80,7 +80,7 @@
 
             <el-table-column align="center" label="操作" class="action-btns" fixed="right" width="250px">
                 <template slot-scope="scope">
-                    <el-button class="filter-item" size="mini" v-if="[20,30,60].indexOf(scope.row.status) !== -1" icon="el-icon-warning" type="warning"
+                    <el-button class="filter-item" size="mini" v-if="[10,20,30,60].indexOf(scope.row.status) !== -1" icon="el-icon-warning" type="warning"
                                @click="setFail(scope.row)" v-waves>退款
                     </el-button>
                     <el-button class="filter-item" size="mini" v-if="[30,20,60].indexOf(scope.row.status) !== -1" type="success" icon="el-icon-check"

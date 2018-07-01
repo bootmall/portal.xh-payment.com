@@ -32,6 +32,11 @@
                     <span  >{{scope.row.merchant_id}}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="center" label="出款费率" >
+                <template slot-scope="scope">
+                    <span  >{{scope.row.remit_fee}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" :label="item" v-for="(item,key) in methodsOptions" :key="key" >
                 <template slot-scope="scope">
                     <span  >{{scope.row.pay_methods | filterMerchantPayMethod(key)}}</span>
@@ -52,7 +57,7 @@
                     <span>{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-            <el-table-column  width="200" align="center" label="操作" class="action-btns">
+            <el-table-column  width="200" align="center" label="操作" class="action-btns" fixed="right">
                 <template slot-scope="scope">
                     <el-button class="filter-item" size="mini"  icon="el-icon-document" v-waves @click="editHandle(scope.row)">修改</el-button>
                     <el-button class="filter-item" size="mini"  icon="el-icon-edit" v-waves @click="showDialog(scope.row)">状态</el-button>
@@ -91,7 +96,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="'渠道配置-'+item" label-width="160px"  v-for="(item,key) in editForm.app_secrets_template" :key="key">
+                <el-form-item :label="'渠道配置-'+item" label-width="160px"  v-for="(item,key) in app_secrets_template" :key="key">
                     <el-input size="small" type="textarea" :rows="3" v-model="editForm.app_secrets[key]" style="width: 300px"></el-input>
                 </el-form-item>
                 <el-form-item label="渠道商户ID：" label-width="160px">
@@ -165,6 +170,7 @@
                     oldStatus:null,
                     newStatus:null
                 },
+                app_secrets_template: {},
                 editForm:{
                     id:null,
                     channel_name:null,//渠道名称
@@ -218,11 +224,11 @@
         },
         methods: {
           changeChannelInAddForm(channelId){
+            let template = JSON.parse(this.channelSecretTemplates[channelId])
+            this.app_secrets_template = template
+            this.editForm.app_secrets = template
             console.log(channelId)
-            console.log(this.channelSecretTemplates)
-
-            this.editForm.app_secrets_template = JSON.parse(this.channelSecretTemplates[channelId])
-            this.editForm.app_secrets = this.editForm.app_secrets_template
+            console.log(template)
           },
             getList() {
                 var self = this
@@ -309,7 +315,7 @@
                 this.editForm.merchant_id = row.merchant_id;
                 this.editForm.merchant_account = row.merchant_account;
                 this.editForm.app_secrets = row.app_secrets;
-                this.editForm.app_secrets_template = row.app_secrets_template;
+                this.app_secrets_template = row.app_secrets_template;
 
                 this.editForm.remit_fee = row.remit_fee;
                 for (let i in row.pay_methods) {

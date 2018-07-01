@@ -14,16 +14,16 @@ const user = {
     introduction: '',
     roles: [],
     permissions: [],
-    setting: {
-      articlePlatform: []
-    }
+    setting: {}
   },
 
   mutations: {
     SET_USER: (state, user) => {
       // console.log('set user',user);
       common.setPermissions(user.permissions)
-        state.user = user
+      for (let k in user){
+        state.user[k] = user[k]
+      }
     },
     SET_CODE: (state, code) => {
       state.code = code
@@ -98,7 +98,7 @@ const user = {
           if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
             reject('error')
           }
-          const data = response.data
+          let data = response.data
           commit('SET_USER', data)
           commit('SET_ROLES', data.role)
           commit('SET_NICKNAME', data.nickname==''?data.username:data.nickname)

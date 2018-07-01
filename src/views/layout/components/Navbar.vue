@@ -5,9 +5,12 @@
         <breadcrumb class="breadcrumb-container"></breadcrumb>
 
         <div class="right-menu">
+            <span style="color: #5a5e66;font-size: 14px;margin-left: 20px;">
+                商户号：<span style="color:#F56C6C">{{user.user.main_merchant_id}}</span>
+            </span>
             <el-dropdown trigger="click" v-if="group_id != 10">
             <span class="el-dropdown-link" @click="getInitData">
-                账户余额：{{asset}}
+                账户余额：<span style="color:#F56C6C">{{asset}}</span>
             </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item divided>
@@ -25,7 +28,7 @@
             <el-dropdown class="avatar-container right-menu-item">
                 <div class="avatar-wrapper">
                     欢迎您:
-                    <router-link to="/">{{nickname_dis}}</router-link>
+                    <router-link to="/"><span style="color:#F56C6C">{{nickname_dis}}</span></router-link>
                     <i class="el-icon-caret-bottom"></i>
                     <audio src="/static/mp3/6005.mp3" controls="controls" preload id="remind" hidden></audio>
                 </div>
@@ -34,7 +37,7 @@
                         <span @click="editPassDialog" style="display:block;">修改密码</span>
                     </el-dropdown-item>
                     <el-dropdown-item divided v-if="group_id != 10">
-                        <span @click="handleAuthKey" style="display:block;">修改商户KEY</span>
+                        <span @click="showHandleAuthKeyDialog" style="display:block;">修改商户KEY</span>
                     </el-dropdown-item>
                     <el-dropdown-item divided>
                         <span @click="getGoogleCode" style="display:block;">安全令牌</span>
@@ -121,6 +124,21 @@
                 <el-button size="small" type="primary" @click="editFinancialPassHandle">提交</el-button>
             </div>
         </el-dialog>
+        <el-dialog title="验证登录会话安全性" :visible.sync="sessionSecurityCheckDialogVisible" width="30%">
+            <el-form :model="sessionSecurityCheckForm">
+                <dd style="color: red;">提示：资金密码和安全令牌必须填至少一项</dd>
+                <el-form-item label="资金密码：" label-width="120px">
+                    <el-input size="small" type="password" v-model="sessionSecurityCheckForm.finacialPwd" style="width: 200px"></el-input>
+                </el-form-item>
+                <el-form-item label="安全密码：" label-width="120px">
+                    <el-input size="small" type="password" v-model="sessionSecurityCheckForm.key2fa" style="width: 200px"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="small" @click="sessionSecurityCheckDialogVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="sessionSecurityCheckForm.handle">提交</el-button>
+            </div>
+        </el-dialog>
     </el-menu>
 
 </template>
@@ -176,8 +194,15 @@
           oldPass: null,
           newPass: null,
           confirmPass: null,
-        }
+        },
+        sessionSecurityCheckDialogVisible:false,
+        sessionSecurityCheckForm:{
+          finacialPwd: '',
+          key2fa: '',
+          handle: function () {
 
+          },
+        }
       }
     },
     computed: {
@@ -202,8 +227,9 @@
     },
     mounted() {
       //设置定时器，每30秒刷新一次
-      this.checkRemitStatus();
       // setInterval(this.checkRemitStatus,30 * 1000)
+      // //资金等检测
+      // setInterval(this.getInitData, 60 * 1000)
     },
     methods: {
       getInitData() {
@@ -303,14 +329,28 @@
           }
         );
       },
+      showHandleAuthKeyDialog(){
+        this.sessionSecurityCheckDialogVisible = true
+        this.sessionSecurityCheckForm.handle = this.handleAuthKey
+      },
       handleAuthKey() {
         let self = this
-        axios.post('/user/get-auth-key').then(
+
+        //合并会话验证字段
+        let data = {
+          finacialPwd:this.sessionSecurityCheckForm.finacialPwd,
+          key2fa:this.sessionSecurityCheckForm.key2fa,
+        }
+
+        axios.post('/user/get-auth-key',data).then(
           res => {
             if (res.code == 0) {
               self.auth_key = res.data;
               self.old_auth_key = res.data;
               self.authKeyVisible = true;
+              self.sessionSecurityCheckDialogVisible = false
+            }else {
+              self.$message.error({message: res.message})
             }
           }
         );
