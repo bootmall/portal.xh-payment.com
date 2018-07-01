@@ -66,7 +66,7 @@
                     <span >{{scope.row.event_type_str}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="状态" width="160">
+            <el-table-column align="center" label="状态" width="100">
                 <template slot-scope="scope">
                     <span>{{scope.row.status_str}}</span>
                 </template>
@@ -96,7 +96,7 @@
 
             <el-table-column align="center" label="备注" class="action-btns">
                 <template slot-scope="scope">
-                    <span class="link-type" @click="showNotifyRet(scope.row)">{{scope.row.bak}}</span>
+                    <span>{{scope.row.bak}}</span>
                 </template>
             </el-table-column>
 

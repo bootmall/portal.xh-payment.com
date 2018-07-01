@@ -863,7 +863,7 @@
         }).then(() => {
 
           let data = {
-            merchantId:this.userInfo.id,
+            merchantId:user.id,
             type:2
           };
           axios.post('/admin/user/clear-unbind-update',data).then(
