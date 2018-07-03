@@ -143,10 +143,10 @@
                     <span>{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" width="200" align="center" label="操作" class="action-btns">
+            <el-table-column fixed="right" width="160" align="center" label="操作" class="action-btns">
                 <template slot-scope="scope">
-                    <el-button class="filter-item" size="mini" type="success" v-if="scope.row.status == 10" icon="el-icon-check" v-waves @click="setSuccess(scope.row)">成功</el-button>
-                    <el-button class="filter-item" size="mini" icon="el-icon-refresh" v-if="scope.row.status == 10" @click="syncStatus(scope.row)" v-waves>同步
+                    <el-button class="filter-item" size="mini" type="success" v-if="scope.row.status == 10" v-waves @click="setSuccess(scope.row)">成功</el-button>
+                    <el-button class="filter-item" size="mini" v-if="scope.row.status == 10" @click="syncStatus(scope.row)" v-waves>同步
                     </el-button>
                     <el-popover
                             placement="top"
@@ -156,14 +156,15 @@
                         <p><span>通知次数：</span><span v-text="notify_times"></span></p>
                         <p><span>商户响应：</span><span v-text="notify_ret"></span></p>
 
-                        <el-button class="filter-item" slot="reference" size="mini" type="primary" @click="showDetail(scope.row)" icon="el-icon-document" v-waves>详情</el-button>
+                        <el-button class="filter-item" slot="reference" size="mini" type="primary" @click="showDetail(scope.row)"  v-waves>详情</el-button>
                     </el-popover>
 
-                    <el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" icon="el-icon-edit" @click="handleTrack(scope.row)" v-waves>录入</el-button>
+                    <el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" @click="handleTrack(scope.row)" v-waves>录入</el-button>
 
-                    <el-button class="filter-item" size="mini" type="info" v-if="scope.row.status == 20" icon="el-icon-message" @click="sendNotify(scope.row)" circle>通知</el-button>
-                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves @click="setFrozen(scope.row)"><i class="iconfont extend-icon-prohibit"></i>冻结</el-button>
-                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 30" v-waves @click="setUnFrozen(scope.row)"><i class="iconfont  extend-icon-agree"></i>解冻</el-button>
+                    <el-button class="filter-item" size="mini" type="info" v-if="scope.row.status == 20" @click="sendNotify(scope.row)" circle>通知</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves @click="setFrozen(scope.row)">冻结</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 30" v-waves @click="setUnFrozen(scope.row)">解冻</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves @click="setRefund(scope.row)">退款</el-button>
                 </template>
             </el-table-column>
 
@@ -398,58 +399,126 @@
         )
       },
       setFrozen(row) {
-        self = this
+        let self = this
+        self.$confirm('此操作将订单设置为冻结状态并冻结余额, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
 
-        axios.post('/admin/order/frozen', {id: row.id}).then(
-          res => {
-            if (res.code != 0) {
+          axios.post('/admin/order/frozen', {id: row.id}).then(
+            res => {
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                row.status = 30
+                self.getList()
+              }
+            },
+            res => {
               self.$message.error({message: res.message})
-            } else {
-              self.$message.success({message: res.message})
-              row.status = 30
-              self.getList()
             }
-          },
-          res => {
-            self.$message.error({message: res.message})
-          }
-        )
+          )
+
+        }).catch(() => {
+          self.$message({
+            type: 'warning',
+            message: '已取消操作'
+          });
+        });
+
+
       },
       setUnFrozen(row) {
-        self = this
+        let self = this
+        self.$confirm('此操作将订单设置为解冻并恢复为成功, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
 
-        axios.post('/admin/order/un-frozen', {id: row.id}).then(
-          res => {
-            if (res.code != 0) {
+          axios.post('/admin/order/un-frozen', {id: row.id}).then(
+            res => {
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                row.status = 20
+                self.getList()
+              }
+            },
+            res => {
               self.$message.error({message: res.message})
-            } else {
-              self.$message.success({message: res.message})
-              row.status = 20
-              self.getList()
             }
-          },
-          res => {
-            self.$message.error({message: res.message})
-          }
-        )
+          )
+
+        }).catch(() => {
+          self.$message({
+            type: 'warning',
+            message: '已取消操作'
+          });
+        });
+      },
+      setRefund(row) {
+        let self = this
+        this.$prompt('请输入退款原因', '提示', {
+                     confirmButtonText: '确定',
+                     cancelButtonText: '取消',
+                     // inputPattern: /\W+/,
+                     // inputErrorMessage: '格式不正确'
+      }).then(({ value }) => {
+          axios.post('/admin/order/refund', {id: row.id,bak:value}).then(
+            res => {
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                row.status = 20
+                self.getList()
+              }
+            },
+            res => {
+              self.$message.error({message: res.message})
+            }
+          )
+
+        }).catch(() => {
+          self.$message({
+            type: 'warning',
+            message: '已取消操作'
+          });
+        });
       },
       setSuccess(row) {
-        self = this
+        let self = this
+        self.$confirm('此操作将订单设置为成功并增加用户余额, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
 
-        axios.post('/admin/order/set-success', {id: row.id}).then(
-          res => {
-            if (res.code != 0) {
+          axios.post('/admin/order/set-success', {id: row.id}).then(
+            res => {
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                row.status = 20
+                self.getList()
+              }
+            },
+            res => {
               self.$message.error({message: res.message})
-            } else {
-              self.$message.success({message: res.message})
-              row.status = 20
-              self.getList()
             }
-          },
-          res => {
-            self.$message.error({message: res.message})
-          }
-        )
+          )
+
+        }).catch(() => {
+          self.$message({
+            type: 'warning',
+            message: '已取消操作'
+          });
+        });
       },
       showNotifyRet(row) {
         // self.$message.error({message: res.message})
@@ -556,11 +625,14 @@
 </script>
 
 <style>
-    .action-btns a {
-        margin-left: 5px;
-    }
-
     .el-table td, .el-table th {
         padding: 5px 0 !important;
+    }
+
+    .el-button--mini{
+        margin-left: 5px;
+        float: left;
+        display: inline-block;
+        margin-top: 5px;
     }
 </style>
