@@ -229,6 +229,7 @@ export const asyncRouterMap = [
       // 系统公告
       {path: 'notice', component: _import("admin/system/notice"),view: "system/notice", name: 'vue_notice', meta: {title: '系统公告', icon: 'excel', role: ['admin'], noCache: false}},
       {path: 'api_log', component: _import("admin/log/apiLog"),view: "admin/log/apiLog", name: 'vue_api_log', meta: {title: '接口日志', icon: 'excel', role: ['admin'], noCache: false}},
+      {path: 'system_log', component: _import("admin/log/systemLog"),view: "admin/log/systemLog", name: 'vue_system_log', meta: {title: '系统错误日志', icon: 'excel', role: ['admin'], noCache: false}},
     ]
 
 },
