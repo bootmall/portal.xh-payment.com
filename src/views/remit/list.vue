@@ -49,6 +49,7 @@
             <el-button class="filter-item" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
             <el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>
             <el-button class="filter-item" size="small" type="primary" v-waves @click="setChecked()">批量审核</el-button>
+            <el-button class="filter-item" size="small" type="primary" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%;font-size: 12px" :summary-method="getSummaries" @selection-change="handleSelectionChange" show-summary stripe>
@@ -92,6 +93,7 @@
                     <el-button class="filter-item" size="mini" icon="el-icon-edit" type="danger" v-if="scope.row.track == 0" @click="handleTrack(scope.row)" v-waves>录入</el-button>
                     <!--<el-button class="filter-item" size="mini" v-waves>IP</el-button>-->
                     <el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[30].indexOf(scope.row.status) !== -1" @click="syncStatus()" v-waves>同步</el-button>
+                    <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
                     <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
                 </template>
             </el-table-column>
@@ -125,6 +127,25 @@
             <div slot="footer" class="dialog-footer">
                 <el-button @click="trackVisible = false">取 消</el-button>
                 <el-button type="primary" @click="createTrack">提交</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="切换出款通道" :visible.sync="dialogSwitchRemitVisible" width="500px">
+            <el-form label-width="80px">
+                <el-form-item label="出款通道" width="200">
+                    <el-select class="filter-item" size="small" v-model="remitIdSwitchTo" placeholder="请选择出款通道">
+                        <el-option
+                                v-for="(item,key) in channelAccountOptions"
+                                :key="key"
+                                :label="item"
+                                :value="key">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogSwitchRemitVisible = false">取 消</el-button>
+                <el-button type="primary" @click="switchRemit()">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -193,6 +214,9 @@
         constTrue: true,
         channelAccountOptions: [],
         statusOptions: [],
+        currentRemit:{},
+        dialogSwitchRemitVisible:false,
+        remitIdSwitchTo:'',
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -460,6 +484,39 @@
           }
         )
       },
+      switchRemit(id) {
+        self = this
+        let idList = self.listQuery.idList
+        if (id) {
+          idList = [id]
+        }
+
+        if (!idList) {
+          self.$message.error({message: '请选择出款渠道'})
+          return
+        }
+
+        axios.post('/admin/remit/switch-channel-account', {id:idList,channelAccountId:self.remitIdSwitchTo}).then(
+          res => {
+            if (res.code != 0) {
+              self.$alert(res.message, '错误提示', {
+                confirmButtonText: '确定',
+                type: 'error'
+              });
+            } else {
+              self.$message.success({message: '通道切换成功'})
+
+              self.dialogSwitchRemitVisible = false
+              self.currentRemit={}
+              self.remitIdSwitchTo=''
+              self.getList()
+            }
+          },
+          res => {
+            self.$message.error({message: res.message})
+          }
+        )
+      },
     }
 
   }
@@ -476,5 +533,9 @@
 
     .el-table__row button{
         margin-top: 5px;
+    }
+    .op-column .cell{
+        padding-left: 0;
+        text-align: left;
     }
 </style>

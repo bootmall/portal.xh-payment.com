@@ -64,9 +64,9 @@
             <!--</el-option>-->
             <!--</el-select>-->
 
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-            <el-button class="filter-item" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
-            <el-button class="filter-item" type="primary" plain>批量同步</el-button>
+            <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+            <el-button class="filter-item"  size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
+            <el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>
         </div>
 
         <el-table stripe :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%" :summary-method="getSummaries" show-summary>

@@ -58,7 +58,11 @@
                     <span class="link-type">{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-
+            <el-table-column label="描述">
+                <template slot-scope="scope">
+                    <span class="link-type">{{scope.row.desc}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="操作" class="action-btns">
                 <template slot-scope="scope">
                     <el-button class="filter-item" size="mini" type="warning" v-waves @click="showDetailDialog(scope.row)">详情</el-button>
