@@ -106,7 +106,11 @@
                     <span>{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-
+            <el-table-column fixed="right" width="80" align="center" label="操作" class="action-btns">
+                <template slot-scope="scope">{{scope.row.status}}
+                    <el-button class="filter-item" size="mini" type="info" v-if="scope.row.status == 20" @click="sendNotify(scope.row)" circle>通知</el-button>
+                </template>
+            </el-table-column>
         </el-table>
 
         <div v-show="!listLoading" class="pagination-container">
@@ -266,22 +270,6 @@
           }
         )
       },
-        frozen(row){
-            self = this
-
-            axios.post('/order/frozen',{id:row.id}).then(
-                res => {
-                    if (res.code != 0) {
-                        self.$message.error({message: res.message})
-                    } else {
-                        self.$message.success({message: res.message})
-                    }
-                },
-                res => {
-                    self.$message.error({message: res.message})
-                }
-            )
-        },
       showNotifyRet(row){
         // self.$message.error({message: res.message})
         this.$alert(row.notify_ret, '商户服务器响应内容', {

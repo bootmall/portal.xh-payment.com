@@ -9,8 +9,9 @@
                     :value="item.k">
             </el-option>
         </el-select>
-            商户 <el-input style="width: 100px;" class="filter-item" v-model="listQuery.merchant_name"></el-input>
-            对象ID <el-input style="width: 200px;" class="filter-item" v-model="listQuery.event_id"></el-input>
+            <!--商户 <el-input style="width: 100px;" class="filter-item" v-model="listQuery.merchant_name"></el-input>-->
+            商户ID <el-input style="width: 100px;" class="filter-item" v-model="listQuery.merchant_id"></el-input>
+            订单号 <el-input style="width: 200px;" class="filter-item" v-model="listQuery.event_id"></el-input>
             开始时间：
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
@@ -50,9 +51,9 @@
                     <span class="link-type">{{scope.row.event_id}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="商户名">
+            <el-table-column label="商户ID">
                 <template slot-scope="scope">
-                    <span class="link-type">{{scope.row.merchant_name}}</span>
+                    <span class="link-type">{{scope.row.merchant_id}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="渠道名">
@@ -63,6 +64,11 @@
             <el-table-column label="请求地址">
                 <template slot-scope="scope">
                     <span class="link-type">{{scope.row.request_url}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="响应结果">
+                <template slot-scope="scope">
+                    <span class="link-type">{{scope.row.response_data}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="时间">
@@ -142,6 +148,7 @@
           event_type: '',
           event_id: '',
           merchant_name: '',
+          merchant_id: '',
           sort: '',
           dateStart: null,
           dateEnd: null,
