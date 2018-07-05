@@ -155,7 +155,9 @@
         var self = this
 
         self.listLoading = true
-
+        for(let i in self.listQuery){
+          if(self.listQuery[i]=='__ALL__') self.listQuery[i] = ''
+        }
         axios.post('/remit/my-list', self.listQuery).then(
           res => {
             self.listLoading = false
