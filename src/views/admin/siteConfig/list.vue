@@ -47,10 +47,12 @@
             <template>
                 <el-form :model="viewModel">
                     <el-form-item label="配置key：">
-                        <el-input size="small" type="email" v-model="viewModel.title" style="width: 300px" :disabled="true"></el-input>
+                        <!--<el-input size="small" type="email" v-model="viewModel.title" style="width: 300px" :disabled="true"></el-input>-->
+                        <span class="link-type">{{viewModel.title}}</span>
                     </el-form-item>
                     <el-form-item label="描述：">
-                        <el-input size="small" type="email" v-model="viewModel.desc" style="width: 400px" :disabled="true"></el-input>
+                        <!--<el-input size="small" type="email" v-model="viewModel.desc" style="width: 400px" :disabled="true"></el-input>-->
+                        <span class="link-type">{{viewModel.desc}}</span>
                     </el-form-item>
                     <!--配置：<el-input-->
                     <!--type="textarea"-->

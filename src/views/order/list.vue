@@ -66,11 +66,12 @@
 
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
             <el-button class="filter-item"  size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
-            <el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>
+            <!--<el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>-->
+            <el-button class="filter-item"  size="small" type="primary" @click="setSettlement('')" >结算筛选订单</el-button>
         </div>
 
         <el-table stripe :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%" :summary-method="getSummaries" show-summary>
-
+            <el-table-column align="center" fixed type="selection" width="30"></el-table-column>
             <el-table-column fixed="left" align="center" label="商户编号">
                 <template slot-scope="scope">
                     <span>{{scope.row.merchant_id}}</span>
@@ -100,7 +101,11 @@
             <el-table-column label="金额">
                 <template slot-scope="scope">
                     <span>￥{{scope.row.amount}}</span>
-
+                </template>
+            </el-table-column>
+            <el-table-column label="到账">
+                <template slot-scope="scope">
+                    <span>{{scope.row.settlement_type}}</span>
                 </template>
             </el-table-column>
 
@@ -161,10 +166,11 @@
 
                     <el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" @click="handleTrack(scope.row)" v-waves>录入</el-button>
 
-                    <el-button class="filter-item" size="mini" type="info" v-if="scope.row.status == 20" @click="sendNotify(scope.row)" circle>通知</el-button>
-                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves @click="setFrozen(scope.row)">冻结</el-button>
+                    <el-button class="filter-item" size="mini" type="info" v-if="[20,60].indexOf(scope.row.status) !== -1" @click="sendNotify(scope.row)" circle>通知</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="setFrozen(scope.row)">冻结</el-button>
                     <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 30" v-waves @click="setUnFrozen(scope.row)">解冻</el-button>
-                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves @click="setRefund(scope.row)">退款</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="setRefund(scope.row)">退款</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves @click="setSettlement(scope.row)">结算</el-button>
                 </template>
             </el-table-column>
 
@@ -243,6 +249,7 @@
           sort: '',
           export: 0,
           exportType: '',
+          idList: [],
         },
         trackVisible: false,
         trackForm: {
@@ -265,6 +272,7 @@
         notifyStatusOptions: [],
         methodOptions: [],
         channelAccountOptions: [],
+        multipleSelection:[],
         // {0:'全部'},
         pickerOptions: {
           disabledDate(time) {
@@ -309,6 +317,15 @@
       ])
     },
     methods: {
+      handleSelectionChange(val) {
+        let self = this
+        self.multipleSelection = val;
+        self.listQuery.idList = []
+        self.multipleSelection.forEach((u) => {
+          self.listQuery.idList.push(u.id)
+        })
+
+      },
       getList() {
         var self = this
 
@@ -494,13 +511,52 @@
       },
       setSuccess(row) {
         let self = this
-        self.$confirm('此操作将订单设置为成功并增加用户余额, 是否继续?', '提示', {
+        self.$confirm('此操作将订单设置为成功, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
 
           axios.post('/admin/order/set-success', {id: row.id}).then(
+            res => {
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                row.status = 20
+                self.getList()
+              }
+            },
+            res => {
+              self.$message.error({message: res.message})
+            }
+          )
+
+        }).catch(() => {
+          self.$message({
+            type: 'warning',
+            message: '已取消操作'
+          });
+        });
+      },
+      setSettlement(row) {
+        let self = this
+        self.$confirm('此操作将订单设置为已结算并增加用户余额, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let data = self.listQuery
+          if (row) {
+            data.idList = [row.id]
+          }else{
+            // if(data.idList.length==0){
+            //   self.$message.success({message: '请选择订单！'})
+            //   return;
+            // }
+          }
+
+          axios.post('/admin/order/set-settlement', data).then(
             res => {
               if (res.code != 0) {
                 self.$message.error({message: res.message})

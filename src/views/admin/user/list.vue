@@ -285,7 +285,7 @@
                     <span v-if="userInfo.lower_remit_fee > 0 " v-text="userInfo.lower_remit_fee"></span>
                     <span v-else></span>
                 </el-form-item>
-                <el-form-item label-width="180px" v-for="(item,key) in payMethodsOptions" :key="key" :label="item+'：'">
+                <el-form-item class="el-row-rate" label-width="100px" v-for="(item,key) in payMethodsOptions" :key="key" :label="item+'：'">
                     <el-input size="small" style="width: 200px" @change="checkRate(rateForm.pay_methods[key],key)" v-model="rateForm.pay_methods[key]"></el-input>
                     <el-switch style="margin-left: 20px"
                                v-model="methodStatus[key]"
@@ -302,6 +302,14 @@
                     <span v-text="methods.min_rate[key]"></span> ~
                     <span v-if="methods.max_rate[key] > 0 " v-text="methods.max_rate[key]"></span>
                     <span v-else></span>
+                    <el-select v-model="settlementType[key]" placeholder="到账" size="mini">
+                        <el-option
+                                v-for="(item,key) in settlementTypeOptions"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -407,6 +415,10 @@
         methodStatus:{},
         payMethodsOptions:{},
         agentOptions:[],
+        remitMaxFee: 5,
+        rechargeMaxRate: 0.3,
+        settlementType: {},
+        settlementTypeOptions: [],
 
         userStatusOptions:{},
         statusForm:{
@@ -534,6 +546,7 @@
               self.userStatusOptions = res.data.userStatusOptions
               self.agentOptions = res.data.agentOptions
               self.payMethodsOptions = res.data.payMethodsOptions
+              self.settlementType = res.data.methods.settlement_type
 
               let methodStatus = {}
               for (let index in res.data.methods.status) {
@@ -768,6 +781,9 @@
               self.remitOptions = res.data.all_channel
               self.payChannelOptions = res.data.all_channel
               self.tagList = self.filteredTagList = res.data.tags
+              self.remitMaxFee = res.data.remitMaxFee
+              self.rechargeMaxRate = res.data.rechargeMaxRate
+              self.settlementTypeOptions = res.data.settlementType
 
               let payTypeFields = {}
               for (let i in res.data.pay_method) {
@@ -783,7 +799,6 @@
       },
 
       handleResetLoginPass(user){
-        console.log('handleResetLoginPass '+user)
         let self = this
         self.$confirm('此操作将重置用户密码, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -907,10 +922,14 @@
       },
       checkRate(rate, method_id) {
         let self = this
+
+        self.methodStatus[method_id] = "0"
         if (rate > 0) {
-          this.methodStatus[method_id] = "1"
-        } else {
-          this.methodStatus[method_id] = "0"
+          if (rate > this.rechargeMaxRate) {
+            self.$message.error({message: '收款费率不能大于系统设置最大费率:' + self.rechargeMaxRate})
+          } else {
+            self.methodStatus[method_id] = "1"
+          }
         }
 
         if (rate < self.methods.min_rate[method_id] && self.methodStatus[method_id] == '1') {
@@ -926,13 +945,18 @@
       updateRate(){
         let self = this;
         if(self.rateForm.remit_fee < self.userInfo.parent_remit_fee){
-          this.$message.error({message:'出款费率不能小于上级'});
+          this.$message.error({message:'出款费率'+self.rateForm.remit_fee +'不能小于上级'+self.userInfo.parent_remit_fee});
           return
         }
         if(self.userInfo.lower_remit_fee > 0 && self.rateForm.remit_fee > self.userInfo.lower_remit_fee){
-          this.$message.error({message:'出款费率不能大于下级'});
+          this.$message.error({message:'出款费率'+self.rateForm.remit_fee +'不能大于下级'+self.userInfo.parent_remit_fee});
           return
         }
+        if (parseFloat(self.rateForm.remit_fee) > parseFloat(self.remitMaxFee)) {
+          this.$message.error({message: '出款费率'+self.rateForm.remit_fee +'不能大于系统设置最大结算手续费:' + self.remitMaxFee})
+          return;
+        }
+
         let payMethods = []
         let status = 0
         for (let i in self.rateForm.pay_methods) {
@@ -940,7 +964,7 @@
           if(self.methodStatus[i] == '1' && !self.checkRate(rate,i)){
             status = 1;
           }
-          payMethods.push({id: i, rate: rate, status:self.methodStatus[i]})
+          payMethods.push({id: i, rate: rate, status:self.methodStatus[i],settlement_type:self.settlementType[i]})
         }
         if(status == 1 ){
           self.$message.error({message:'有收款费率错误！请检查'});
@@ -950,6 +974,7 @@
           self.$message.error({message:'请填写收款费率！'});
           return;
         }
+
         let data = {
           merchantId:self.userInfo.id,
           channelId:self.rateForm.channel_id,
@@ -1072,7 +1097,7 @@
         this.$router.push({name: 'vue_merchant_add'});
       },
       handleDetail(row) {
-        this.$router.push({name: 'vue_merchant_detail', query: {merchantId: row.id}});
+        this.$router.push({name: 'vue_merchant_detail', params: {merchantId: row.id}});
       }
     }
   }
@@ -1119,5 +1144,11 @@
 
     .error {
         color: #F56C6C
+    }
+
+
+    .el-row-rate .el-select{
+        width:80px;
+        margin-left: 10px;
     }
 </style>

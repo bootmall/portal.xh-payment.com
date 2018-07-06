@@ -92,6 +92,11 @@
                     <span>安全令牌绑定：</span><span>{{userInfo.is_key_2fa}}</span>
                 </div>
             </el-col>
+            <el-col :span="8">
+                <div class="grid-content bg-purple">
+                    <span>商户key：</span><span>{{userInfo.merchant_key}}</span>
+                </div>
+            </el-col>
         </el-row>
         <span v-if="userInfo.agent">
             <h4>代理</h4>
@@ -137,7 +142,7 @@
                     <span v-if="userInfo.lower_remit_fee > 0 " v-text="userInfo.lower_remit_fee"></span>
                     <span v-else></span>
                 </el-form-item>
-                <el-form-item label-width="180px" v-for="(item,key) in payMethodsOptions" :key="key" :label="item+'：'">
+                <el-form-item class="el-row-rate" label-width="100px" v-for="(item,key) in payMethodsOptions" :key="key" :label="item+'：'">
                     <el-input size="small" style="width: 200px" @change="checkRate(rateForm.pay_methods[key],key)" v-model="rateForm.pay_methods[key]"></el-input>
                     <el-switch style="margin-left: 20px"
                                v-model="methodStatus[key]"
@@ -154,6 +159,14 @@
                     <span v-text="methods.min_rate[key]"></span> ~
                     <span v-if="methods.max_rate[key] > 0 " v-text="methods.max_rate[key]"></span>
                     <span v-else></span>
+                    <el-select v-model="settlementType[key]" placeholder="到账" size="mini">
+                        <el-option
+                                v-for="(item,key) in settlementTypeOptions"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -375,6 +388,10 @@
         methodStatus: {},
         payMethodsOptions: {},
         agentOptions: [],
+        remitMaxFee: 5,
+        rechargeMaxRate: 0.3,
+        settlementType: {},
+        settlementTypeOptions: [],
         company: {
           // id:0,
           type: 0
@@ -438,11 +455,40 @@
         return value;
       }
     },
+    watch: {
+      '$route'(to, from) {
+        // 对路由变化作出响应...
+        let merchantId = 0
+        if(to.name == from.name){
+          if(to.params.merchantId!=from.params.merchantId){
+            merchantId = to.params.merchantId
+          }
+        }else{
+          merchantId = to.params.merchantId
+        }
+
+        if(merchantId) this.getInitData(merchantId)
+      },
+    },
     methods: {
-      getInitData() {
+      getInitData(merchantId) {
         let self = this
         self.listLoading = true
-        self.merchantId = this.$route.query.merchantId;
+
+        if(!merchantId){
+          if(this.$route.query.merchantId){
+            self.merchantId = this.$route.query.merchantId;
+          }
+          else if(this.$route.params.merchantId){
+            self.merchantId = this.$route.params.merchantId;
+          }else{
+            self.$message.error({message: '商户ID错误！'})
+            return;
+          }
+        }else{
+          self.merchantId = merchantId
+        }
+
         axios.post('/admin/user/detail', {merchantId: self.merchantId}).then(
           res => {
             self.listLoading = false
@@ -461,6 +507,7 @@
                 methodStatus[index] = res.data.methods.status[index].toString()
               }
               self.methodStatus = methodStatus
+              self.settlementType = res.data.methods.settlement_type
 
               self.apiForm.user_id = self.userInfo.id
               self.apiForm.allow_api_fast_remit = self.userInfo.allow_api_fast_remit + ''
@@ -468,6 +515,10 @@
               self.apiForm.allow_api_remit = self.userInfo.allow_api_remit + ''
               self.apiForm.allow_manual_recharge = self.userInfo.allow_manual_recharge + ''
               self.apiForm.allow_manual_remit = self.userInfo.allow_manual_remit + ''
+
+              self.remitMaxFee = res.data.remitMaxFee
+              self.rechargeMaxRate = res.data.rechargeMaxRate
+              self.settlementTypeOptions = res.data.settlementType
             }
           },
         )
@@ -594,6 +645,10 @@
           this.$message.error({message: '出款费率不能大于下级'});
           return
         }
+        if (parseFloat(self.rateForm.remit_fee) > parseFloat(self.remitMaxFee)) {
+          this.$message.error({message: '出款费率'+self.rateForm.remit_fee +'不能大于系统设置最大结算手续费:' + self.remitMaxFee})
+          return;
+        }
         let payMethods = []
         let status = 0
         for (let i in self.rateForm.pay_methods) {
@@ -601,7 +656,7 @@
           if (self.methodStatus[i] == '1' && !self.checkRate(rate, i)) {
             status = 1;
           }
-          payMethods.push({id: i, rate: rate, status: self.methodStatus[i]})
+          payMethods.push({id: i, rate: rate, status: self.methodStatus[i],settlement_type:self.settlementType[i]})
         }
         if (status == 1) {
           self.$message.error({message: '有收款费率错误！请检查'});
@@ -930,10 +985,13 @@
       },
       checkRate(rate, method_id) {
         let self = this
+        self.methodStatus[method_id] = "0"
         if (rate > 0) {
-          this.methodStatus[method_id] = "1"
-        } else {
-          this.methodStatus[method_id] = "0"
+          if (rate > this.rechargeMaxRate) {
+            self.$message.error({message: '收款费率不能大于系统设置最大费率:' + self.rechargeMaxRate})
+          } else {
+            self.methodStatus[method_id] = "1"
+          }
         }
 
         if (rate < self.methods.min_rate[method_id] && self.methodStatus[method_id] == '1') {
@@ -1004,4 +1062,9 @@
     .error {
         color: #F56C6C !important;
     }
+    .el-row-rate .el-select{
+        width:80px;
+        margin-left: 10px;
+    }
+
 </style>
