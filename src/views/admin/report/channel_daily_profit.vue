@@ -1,8 +1,14 @@
 <template>
     <div class="components-container">
         <div class="filter-container">
-            <!--渠道名称-->
-            <!--<el-input style="width: 200px;" class="filter-item" v-model="listQuery.username"></el-input>-->
+            <el-select class="filter-item" v-model="listQuery.channelAccountId" placeholder="选择通道" filterable>
+                <el-option
+                        v-for="(item,key) in channelList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                </el-option>
+            </el-select>
             开始时间：
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
@@ -97,11 +103,11 @@
         total: null,
         listLoading: true,
         statusOptions: [],
+        channelList: [],
         listQuery: {
           page: 1,
           limit: 10,
-          user_id: '',
-          username: '',
+          channelAccountId: '',
           sort: '',
           dateStart: null,//.getDateStr(-1),
           dateEnd: null,//.getDateStr(-1),
@@ -135,6 +141,7 @@
     },
     created() {
       this.getInitData()
+      this.getChannelList()
     },
     methods: {
       getInitData() {
@@ -150,6 +157,25 @@
           }
         )
       },
+        getChannelList() {
+            self = this
+            self.isLoading = true
+            axios.post('/admin/channel/get-account-list').then(
+                res => {
+                    if (res.code != 0) {
+                        self.$message.error({message: res.message})
+                    } else {
+                        res.data.unshift({id:'__ALL__',name:'所有'})
+                        self.channelList = res.data
+                    }
+                    self.isLoading = false
+                },
+                res => {
+                    self.$message.error({message: res.message})
+                    self.isLoading = false
+                }
+            )
+        },
       handleFilter() {
         this.listQuery.page = 1
         this.getInitData()

@@ -234,6 +234,8 @@
         isLoading: false,
         remitMaxFee: 5,
         rechargeMaxRate: 0.3,
+        remitFeeCanBeZero:0,
+        rechargeFeeCanBeZero:0,
         settlementType: {},
         settlementTypeOptions: [],
       }
@@ -251,6 +253,9 @@
       },
       onRechargeRateChange(key) {
         this.methodStatus[key] = "0"
+        if(self.rechargeFeeCanBeZero){
+          self.methodStatus[method_id] = "1"
+        }
         if (this.commonForm.recharge_rate[key] > 0) {
           if (this.commonForm.recharge_rate[key] > this.rechargeMaxRate) {
             this.$message.error({message: '收款费率不能大于系统设置最大费率:' + this.rechargeMaxRate})
@@ -346,7 +351,9 @@
               self.remitMaxFee = res.data.remitMaxFee
               self.rechargeMaxRate = res.data.rechargeMaxRate
               self.settlementTypeOptions = res.data.settlementType
-
+              self.settlementTypeOptions = res.data.settlementType
+              self.rechargeFeeCanBeZero = res.data.rechargeFeeCanBeZero
+              self.remitFeeCanBeZero = res.data.remitFeeCanBeZero
             }
           },
           res => {

@@ -70,9 +70,11 @@
             </el-table-column>
             <el-table-column prop="status_str" label="订单状态" width="130">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="light" :content="scope.row.bank_ret" placement="top">
+                    <el-tooltip v-if="scope.row.bank_ret!=''" class="item" effect="light" placement="top">
                         <span class="link-type">{{scope.row.status_str}}</span>
+                        <span slot="content" v-html="scope.row.bank_ret"></span>
                     </el-tooltip>
+                    <span  v-if="scope.row.bank_ret==''">{{scope.row.status_str}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="channel_order_no" label="凭证" width="165"></el-table-column>

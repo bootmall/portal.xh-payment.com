@@ -112,13 +112,11 @@
             <el-table-column label="通道" width="180">
                 <template slot-scope="scope">
                     <span>{{scope.row.channel_account_name}}</span>
-
                 </template>
             </el-table-column>
             <el-table-column label="类型">
                 <template slot-scope="scope">
                     <span>{{scope.row.pay_method_code_str}}</span>
-
                 </template>
             </el-table-column>
 
@@ -131,16 +129,25 @@
 
             <el-table-column align="center" label="订单状态">
                 <template slot-scope="scope">
-                    <span>{{scope.row.status_str}}</span>
+                    <el-tooltip v-if="scope.row.bak!=''" class="item" effect="light" placement="top">
+                        <span class="link-type">{{scope.row.status_str}}</span>
+                        <span slot="content" v-html="scope.row.bak"></span>
+                    </el-tooltip>
+                    <span  v-if="scope.row.bak==''">{{scope.row.status_str}}</span>
                 </template>
             </el-table-column>
 
             <el-table-column align="center" label="通知状态">
                 <template slot-scope="scope">
-                    <!--<span class="link-type" @click="showNotifyRet(scope.row)">{{scope.row.notify_status_str}}</span>-->
-                    <el-tooltip class="item" effect="light" :content="scope.row.notify_ret" placement="top">
-                        <span class="link-type" @click="showNotifyRet(scope.row)">{{scope.row.notify_status_str}}</span>
-                    </el-tooltip>
+                    <el-popover
+                        placement="top"
+                        width="400"
+                        trigger="click">
+                        <p><span>通知地址：</span><span v-text="notify_url"></span></p>
+                        <p><span>通知次数：</span><span v-text="notify_times"></span></p>
+                        <p><span>商户响应：</span><span v-text="notify_ret"></span></p>
+                        <span class="link-type" slot="reference" @click="showDetail(scope.row)">{{scope.row.notify_status_str}}</span>
+                    </el-popover>
                 </template>
             </el-table-column>
             <el-table-column align="center" width="180" label="创建时间">
@@ -592,12 +599,12 @@
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '当前查询条件总计';
+            sums[index] = '-';
             return;
           }
           sums[index] = 'N/A';
         });
-        sums[2] = this.summery.amount + '元'
+        sums[2] = this.summery.amount
         return sums;
       },
       objectSpanMethod({row, column, rowIndex, columnIndex}) {

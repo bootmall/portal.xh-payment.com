@@ -392,6 +392,8 @@
         rechargeMaxRate: 0.3,
         settlementType: {},
         settlementTypeOptions: [],
+        remitFeeCanBeZero:0,
+        rechargeFeeCanBeZero:0,
         company: {
           // id:0,
           type: 0
@@ -519,6 +521,9 @@
               self.remitMaxFee = res.data.remitMaxFee
               self.rechargeMaxRate = res.data.rechargeMaxRate
               self.settlementTypeOptions = res.data.settlementType
+              self.rechargeFeeCanBeZero = res.data.rechargeFeeCanBeZero
+              self.remitFeeCanBeZero = res.data.remitFeeCanBeZero
+
             }
           },
         )
@@ -986,6 +991,9 @@
       checkRate(rate, method_id) {
         let self = this
         self.methodStatus[method_id] = "0"
+        if(self.rechargeFeeCanBeZero){
+          self.methodStatus[method_id] = "1"
+        }
         if (rate > 0) {
           if (rate > this.rechargeMaxRate) {
             self.$message.error({message: '收款费率不能大于系统设置最大费率:' + self.rechargeMaxRate})
