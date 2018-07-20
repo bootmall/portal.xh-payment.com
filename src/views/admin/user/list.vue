@@ -194,18 +194,20 @@
             </el-pagination>
         </div>
 
-        <el-dialog title="切换通道" :visible.sync="dialogSwitchChannelVisible" width="500px">
+        <el-dialog title="切换通道" :visible.sync="dialogSwitchChannelVisible" width="600px">
             <el-form label-width="80px">
-                <el-form-item label="通道类型" width="200">
-                    <el-select v-model="switchPayChannelForm.payMethodId" placeholder="选择通道类型"
-                               @change="getAccountListInSwitchPayChannelForm">
-                        <el-option
-                                v-for="(item,key) in payTypeOptions"
-                                :key="key"
-                                :label="item"
-                                :value="key">
-                        </el-option>
-                    </el-select>
+                <el-form-item label="通道类型" class="switchPayChannelForm-payMethodIdList">
+                    <!--<el-select v-model="switchPayChannelForm.payMethodId" placeholder="选择通道类型"-->
+                               <!--@change="getAccountListInSwitchPayChannelForm">-->
+                        <!--<el-option-->
+                                <!--v-for="(item,key) in payTypeOptions"-->
+                                <!--:key="key"-->
+                                <!--:label="item"-->
+                                <!--:value="key">-->
+                        <!--</el-option>-->
+                    <!--</el-select>-->
+                    <el-checkbox v-model="switchPayChannelForm.payMethodId[key]" v-for="(item,key) in payTypeOptions"
+                     :key="key" :label="item" @change="getAccountListInSwitchPayChannelForm">{{item}}</el-checkbox>
                 </el-form-item>
                 <el-form-item v-loading="switchPayChannelFormAccountListLoading" element-loading-text="数据加载中，请稍候..."
                               label="通道" width="200">
@@ -220,7 +222,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogSwitchChannelVisible = false">取 消</el-button>
+                <el-button @click="switchPayChannelFormAccountListLoading = false;dialogSwitchChannelVisible = false">取 消</el-button>
                 <el-button type="primary" @click="switchPayChannel()">确 定</el-button>
             </div>
         </el-dialog>
@@ -371,7 +373,7 @@
           appIds: [],
         },
         switchPayChannelForm: {
-          payMethodId: '',
+          payMethodId: {},
           rechargeChannelId: '',
           appIds: [],
         },
@@ -661,14 +663,27 @@
 
         let self = this
         self.switchPayChannelFormAccountListLoading = true
-        console.log(self.switchPayChannelForm.payMethodId)
-        axios.post('/admin/user/channel-account-list', {methodId: self.switchPayChannelForm.payMethodId}).then(
+        let methodIds = []
+        for(let x in self.switchPayChannelForm.payMethodId){
+          if(self.switchPayChannelForm.payMethodId[x]){
+            methodIds.push(x)
+          }
+        }
+        if(methodIds.length==0){
+          // self.$message.error({message: '请选择收款类型！'})
+          self.switchPayChannelFormAccountListLoading = false
+          return
+        }
+        axios.post('/admin/user/channel-account-list', {methodId: methodIds}).then(
           res => {
             if (res.code != 0) {
               self.$message.error({message: res.message})
             } else {
-              // self.$message.error({message: res.message})
+              self.switchPayChannelForm.rechargeChannelId = ''
               self.methodFilteredPayChannelOptions = res.data
+              if(res.data.length==0){
+                self.$message.error({message: '没有符合筛选条件的通道账户！'})
+              }
 
             }
             self.switchPayChannelFormAccountListLoading = false
@@ -688,21 +703,34 @@
           return
         }
 
+        self.initSwitchPayFormMethods()
         self.dialogSwitchChannelVisible = true
       },
       switchPayChannel() {
-        console.log(this.multipleSelection)
         let self = this
-        if (!self.switchPayChannelForm.payMethodId || !self.switchPayChannelForm.rechargeChannelId) {
+        if (!self.switchPayChannelForm.rechargeChannelId) {
           self.$message.error({message: '请选择收款方式及收款渠道'})
           return
         }
         let postData = self.listQuery
-        postData.switchPayChannelForm = self.switchPayChannelForm
         if(self.switchPayChannelWithQueryForm==1){
           postData.appIds=[]
         }
-        console.log(postData)
+        let methodIds = []
+        for(let x in self.switchPayChannelForm.payMethodId){
+          if(self.switchPayChannelForm.payMethodId[x]){
+            methodIds.push(x)
+          }
+        }
+
+        if (!methodIds) {
+          self.$message.error({message: '请选择收款方式及收款渠道'})
+          return
+        }
+
+        postData.switchPayChannelForm.payMethodId = methodIds
+        self.initSwitchPayFormMethods()
+        console.log(JSON.stringify(postData))
 
         axios.post('/admin/user/switch-recharge-channel', postData).then(
           res => {
@@ -712,7 +740,6 @@
               self.$message.success({message: '通道切换成功'})
               self.methodFilteredPayChannelOptions = []
               self.listQuery.payChannel = ''
-              self.switchPayChannelForm.payMethodId = ''
               self.switchPayChannelForm.rechargeChannelId = ''
               self.getList()
               self.dialogSwitchChannelVisible = false
@@ -722,6 +749,19 @@
             self.$message.error({message: res.message})
           }
         )
+      },
+      switchPayMedhod(key, val) {
+        this.listQuery.payMedhod = key;
+        this.getList();
+        console.log(key, val)
+      },
+      initSwitchPayFormMethods(){
+        console.log('initSwitchPayFormMethods')
+        let self = this
+        self.switchPayChannelForm.payMethodId = {}
+        for (let i in self.payTypeFields) {
+          self.switchPayChannelForm.payMethodId[i] = false
+        }
       },
       showSwitchRemitChannelDialog() {
         let self = this
@@ -762,11 +802,6 @@
           }
         )
       },
-      switchPayMedhod(key, val) {
-        this.listQuery.payMedhod = key;
-        this.getList();
-        console.log(key, val)
-      },
       getFormOptions() {
         self = this
 
@@ -789,7 +824,6 @@
               self.settlementTypeOptions = res.data.settlementType
               self.rechargeFeeCanBeZero = res.data.rechargeFeeCanBeZero
               self.remitFeeCanBeZero = res.data.remitFeeCanBeZero
-
               let payTypeFields = {}
               for (let i in res.data.pay_method) {
                 if (i != '__ALL__') payTypeFields[i] = res.data.pay_method[i]
@@ -1158,5 +1192,11 @@
     .el-row-rate .el-select{
         width:80px;
         margin-left: 10px;
+    }
+    .switchPayChannelForm-payMethodIdList .el-checkbox{
+            width: 120px;
+    }
+    .switchPayChannelForm-payMethodIdList .el-checkbox+.el-checkbox{
+        margin-left: 0 !important;
     }
 </style>
