@@ -713,6 +713,8 @@
           return
         }
         let postData = self.listQuery
+        postData.switchPayChannelForm =   JSON.parse(JSON.stringify(self.switchPayChannelForm));
+
         if(self.switchPayChannelWithQueryForm==1){
           postData.appIds=[]
         }

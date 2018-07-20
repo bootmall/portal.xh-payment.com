@@ -1,103 +1,105 @@
 <template>
     <div class="dashboard-editor-container" style="margin-left: 50px;font-size:12px" v-loading="listLoading" element-loading-text="数据加载中，请稍候...">
-        <span><h4>商户基本信息</h4></span>
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>商户编号：</span><span>{{userInfo.id}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>登陆名：</span><span>{{userInfo.username}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>商户类型：</span><span>{{userInfo.group_name}}</span>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>邮箱：</span><span>{{userInfo.email}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>创建时间：</span><span>{{userInfo.created_at}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>状态：</span><span>{{userInfo.status_name}}</span>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>支持API下发：</span><span>{{userInfo.allow_api_remit}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>支持后台下发：</span><span>{{userInfo.allow_manual_remit}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>出款费率(元/笔)：</span><span>{{userInfo.remit_fee | numberFormat}}</span>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>下发总额度：</span><span>{{userInfo.remit_quota_perday | numberFormat}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>收款总额度：</span><span>{{userInfo.recharge_quota_perday | numberFormat}}</span>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>总资产：</span><span>{{userInfo.asset | numberFormat}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>冻结资产：</span><span>{{userInfo.frozen_balance | numberFormat}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>可用余额：</span><span>{{userInfo.balance | numberFormat}}</span>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>资金密码设置：</span><span>{{userInfo.is_financial}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>安全令牌绑定：</span><span>{{userInfo.is_key_2fa}}</span>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <span>商户key：</span><span>{{userInfo.merchant_key}}</span>
-                </div>
-            </el-col>
-        </el-row>
+        <div class="user-attr">
+            <span><h4>商户基本信息</h4></span>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>商户编号：</span><span>{{userInfo.id}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>登陆名：</span><span>{{userInfo.username}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>商户类型：</span><span>{{userInfo.group_name}}</span>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>邮箱：</span><span>{{userInfo.email}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>创建时间：</span><span>{{userInfo.created_at}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>状态：</span><span>{{userInfo.status_name}}</span>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>支持API下发：</span><span>{{userInfo.allow_api_remit}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>支持后台下发：</span><span>{{userInfo.allow_manual_remit}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>出款费率(元/笔)：</span><span>{{userInfo.remit_fee | numberFormat}}</span>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>下发总额度：</span><span>{{userInfo.remit_quota_perday | numberFormat}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>收款总额度：</span><span>{{userInfo.recharge_quota_perday | numberFormat}}</span>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>总资产：</span><span>{{userInfo.asset | numberFormat}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>冻结资产：</span><span>{{userInfo.frozen_balance | numberFormat}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>可用余额：</span><span>{{userInfo.balance | numberFormat}}</span>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>资金密码设置：</span><span>{{userInfo.is_financial}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>安全令牌绑定：</span><span>{{userInfo.is_key_2fa}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>商户key：</span><span>{{userInfo.merchant_key}}</span>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
         <span v-if="userInfo.agent">
             <h4>代理</h4>
             <el-row :gutter="20">
@@ -124,7 +126,7 @@
         </el-row>
         <el-row>
             <el-button type="primary" @click="handleUserStatus">修改商户状态</el-button>
-            <!--<el-button type="primary" @click="handleQuota">修改商户额度</el-button>-->
+            <el-button type="primary" @click="handleQuota">修改商户额度</el-button>
             <el-button type="primary" @click="handleAgent">切换上级代理</el-button>
             <!--<el-button type="primary" @click="handleClearPass">系统调账</el-button>-->
             <el-button type="primary" @click="handleUpdateUserEmail">修改商户邮箱</el-button>
@@ -1074,5 +1076,8 @@
         width:80px;
         margin-left: 10px;
     }
-
+.user-attr .grid-content{
+    /*padding-left: 15px;*/
+    background: none;
+}
 </style>

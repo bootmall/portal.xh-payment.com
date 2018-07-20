@@ -48,12 +48,12 @@ function getAsyncRouterName(asyncRouterMap) {
     // console.log(asyncRouterMap[i])
     let route = asyncRouterMap[i]
     if(typeof route.meta=='undefined') route.meta = {}
-    console.log(JSON.stringify([route.name,route.path,route.meta.title,route.view,[],route.meta.role],[])+',')
+    // console.log(JSON.stringify([route.name,route.path,route.meta.title,route.view,[],route.meta.role],[])+',')
     if(typeof asyncRouterMap[i].children!='undefined'){
       for(let k=0;k<asyncRouterMap[i].children.length;k++){
         let subRoute = asyncRouterMap[i].children[k]
         subRoute.path = route.path+'/'+subRoute.path
-        console.log(JSON.stringify([subRoute.name,subRoute.path,subRoute.meta.title,subRoute.view,[],subRoute.meta.role,route.name])+',')
+        // console.log(JSON.stringify([subRoute.name,subRoute.path,subRoute.meta.title,subRoute.view,[],subRoute.meta.role,route.name])+',')
       }
     }
   }
