@@ -9,7 +9,7 @@
                         <!--<el-input v-model="commonForm.group_id"></el-input>-->
                         <!--</el-form-item>-->
                         <el-form-item label="账户类型" prop="group_id">
-                            <el-radio-group v-model="commonForm.group_id" size="small">
+                            <el-radio-group v-model="commonForm.group_id" size="small" @change="onUserGroupChange">
                                 <el-radio
                                         v-for="(item,key) in typeOptions"
                                         :key="key"
@@ -20,6 +20,9 @@
                                 </el-radio>
                             </el-radio-group>
                             <div class="el_item_tips">账户类型为商户时必须指定上级代理</div>
+                        </el-form-item>
+                        <el-form-item label="开户费" prop="account_open_fee" class="el-form-item-input" v-if="accountOpenFeeShow">
+                            <el-input v-model="commonForm.account_open_fee"></el-input>
                         </el-form-item>
                         <el-form-item label="上级商户帐号" prop="parentMerchantAccount" class="el-form-item-input">
                             <el-input v-model="commonForm.parentMerchantAccount"></el-input>
@@ -203,6 +206,7 @@
           allow_api_remit: '1',
           allow_manual_remit: '1',
           allow_api_fast_remit: '1',
+          account_open_fee: '',
         },
         rules: {
           username: [{required: true, trigger: 'blur', validator: isvalidUsername}],
@@ -219,6 +223,7 @@
           // parentMerchantAccount: [{ required: true, trigger: 'blur', message: '请输入上级账户'}],
         },
         saveBtnTitle: '',
+        accountOpenFeeShow: false,
         dialogAvatarVisible: false,
         submitBtnDisableStatus: false,
         checkAll: false,
@@ -242,6 +247,11 @@
     },
     computed: {},
     methods: {
+      onUserGroupChange(){
+      if(this.commonForm.group_id==30){
+        this.accountOpenFeeShow = true
+      }
+     },
       handleCheckAllMethodChange(val) {
         this.commonForm.pay_method = val ? this.payMethodNames : [];
         this.isIndeterminate = false;
@@ -254,7 +264,7 @@
       onRechargeRateChange(key) {
         this.methodStatus[key] = "0"
         if(self.rechargeFeeCanBeZero){
-          self.methodStatus[method_id] = "1"
+          self.methodStatus[key] = "1"
         }
         if (this.commonForm.recharge_rate[key] > 0) {
           if (this.commonForm.recharge_rate[key] > this.rechargeMaxRate) {

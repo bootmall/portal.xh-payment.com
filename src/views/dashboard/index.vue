@@ -14,6 +14,22 @@
                 <el-button @click="noticeVisible = false">关闭</el-button>
             </span>
         </el-dialog>
+        <el-dialog
+            title="请支付开户费用"
+            :visible.sync="needPayAccountOpenFeeVisible"
+            :show-close="false"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            width="40%">
+            <el-alert
+                title="您需要先支付开户费用进行开户"
+                type="warning"
+                center
+                show-icon>
+            </el-alert>
+            <add-recharge :type="3" :amount="needPayAccountOpenAmount" :amount-disabled="1"></add-recharge>
+        </el-dialog>
+
         <div style="width: 90%;margin-left: 50px"><order-census></order-census></div>
         <div style="width: 90%;margin-left: 50px;margin-bottom: 20px;" v-if="user.group_id != 10 " class="rate-list">
             <el-alert
@@ -55,6 +71,7 @@
   // import PieChart from './components/PieChart'
   // import BarChart from './components/BarChart'
   // import BoxCard from './components/BoxCard'
+  import addRecharge from '@/views/components/addRecharge'
   import { mapGetters } from 'vuex'
   import axios from '@/utils/http'
   import common from '@/utils/common'
@@ -79,26 +96,18 @@
     name: 'dashboardIndex',
     components: {
       //PanelGroup,
-        OrderCensus
+        OrderCensus,
       // LineChart,
       // RaddarChart,
       // PieChart,
       // BarChart,
       // BoxCard
+        addRecharge
     },
     data() {
       return {
         groupPanel:{},
-        onExamineInfoShow: true,
           listLoading:false,
-        company:{
-          id:0,
-          type:0
-        },
-        companyExame:{},
-        companyExameStr:'',
-        exameHistory:[],
-        companyExameStepNow: 1,
         lineChartOrderCountData: lineChartOrderCountData,
         lineChartOrderMoneyData: lineChartOrderMoneyData,
         notice: {},
@@ -108,14 +117,14 @@
         rate: {},
         remit_fee: null,
         payMethodOptions: {},
+        needPayAccountOpenFeeVisible: false,
+        needPayAccountOpenFee: false,
+        needPayAccountOpenAmount: 0,
       }
     },
     methods: {
       go(path) {
         this.$router.push({path: path});
-      },
-      onExamineInfoClose(type) {
-        this.onExamineInfoShow = false
       },
       handleSetLineChartData(type) {
         //return
@@ -148,6 +157,13 @@
 
               self.remit_fee = res.data.remit_fee
               self.payMethodOptions = res.data.payMethodOptions
+              self.needPayAccountOpenFee = res.data.needPayAccountOpenFee
+
+              if(self.needPayAccountOpenFee){
+                self.noticeVisible = false
+                self.needPayAccountOpenFeeVisible = true
+                self.needPayAccountOpenAmount = parseInt(res.data.needPayAccountOpenAmount)
+              }
             }
           },
           res => {
