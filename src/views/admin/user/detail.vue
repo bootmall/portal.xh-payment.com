@@ -99,6 +99,23 @@
                     </div>
                 </el-col>
             </el-row>
+          <el-row :gutter="20" v-if="accountOpenInfo.fee>0">
+            <el-col :span="8">
+              <div class="grid-content">
+                <span>开户费：</span><span>{{accountOpenInfo.fee}}</span>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <span>开户费订单：</span><span>{{accountOpenInfo.order_no}}</span>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content" :class="{ error: accountOpenInfo.status==0 }">
+                <span>开户费状态：</span><span>{{accountOpenInfo.status_str}}</span>
+              </div>
+            </el-col>
+          </el-row>
         </div>
         <span v-if="userInfo.agent">
             <h4>代理</h4>
@@ -472,6 +489,9 @@
         },
         accountOpenAmount:0,
         accountOpenPaid:0,
+        accountOpenInfo:{
+          fee:0
+        },
       }
     },
     created() {
@@ -557,6 +577,7 @@
               self.remitFeeCanBeZero = res.data.remitFeeCanBeZero
               self.accountOpenPaid = res.data.accountOpenPaid
               self.accountOpenAmount = res.data.accountOpenAmount
+              self.accountOpenInfo = res.data.accountOpenInfo
             }
           },
         )
