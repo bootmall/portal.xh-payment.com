@@ -225,10 +225,8 @@
         methods: {
           changeChannelInAddForm(channelId){
             let template = JSON.parse(this.channelSecretTemplates[channelId])
-            this.app_secrets_template = template
+            this.app_secrets_template = JSON.parse(JSON.stringify(template))
             this.editForm.app_secrets = template
-            console.log(channelId)
-            console.log(template)
           },
             getList() {
                 var self = this
