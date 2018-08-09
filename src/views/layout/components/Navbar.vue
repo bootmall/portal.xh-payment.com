@@ -10,7 +10,7 @@
       <el-menu
           class="el-top-menu"
           mode="horizontal"
-          background-color="rgb(48, 65, 86)"
+          background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
         <template v-for="item in permission_routers">
@@ -31,11 +31,11 @@
             <template v-if="!child.hidden" v-for="child in item.children">
               <!--<sidebar-item class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]" :key="child.path"></sidebar-item>-->
 
-              <!--<router-link :to="{ path: item.path+'/'+child.path, query: child.query}" :key="child.name">-->
+              <router-link :to="{ path: item.path+'/'+child.path, query: child.query}" :key="child.name">
               <el-menu-item :index="item.path+'/'+child.path">
                 <span v-if="child.meta&&child.meta.title">{{child.meta.title}}</span>
               </el-menu-item>
-              <!--</router-link>-->
+              </router-link>
             </template>
           </el-submenu>
         </template>
@@ -279,9 +279,6 @@
       // setInterval(this.checkRemitStatus,30 * 1000)
       // //资金等检测
       // setInterval(this.getInitData, 60 * 1000)
-      for (let x in this.permission_routers) {
-        console.log(this.permission_routers[x])
-      }
     },
     methods: {
 
@@ -510,12 +507,11 @@
   .el-menu--horizontal {
     border-bottom: 0px;
   }
-
   .navbar {
     height: 50px;
     line-height: 50px;
     border-radius: 0px !important;
-    background-color: rgb(48, 65, 86);
+    background-color: #545c64;
 
     .el-top-menu {
       float: left;
