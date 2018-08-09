@@ -98,7 +98,7 @@
             <el-form>
                 <el-form-item label="商户KEY：" label-width="120px">
                     <el-input size="small" type="textarea" :rows="3" v-model="auth_key" style="width: 200px"></el-input>
-                    <dd style="color: red;line-height: 20px;margin-left: 0;">提示：商户Key必须包含一个大写字母，一个小字母，一个数字；长度（8-50）</dd>
+                    <dd style="color: red;line-height: 20px;margin-left: 0;">提示：商户Key值长度不能超过36位</dd>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -357,10 +357,14 @@
       },
       editAuthKey() {
         let self = this
-        let reg = /^.*(?=.{8,50})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
-        if (!reg.test(self.auth_key)) {
-          self.$message.error({message: '商户Key值不符合规范'})
-          return
+        // let reg = /^.*(?=.{8,50})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
+        // if (!reg.test(self.auth_key)) {
+        //   self.$message.error({message: '商户Key值不符合规范'})
+        //   return
+        // }
+        if(self.auth_key.length > 36){
+            self.$message.error({message: '商户Key值长度超过规定长度'})
+            return
         }
         if (self.auth_key == self.old_auth_key) {
           this.$message.error({message: '商户Key值没有做任何修改'})
