@@ -14,10 +14,10 @@
                 <el-button @click="noticeVisible = false">关闭</el-button>
             </span>
         </el-dialog>
+        <!--:show-close="false"-->
         <el-dialog
             title="请支付开户费用"
             :visible.sync="needPayAccountOpenFeeVisible"
-            :show-close="false"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
             width="40%">
