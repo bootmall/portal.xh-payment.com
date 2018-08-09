@@ -1,84 +1,123 @@
 <template>
-    <el-menu class="navbar" mode="horizontal">
-        <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+  <el-menu class="navbar" mode="horizontal">
+    <!--<hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>-->
 
-        <breadcrumb class="breadcrumb-container"></breadcrumb>
+    <!--<breadcrumb class="breadcrumb-container"></breadcrumb>-->
+    <div style="line-height: 50px;
+    height: 50px;
+    float: left;
+    padding: 0 10px;">
+      <el-menu
+          class="el-top-menu"
+          mode="horizontal"
+          background-color="rgb(48, 65, 86)"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+        <template v-for="item in permission_routers">
+          <router-link v-if="!item.hidden&&item.children&&item.children.length===1"
+                       :to="{ path: item.path+'/'+item.children[0].path, query: item.children[0].query}"
+                       :key="item.children[0].name">
+            <el-menu-item :index="item.path+'/'+item.children[0].path">
+              <span v-if="item.children[0].meta&&item.children[0].meta.title">{{item.children[0].meta.title}}</span>
+            </el-menu-item>
+          </router-link>
 
-        <div class="right-menu">
-            <span style="color: #5a5e66;font-size: 14px;margin-left: 20px;">
+          <el-submenu :show-timeout="100" v-if="!item.hidden&&item.children&&item.children.length>1"
+                      :index="item.name||item.path" :key="item.name">
+            <template slot="title">
+              <span v-if="item.meta&&item.meta.title">{{item.meta.title}}</span>
+            </template>
+
+            <template v-if="!child.hidden" v-for="child in item.children">
+              <!--<sidebar-item class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]" :key="child.path"></sidebar-item>-->
+
+              <!--<router-link :to="{ path: item.path+'/'+child.path, query: child.query}" :key="child.name">-->
+              <el-menu-item :index="item.path+'/'+child.path">
+                <span v-if="child.meta&&child.meta.title">{{child.meta.title}}</span>
+              </el-menu-item>
+              <!--</router-link>-->
+            </template>
+          </el-submenu>
+        </template>
+      </el-menu>
+    </div>
+    <div class="right-menu">
+
+
+            <span style="font-size: 14px;margin-left: 20px;">
                 商户号：<span style="color:#F56C6C">{{user.user.main_merchant_id}}</span>
             </span>
-            <el-dropdown trigger="click" v-if="group_id != 10">
+      <el-dropdown trigger="click" v-if="group_id != 10">
             <span class="el-dropdown-link" @click="getInitData">
                 账户余额：<span style="color:#F56C6C">{{asset}}</span>
             </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item divided>
-                        <span style="display:block;">账户余额：{{asset}}</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided>
-                        <span style="display:block;">冻结金额：{{frozen_balance}}</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided>
-                        <span style="display:block;">可提现金额：{{balance}}</span>
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item divided>
+            <span style="display:block;">账户余额：{{asset}}</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <span style="display:block;">冻结金额：{{frozen_balance}}</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <span style="display:block;">可提现金额：{{balance}}</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
 
-            <el-dropdown class="avatar-container right-menu-item">
-                <div class="avatar-wrapper">
-                    欢迎您:
-                    <router-link to="/"><span style="color:#F56C6C">{{nickname_dis}}</span></router-link>
-                    <i class="el-icon-caret-bottom"></i>
-                    <audio src="/static/mp3/6005.mp3" controls="controls" preload id="remind" hidden></audio>
-                </div>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item divided>
-                        <span @click="editPassDialog" style="display:block;">修改密码</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided v-if="group_id != 10">
-                        <span @click="showHandleAuthKeyDialog" style="display:block;">修改商户KEY</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided>
-                        <span @click="getGoogleCode" style="display:block;">安全令牌</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided v-if="group_id != 10">
-                        <span @click="handleFinancial" style="display:block;">设置/修改资金密码</span>
-                    </el-dropdown-item>
-
-                    <el-dropdown-item divided>
-                        <span @click="logout" style="display:block;">退出登录</span>
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
+      <el-dropdown class="avatar-container right-menu-item">
+        <div class="avatar-wrapper">
+          欢迎您:
+          <router-link to="/"><span style="color:#F56C6C">{{nickname_dis}}</span></router-link>
+          <i class="el-icon-caret-bottom"></i>
+          <audio src="/static/mp3/6005.mp3" controls="controls" preload id="remind" hidden></audio>
         </div>
-        <el-dialog title="修改密码" :visible.sync="editPassVisible" width="30%">
-            <el-form :model="editPassForm">
-                <dd style="color: red;">提示：密码必须包含一个大写字母，一个小字母，一个数字；长度（6-16）</dd>
-                <el-form-item label="旧密码：" label-width="120px">
-                    <el-input size="small" type="password" v-model="editPassForm.oldPass" style="width: 200px"></el-input>
-                </el-form-item>
-                <el-form-item label="新密码：" label-width="120px">
-                    <el-input size="small" type="password" v-model="editPassForm.newPass" style="width: 200px"></el-input>
-                </el-form-item>
-                <el-form-item label="确认密码：" label-width="120px">
-                    <el-input size="small" type="password" v-model="editPassForm.confirmPass" style="width: 200px"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="editPassVisible = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="editPassHandle">提交</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog title="绑定安全令牌" :visible.sync="googleCodeVisible" width="50%">
-            <el-form :model="editPassForm">
-                <div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item divided>
+            <span @click="editPassDialog" style="display:block;">修改密码</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided v-if="group_id != 10">
+            <span @click="showHandleAuthKeyDialog" style="display:block;">修改商户KEY</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <span @click="getGoogleCode" style="display:block;">安全令牌</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided v-if="group_id != 10">
+            <span @click="handleFinancial" style="display:block;">设置/修改资金密码</span>
+          </el-dropdown-item>
+
+          <el-dropdown-item divided>
+            <span @click="logout" style="display:block;">退出登录</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <el-dialog title="修改密码" :visible.sync="editPassVisible" width="30%">
+      <el-form :model="editPassForm">
+        <dd style="color: red;">提示：密码必须包含一个大写字母，一个小字母，一个数字；长度（6-16）</dd>
+        <el-form-item label="旧密码：" label-width="120px">
+          <el-input size="small" type="password" v-model="editPassForm.oldPass" style="width: 200px"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码：" label-width="120px">
+          <el-input size="small" type="password" v-model="editPassForm.newPass" style="width: 200px"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码：" label-width="120px">
+          <el-input size="small" type="password" v-model="editPassForm.confirmPass" style="width: 200px"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="editPassVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="editPassHandle">提交</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="绑定安全令牌" :visible.sync="googleCodeVisible" width="50%">
+      <el-form :model="editPassForm">
+        <div>
                   <span style="float: left;width: 200px;height: 260px">
                       <!--<img :src="googleCode" />-->
                       <vue-qr :text="googleCode" height="200" width="200"></vue-qr>
                       <el-input size="small" v-model="key_2fa" style="width: 180px"></el-input>
                   </span>
-                    <span style="height: 260px">
+          <span style="height: 260px">
                       <p style="height: 20px;">1. 造访 App Store</p>
                       <p style="height: 20px;">2. 搜寻 「Google Authenticator」 或 「谷歌身份验证器」</p>
                       <p style="height: 20px;">3. 下载并安装应用程式</p>
@@ -87,59 +126,64 @@
                       <p style="height: 20px;">6. 提交后将本账号绑定谷歌身份验证器</p>
                       <p style="height: 20px;">7. 绑定后，本账号登录时，必须输入验证器产生的验证码，方可登录</p>
                   </span>
-                </div>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="googleCodeVisible = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="setGoogleCode">提交</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog title="修改商户KEY" :visible.sync="authKeyVisible" width="30%">
-            <el-form>
-                <el-form-item label="商户KEY：" label-width="120px">
-                    <el-input size="small" type="textarea" :rows="3" v-model="auth_key" style="width: 200px"></el-input>
-                    <dd style="color: red;line-height: 20px;margin-left: 0;">提示：商户Key值长度不能超过36位</dd>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="authKeyVisible = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="editAuthKey">提交</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog title="设置/修改资金密码" :visible.sync="editFinancialPassVisible" width="30%">
-            <el-form :model="editFinancialPassForm">
-                <dd style="color: red;">提示：密码必须包含一个大写字母，一个小字母，一个数字；长度（6-16）</dd>
-                <el-form-item label="旧资金密码：" label-width="120px" v-if="editFinancialPassForm.is_financial == 1">
-                    <el-input size="small" type="password" v-model="editFinancialPassForm.oldPass" style="width: 200px"></el-input>
-                </el-form-item>
-                <el-form-item label="资金密码：" label-width="120px">
-                    <el-input size="small" type="password" v-model="editFinancialPassForm.newPass" style="width: 200px"></el-input>
-                </el-form-item>
-                <el-form-item label="确认资金密码：" label-width="120px" v-if="editFinancialPassForm.is_financial == 1">
-                    <el-input size="small" type="password" v-model="editFinancialPassForm.confirmPass" style="width: 200px"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="editFinancialPassVisible = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="editFinancialPassHandle">提交</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog title="验证登录会话安全性" :visible.sync="sessionSecurityCheckDialogVisible" width="30%">
-            <el-form :model="sessionSecurityCheckForm">
-                <dd style="color: red;">提示：资金密码和安全令牌必须填至少一项</dd>
-                <el-form-item label="资金密码：" label-width="120px">
-                    <el-input size="small" type="password" v-model="sessionSecurityCheckForm.finacialPwd" style="width: 200px"></el-input>
-                </el-form-item>
-                <el-form-item label="安全密码：" label-width="120px">
-                    <el-input size="small" type="password" v-model="sessionSecurityCheckForm.key2fa" style="width: 200px"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="sessionSecurityCheckDialogVisible = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="sessionSecurityCheckForm.handle">提交</el-button>
-            </div>
-        </el-dialog>
-    </el-menu>
+        </div>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="googleCodeVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="setGoogleCode">提交</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="修改商户KEY" :visible.sync="authKeyVisible" width="30%">
+      <el-form>
+        <el-form-item label="商户KEY：" label-width="120px">
+          <el-input size="small" type="textarea" :rows="3" v-model="auth_key" style="width: 200px"></el-input>
+          <dd style="color: red;line-height: 20px;margin-left: 0;">提示：商户Key值长度不能超过36位</dd>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="authKeyVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="editAuthKey">提交</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="设置/修改资金密码" :visible.sync="editFinancialPassVisible" width="30%">
+      <el-form :model="editFinancialPassForm">
+        <dd style="color: red;">提示：密码必须包含一个大写字母，一个小字母，一个数字；长度（6-16）</dd>
+        <el-form-item label="旧资金密码：" label-width="120px" v-if="editFinancialPassForm.is_financial == 1">
+          <el-input size="small" type="password" v-model="editFinancialPassForm.oldPass"
+                    style="width: 200px"></el-input>
+        </el-form-item>
+        <el-form-item label="资金密码：" label-width="120px">
+          <el-input size="small" type="password" v-model="editFinancialPassForm.newPass"
+                    style="width: 200px"></el-input>
+        </el-form-item>
+        <el-form-item label="确认资金密码：" label-width="120px" v-if="editFinancialPassForm.is_financial == 1">
+          <el-input size="small" type="password" v-model="editFinancialPassForm.confirmPass"
+                    style="width: 200px"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="editFinancialPassVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="editFinancialPassHandle">提交</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="验证登录会话安全性" :visible.sync="sessionSecurityCheckDialogVisible" width="30%">
+      <el-form :model="sessionSecurityCheckForm">
+        <dd style="color: red;">提示：资金密码和安全令牌必须填至少一项</dd>
+        <el-form-item label="资金密码：" label-width="120px">
+          <el-input size="small" type="password" v-model="sessionSecurityCheckForm.finacialPwd"
+                    style="width: 200px"></el-input>
+        </el-form-item>
+        <el-form-item label="安全密码：" label-width="120px">
+          <el-input size="small" type="password" v-model="sessionSecurityCheckForm.key2fa"
+                    style="width: 200px"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="sessionSecurityCheckDialogVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="sessionSecurityCheckForm.handle">提交</el-button>
+      </div>
+    </el-dialog>
+  </el-menu>
 
 </template>
 
@@ -154,6 +198,7 @@
 
   import axios from '@/utils/http'
   import VueQr from 'vue-qr'
+  import ScrollPane from '@/components/ScrollPane'
 
   export default {
     components: {
@@ -163,6 +208,7 @@
       // ErrorLog,
       Screenfull,
       VueQr,
+      ScrollPane
     },
     data() {
       return {
@@ -195,18 +241,21 @@
           newPass: null,
           confirmPass: null,
         },
-        sessionSecurityCheckDialogVisible:false,
-        sessionSecurityCheckForm:{
+        sessionSecurityCheckDialogVisible: false,
+        sessionSecurityCheckForm: {
           finacialPwd: '',
           key2fa: '',
           handle: function () {
 
           },
-        }
+        },
+        activeIndex: '1',
+        activeIndex2: '1'
       }
     },
     computed: {
       ...mapGetters([
+        'permission_routers',
         'sidebar',
         'nickname',
         'username',
@@ -221,8 +270,8 @@
       if (this.nickname_dis == '') this.nickname_dis = this.username
 
       let siteInfo = common.getStorage('siteInfo')
-      if(typeof siteInfo.siteName != 'undefined'){
-        document.title =  siteInfo.siteName
+      if (typeof siteInfo.siteName != 'undefined') {
+        document.title = siteInfo.siteName
       }
     },
     mounted() {
@@ -230,8 +279,16 @@
       // setInterval(this.checkRemitStatus,30 * 1000)
       // //资金等检测
       // setInterval(this.getInitData, 60 * 1000)
+      for (let x in this.permission_routers) {
+        console.log(this.permission_routers[x])
+      }
     },
     methods: {
+
+
+      handleTopMenuSelect(key, keyPath) {
+        console.log(key, keyPath);
+      },
       getInitData() {
         let self = this
         axios.post('/user/user-check').then(
@@ -329,7 +386,7 @@
           }
         );
       },
-      showHandleAuthKeyDialog(){
+      showHandleAuthKeyDialog() {
         this.sessionSecurityCheckDialogVisible = true
         this.sessionSecurityCheckForm.handle = this.handleAuthKey
       },
@@ -338,18 +395,18 @@
 
         //合并会话验证字段
         let data = {
-          finacialPwd:this.sessionSecurityCheckForm.finacialPwd,
-          key2fa:this.sessionSecurityCheckForm.key2fa,
+          finacialPwd: this.sessionSecurityCheckForm.finacialPwd,
+          key2fa: this.sessionSecurityCheckForm.key2fa,
         }
 
-        axios.post('/user/get-auth-key',data).then(
+        axios.post('/user/get-auth-key', data).then(
           res => {
             if (res.code == 0) {
               self.auth_key = res.data;
               self.old_auth_key = res.data;
               self.authKeyVisible = true;
               self.sessionSecurityCheckDialogVisible = false
-            }else {
+            } else {
               self.$message.error({message: res.message})
             }
           }
@@ -362,9 +419,9 @@
         //   self.$message.error({message: '商户Key值不符合规范'})
         //   return
         // }
-        if(self.auth_key.length > 36){
-            self.$message.error({message: '商户Key值长度超过规定长度'})
-            return
+        if (self.auth_key.length > 36) {
+          self.$message.error({message: '商户Key值长度超过规定长度'})
+          return
         }
         if (self.auth_key == self.old_auth_key) {
           this.$message.error({message: '商户Key值没有做任何修改'})
@@ -445,82 +502,112 @@
     }
   }
 </script>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
-    .navbar {
-        height: 50px;
-        line-height: 50px;
-        border-radius: 0px !important;
-        .nickname {
-            display: inline-block;
-            font-size: 14px;
-            line-height: 50px;
-            margin-right: 10px;
-            float: left;
-            color: #606266;
-        }
-        .nickname a {
-            color: #409EFF;
-        }
-        .hamburger-container {
-            line-height: 58px;
-            height: 50px;
-            float: left;
-            padding: 0 10px;
-        }
-        .breadcrumb-container {
-            float: left;
-        }
-        .errLog-container {
-            display: inline-block;
-            vertical-align: top;
-        }
-        .right-menu {
-            float: right;
-            height: 100%;
-            &:focus {
-                outline: none;
-            }
-            .right-menu-item {
-                display: inline-block;
-                margin: 0 8px;
-            }
-            .screenfull {
-                height: 20px;
-            }
-            .international {
-                vertical-align: top;
-                .international-icon {
-                    font-size: 20px;
-                    cursor: pointer;
-                    vertical-align: -5px;
-                }
-            }
-            .theme-switch {
-                vertical-align: 15px;
-            }
-            .avatar-container {
-                height: 50px;
-                margin-right: 30px;
-                .avatar-wrapper {
-                    cursor: pointer;
-                    margin-top: 5px;
-                    position: relative;
-                    .user-avatar {
-                        width: 40px;
-                        height: 40px;
-                        border-radius: 10px;
-                    }
-                    .el-icon-caret-bottom {
-                        position: absolute;
-                        right: -20px;
-                        top: 25px;
-                        font-size: 12px;
-                    }
-                }
-            }
-        }
+  .el-submenu__title {
+    height: 50px;
+  }
+
+  .el-menu--horizontal {
+    border-bottom: 0px;
+  }
+
+  .navbar {
+    height: 50px;
+    line-height: 50px;
+    border-radius: 0px !important;
+    background-color: rgb(48, 65, 86);
+
+    .el-top-menu {
+      float: left;
+
+      .el-submenu {
+        overflow: visible !important;
+      }
+
+      .el-submenu__icon-arrow {
+        display: inline-block !important;
+      }
+
+      .is-opened ul {
+        /*display: block;*/
+      }
+
     }
+
+    .nickname {
+      display: inline-block;
+      font-size: 14px;
+      line-height: 50px;
+      margin-right: 10px;
+      float: left;
+      color: #606266;
+    }
+    .nickname a {
+      color: #409EFF;
+    }
+    .hamburger-container {
+      line-height: 58px;
+      height: 50px;
+      float: left;
+      padding: 0 10px;
+    }
+    .breadcrumb-container {
+      float: left;
+    }
+    .errLog-container {
+      display: inline-block;
+      vertical-align: top;
+    }
+    .right-menu {
+      float: right;
+      height: 100%;
+      color: #fff;
+      .el-dropdown {
+        color: #fff;
+      }
+      &:focus {
+        outline: none;
+      }
+      .right-menu-item {
+        display: inline-block;
+        margin: 0 8px;
+      }
+      .screenfull {
+        height: 20px;
+      }
+      .international {
+        vertical-align: top;
+        .international-icon {
+          font-size: 20px;
+          cursor: pointer;
+          vertical-align: -5px;
+        }
+      }
+      .theme-switch {
+        vertical-align: 15px;
+      }
+      .avatar-container {
+        height: 50px;
+        margin-right: 30px;
+        .avatar-wrapper {
+          cursor: pointer;
+          margin-top: 5px;
+          position: relative;
+          .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+          }
+          .el-icon-caret-bottom {
+            position: absolute;
+            right: -20px;
+            top: 25px;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
 </style>
 
 
