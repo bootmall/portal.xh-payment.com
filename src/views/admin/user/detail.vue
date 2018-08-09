@@ -134,6 +134,7 @@
             <el-button type="primary" @click="showChangeBalanceDialog(1)">调整余额</el-button>
             <el-button type="primary" @click="showChangeBalanceDialog(2)">冻结金额</el-button>
             <el-button type="primary" @click="showChangeBalanceDialog(3)">解冻金额</el-button>
+            <el-button type="primary" @click="accountOpenFeeVisible=true">设置开户费</el-button>
         </el-row>
         <el-dialog title="设置费率" :visible.sync="rateVisible" width="53%">
             <el-form :model="rateForm">
@@ -366,6 +367,24 @@
                 </span>
 
         </el-dialog>
+      <el-dialog
+                title="设置开户费"
+                :visible.sync="accountOpenFeeVisible"
+                width="600px">
+            <el-form :model="accountOpenFeeForm">
+                <template>
+                    <el-form-item label="开户费金额：" label-width="120px" style="margin-top: 20px;width: 400px">
+                        <el-input size="small" type="text" v-model="accountOpenFeeForm.amount"></el-input>
+                        <span class="current-balance">当前:{{accountOpenAmount}},已支付{{accountOpenPaid}}</span>
+                    </el-form-item>
+                </template>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                    <el-button @click="accountOpenFeeVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="handleSetAccountOpenFee">确 定</el-button>
+                </span>
+
+        </el-dialog>
     </div>
 
 </template>
@@ -447,6 +466,12 @@
           amount: '',
           bak: ''
         },
+        accountOpenFeeVisible:false,
+        accountOpenFeeForm:{
+          amount:0,
+        },
+        accountOpenAmount:0,
+        accountOpenPaid:0,
       }
     },
     created() {
@@ -463,12 +488,17 @@
       '$route'(to, from) {
         // 对路由变化作出响应...
         let merchantId = 0
+        console.log(to.query,from.query,to.name == from.name)
         if(to.name == from.name){
-          if(to.params.merchantId!=from.params.merchantId){
-            merchantId = to.params.merchantId
+
+          if(to.query.merchantId!=from.query.merchantId){
+            merchantId = to.query.merchantId
+          }
+          else if(to.params.merchantId!=from.params.merchantId){
+              merchantId = to.params.merchantId
           }
         }else{
-          merchantId = to.params.merchantId
+          merchantId = to.query.merchantId ? to.query.merchantId : to.params.merchantId
         }
 
         if(merchantId) this.getInitData(merchantId)
@@ -525,7 +555,8 @@
               self.settlementTypeOptions = res.data.settlementType
               self.rechargeFeeCanBeZero = res.data.rechargeFeeCanBeZero
               self.remitFeeCanBeZero = res.data.remitFeeCanBeZero
-
+              self.accountOpenPaid = res.data.accountOpenPaid
+              self.accountOpenAmount = res.data.accountOpenAmount
             }
           },
         )
@@ -617,6 +648,37 @@
             res => {
               if (res.code == 0) {
                 this.$message.success({message: '安全令牌已解绑'});
+              } else {
+                this.$message.error({message: res.message});
+                this.getInitData()
+              }
+            }
+          )
+
+        }).catch(() => {
+          self.$message({
+            type: 'warning',
+            message: '已取消操作'
+          });
+        });
+
+      },
+      handleSetAccountOpenFee() {
+        let self = this
+        self.$confirm('此操作将设置开户费为 '+self.accountOpenFeeForm.amount+', 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          let data = {
+            merchantId: self.userInfo.id,
+            amount: self.accountOpenFeeForm.amount
+          };
+          axios.post('/admin/user/set-account-open-fee', data).then(
+            res => {
+              if (res.code == 0) {
+                this.$message.success({message: '开户费已设置'});
               } else {
                 this.$message.error({message: res.message});
                 this.getInitData()

@@ -1141,7 +1141,7 @@
         this.$router.push({name: 'vue_merchant_add'});
       },
       handleDetail(row) {
-        this.$router.push({name: 'vue_merchant_detail', params: {merchantId: row.id}});
+        this.$router.push({name: 'vue_merchant_detail', query: {merchantId: row.id}});
       }
     }
   }
