@@ -45,7 +45,7 @@
 
                     <el-select class="filter-item" v-model="listQuery.tagId" placeholder="分组标签" filterable >
                         <el-option
-                                v-for="(item,key) in filteredTagList"
+                                v-for="(item,key) in tagList"
                                 :key="item.id"
                                 :label="item.name"
                                 :value="item.id"
@@ -579,8 +579,8 @@
         this.filteredTagList = this.tagList.filter(tag => {
           return tag.pinyin.indexOf(query) > -1 || tag.name.indexOf(query) > -1;
         })
-        console.log(this.tagList)
-        console.log(this.filteredTagList)
+        // console.log(this.tagList)
+        // console.log(this.filteredTagList)
       },
       getTagList() {
         // return;
