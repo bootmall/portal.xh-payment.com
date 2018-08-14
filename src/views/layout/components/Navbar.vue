@@ -67,7 +67,7 @@
       <el-dropdown class="avatar-container right-menu-item">
         <div class="avatar-wrapper">
           欢迎您:
-          <router-link to="/"><span style="color:#F56C6C">{{nickname_dis}}</span></router-link>
+          <span style="color:#F56C6C">{{nickname_dis}}</span>
           <i class="el-icon-caret-bottom"></i>
           <audio src="/static/mp3/6005.mp3" controls="controls" preload id="remind" hidden></audio>
         </div>

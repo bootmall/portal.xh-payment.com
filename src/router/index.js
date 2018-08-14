@@ -246,8 +246,7 @@ export const asyncRouterMap = [
       // 静态页面
       {path: 'limit', component: _import("system/bankQuota"),view: "system/bankQuota", name: 'vue_amount_limitation_index', meta: {title: '限额对照表', icon: 'excel', role: ['merchant', 'agent'], noCache: false}},
       // 接口文档和SDK
-      {path: 'index', component: _import("layout/empty"),view: "layout/empty", name: 'vue_document', meta: {title: '接口文档-未完成', icon: 'excel', role: ['merchant', 'agent'], noCache: false},hidden: true},
-
+      {path: 'index', component: _import("system/document"),view: "system/document", name: 'vue_document', meta: {title: '接口文档', icon: 'excel', role: ['merchant', 'agent'], noCache: false}},
     ]
   },
 
