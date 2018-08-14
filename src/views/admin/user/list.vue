@@ -343,7 +343,7 @@
   import {mapGetters} from 'vuex'
 
   export default {
-    name: 'vue_merchant_list',
+    name: 'vue_merchant_list_nocache',
     directives: {
       waves
     },
@@ -439,7 +439,8 @@
 
         apiVisible: false,
         apiForm:{
-          allow_api_fast_remit:"1",
+          allow_api_fast_remit:"0",
+          allow_manual_fast_remit: "0",
           allow_api_recharge:"1",
           allow_api_remit:"1",
           allow_manual_recharge:"1",
@@ -561,6 +562,7 @@
 
               self.apiForm.user_id = self.userInfo.id
               self.apiForm.allow_api_fast_remit = self.userInfo.allow_api_fast_remit + ''
+              self.apiForm.allow_manual_fast_remit = self.userInfo.allow_manual_fast_remit + ''
               self.apiForm.allow_api_recharge = self.userInfo.allow_api_recharge + ''
               self.apiForm.allow_api_remit = self.userInfo.allow_api_remit + ''
               self.apiForm.allow_manual_recharge = self.userInfo.allow_manual_recharge + ''

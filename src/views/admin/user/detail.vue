@@ -237,16 +237,11 @@
                 width="40%">
             <template>
                 <el-form :model="apiForm">
-                    <el-form-item label="支持api接口不审核快速出款：" label-width="180px">
-                        <el-switch style="margin-left: 20px"
-                                   v-model="apiForm.allow_api_fast_remit"
-                                   active-text="启用"
-                                   inactive-text="停用"
-                                   active-color="#13ce66"
-                                   inactive-color="#ff4949"
-                                   active-value="1"
-                                   inactive-value="0">
-                        </el-switch>
+                    <el-form-item label="API出款免审核最高金额：" label-width="180px">
+                        <el-input size="small" v-model="apiForm.allow_api_fast_remit" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="手工出款免审核最高金额：" label-width="180px">
+                        <el-input size="small" v-model="apiForm.allow_manual_fast_remit" ></el-input>
                     </el-form-item>
                     <el-form-item label="支持接口充值：" label-width="180px">
                         <el-switch style="margin-left: 20px"
@@ -464,11 +459,12 @@
         },
         apiVisible: false,
         apiForm: {
-          allow_api_fast_remit: "1",
+          allow_api_fast_remit: "0",
           allow_api_recharge: "1",
           allow_api_remit: "1",
           allow_manual_recharge: "1",
           allow_manual_remit: "1",
+          allow_manual_fast_remit: "0",
         },
         agentId: null,
         channelOptions: {},
@@ -565,6 +561,7 @@
 
               self.apiForm.user_id = self.userInfo.id
               self.apiForm.allow_api_fast_remit = self.userInfo.allow_api_fast_remit + ''
+              self.apiForm.allow_manual_fast_remit = self.userInfo.allow_manual_fast_remit + ''
               self.apiForm.allow_api_recharge = self.userInfo.allow_api_recharge + ''
               self.apiForm.allow_api_remit = self.userInfo.allow_api_remit + ''
               self.apiForm.allow_manual_recharge = self.userInfo.allow_manual_recharge + ''

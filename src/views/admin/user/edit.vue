@@ -135,16 +135,11 @@
                                                inactive-value="0"
                                     ></el-switch>
                                 </el-form-item>
-                                <el-form-item label="接口结算不需审核" prop="allow_api_fast_remit">
-                                    <el-switch style="margin-left: 20px"
-                                               v-model="commonForm.allow_api_fast_remit"
-                                               active-text="允许"
-                                               inactive-text="不允许"
-                                               active-color="#13ce66"
-                                               inactive-color="#ff4949"
-                                               active-value="1"
-                                               inactive-value="0"
-                                    ></el-switch>
+                                <el-form-item label="API出款免审核最高金额：" label-width="180px">
+                                    <el-input size="small" v-model="commonForm.allow_api_fast_remit" ></el-input>
+                                </el-form-item>
+                                <el-form-item label="手工出款免审核最高金额：" label-width="180px">
+                                    <el-input size="small" v-model="commonForm.allow_manual_fast_remit" ></el-input>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -205,7 +200,8 @@
           allow_manual_recharge: '1',
           allow_api_remit: '1',
           allow_manual_remit: '1',
-          allow_api_fast_remit: '1',
+          allow_api_fast_remit: '40000',
+          allow_manual_fast_remit: '1000',
           account_open_fee: '',
         },
         rules: {

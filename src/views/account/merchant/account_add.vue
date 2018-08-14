@@ -8,6 +8,9 @@
                         <el-form-item label="登录名" prop="username" class="el-form-item-input">
                             <el-input v-model="commonForm.username"></el-input>
                         </el-form-item>
+                        <el-form-item label="邮件地址" prop="email" class="el-form-item-input el_item_2col">
+                            <el-input v-model="commonForm.email"></el-input>
+                        </el-form-item>
                         <el-form-item label="账户类型" prop="group_id">
                             <el-radio-group v-model="commonForm.group_id" size="small">
                                 <el-radio
@@ -82,6 +85,7 @@
         commonForm: {
           id: 0,
           username: '',
+          email: '',
           password: '',
           group_id: '20',
           recharge_rate: {},
@@ -121,7 +125,11 @@
         isLoading: false,
       }
     },
-    computed: {},
+    computed: {
+      ...mapGetters([
+        'user',
+      ]),
+    },
     methods: {
       handleCheckAllMethodChange(val) {
         this.commonForm.pay_method = val ? this.payMethodNames : [];
@@ -213,9 +221,10 @@
               self.typeOptions = res.data.user_type
               let methodStatus = {}
               for (let i in res.data.pay_method) {
-                methodStatus[i] = "0"
-                self.commonForm.recharge_rate[i] = 0
+                self.commonForm.recharge_rate[i] = typeof self.user.user.pay_config[i] != "undefined"?self.user.user.pay_config[i].rate:0
+                methodStatus[i] =  self.commonForm.recharge_rate[i]>0?"1":"0"
               }
+
               self.methodStatus = methodStatus
               self.payTypeOptions = res.data.pay_method
             }
@@ -303,7 +312,6 @@
         this.isNewRecord = true
         this.saveBtnTitle = '添加帐号'
       }
-
     }
   }
 </script>
