@@ -52,6 +52,14 @@
                         >
                         </el-option>
                     </el-select>
+                    <el-select class="filter-item" v-model="listQuery.accountOpenFeeStatus" placeholder="开户费缴纳状态" filterable >
+                        <el-option
+                                v-for="(item,key) in accountOpenFeeStatusOptions"
+                                :key="key"
+                                :label="item"
+                                :value="key">
+                        </el-option>
+                    </el-select>
                     <el-button class="" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
                     <el-button class="" type="success" v-waves icon="search" @click="handleEditUser">开户</el-button>
                 </el-col>
@@ -157,6 +165,16 @@
             <el-table-column align="center" label="状态">
                 <template slot-scope="scope">
                     <span>{{scope.row.status_str}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="开户费">
+                <template slot-scope="scope">
+                    <span>{{scope.row.account_open_fee}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="开户费缴纳状态">
+                <template slot-scope="scope">
+                    <span>{{scope.row.account_open_fee_status_str}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="注册时间">
@@ -365,6 +383,7 @@
           username: null,
           parentUsername: '',
           status: null,
+          accountOpenFeeStatus: null,
           type: null,
           remit: null,
             payChannel: null,
@@ -405,6 +424,7 @@
         parentUserNameOptions: [],
         aviableRemitOptions: [],
         aviablePayChannelOptions: [],
+        accountOpenFeeStatusOptions: [],
 
         quotaVisible:false,
         emailVisible:false,
@@ -816,6 +836,7 @@
             } else {
 
               self.statusOptions = res.data.user_status
+              self.accountOpenFeeStatusOptions = res.data.account_open_fee_status
               self.typeOptions = res.data.user_type
               self.payTypeOptions = res.data.pay_method
               self.aviableRemitOptions = res.data.channel_can_remit

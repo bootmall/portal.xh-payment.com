@@ -21,6 +21,14 @@
                                 :value="key">
                         </el-option>
                     </el-select>
+                    <el-select class="filter-item" v-model="listQuery.accountOpenFeeStatus" placeholder="开户费缴纳状态" filterable >
+                        <el-option
+                                v-for="(item,key) in accountOpenFeeStatusOptions"
+                                :key="key"
+                                :label="item"
+                                :value="key">
+                        </el-option>
+                    </el-select>
                     <!--<el-select class="filter-item" v-model="listQuery.remit" placeholder="下发通道">-->
                         <!--<el-option-->
                                 <!--v-for="(item,key) in remitOptions"-->
@@ -90,6 +98,16 @@
                     <span>{{scope.row.status_str}}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="center" label="开户费">
+                <template slot-scope="scope">
+                    <span>{{scope.row.account_open_fee}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="开户费缴纳状态">
+                <template slot-scope="scope">
+                    <span>{{scope.row.account_open_fee_status_str}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="注册时间">
                 <template slot-scope="scope">
                     <span class="link-type">{{scope.row.created_at}}</span>
@@ -143,6 +161,7 @@
                     username:null,
                     parentUsername:'',
                     status:null,
+                    accountOpenFeeStatus:null,
                     type:null,
                     remit:null,
                     sort: ''
@@ -154,6 +173,7 @@
                 constFalse: false,
                 constTrue: true,
                 statusOptions:[],
+                accountOpenFeeStatusOptions:[],
                 typeOptions:[],
                 payTypeOptions:[],
                 remitOptions:[],
@@ -302,6 +322,7 @@
                         } else {
 
                             self.statusOptions=res.data.user_status
+                            self.accountOpenFeeStatusOptions=res.data.account_open_fee_status
                             self.typeOptions=res.data.user_type
                             self.payTypeOptions=res.data.pay_method
                             self.remitOptions=res.data.channel
