@@ -176,10 +176,10 @@
                     return
                 }
                 let regKey = /^[0-9]{6}$/;
-                if(!regKey.test(this.key_2fa)){
-                    this.$message.error({message:'安全令牌格式不正确'})
-                    return
-
+                if(!regKey.test(this.key_2fa)) {
+                  this.$message.error({message: '安全令牌格式不正确'})
+                  return
+                }
                 self.isLoading = true
                 let data={financial_password_hash:this.financial_password_hash,key_2fa:this.key_2fa,remitData:this.excelData}
                 axios.post('/remit/single-batch-remit',data).then(
