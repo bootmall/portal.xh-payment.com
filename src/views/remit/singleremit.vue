@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container" v-loading="isLoading">>
+  <div class="app-container calendar-list-container" v-loading="isLoading">
     <div v-show="formVisible">
       <h4 style="color: red" align="center">逐笔提款一次最多300条</h4>
       <el-alert
