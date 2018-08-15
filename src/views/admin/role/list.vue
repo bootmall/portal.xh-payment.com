@@ -111,9 +111,7 @@
       },
       getList() {
         var self = this
-
         self.listLoading = true
-
         axios.post('/admin/role/list', self.listQuery).then(
           res => {
             self.listLoading = false
