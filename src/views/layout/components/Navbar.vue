@@ -301,9 +301,9 @@
     },
     mounted() {
       //设置定时器，每30秒刷新一次
-      // setInterval(this.checkRemitStatus,30 * 1000)
+      setInterval(this.checkRemitStatus,10 * 1000)
       // //资金等检测
-      // setInterval(this.getInitData, 60 * 1000)
+      setInterval(this.getInitData, 10 * 1000)
     },
     methods: {
 
@@ -312,20 +312,22 @@
         console.log(key, keyPath);
       },
       getInitData() {
-        let self = this
-        axios.post('/user/user-check').then(
-          res => {
-            if (res.code == 0) {
-              self.editFinancialPassForm.is_financial = res.data.is_financial;
-              self.group_id = res.data.group_id;
-              self.asset = res.data.asset;
-              self.frozen_balance = res.data.frozen_balance;
-              self.balance = res.data.balance;
-            } else {
-              self.$message.error({message: res.message})
-            }
+          if(this.group_id != 10){
+              let self = this
+              axios.post('/user/user-check').then(
+                  res => {
+                      if (res.code == 0) {
+                          self.editFinancialPassForm.is_financial = res.data.is_financial;
+                          self.group_id = res.data.group_id;
+                          self.asset = res.data.asset;
+                          self.frozen_balance = res.data.frozen_balance;
+                          self.balance = res.data.balance;
+                      } else {
+                          self.$message.error({message: res.message})
+                      }
+                  }
+              );
           }
-        );
       },
       getGoogleCode() {
         let self = this
