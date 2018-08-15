@@ -40,7 +40,6 @@
             <el-table-column prop="merchant_order_no" label="商户订单号"></el-table-column>
             <el-table-column prop="bank_account" label="持卡人" ></el-table-column>
             <el-table-column prop="bank_no" label="卡号" ></el-table-column>
-            <el-table-column prop="channel_account_name" label="通道" ></el-table-column>
             <el-table-column prop="amount" label="金额（元）" ></el-table-column>
             <el-table-column prop="bank_name" label="银行" ></el-table-column>
             <el-table-column prop="status_str" label="订单状态" ></el-table-column>

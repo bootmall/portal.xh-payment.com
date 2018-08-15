@@ -75,12 +75,6 @@
                     <span>￥{{scope.row.amount}}</span>
                 </template>
             </el-table-column>
-
-            <el-table-column label="通道号" width="180">
-                <template slot-scope="scope">
-                    <span  >{{scope.row.channel_account_name}}</span>
-                </template>
-            </el-table-column>
             <el-table-column label="类型">
                 <template slot-scope="scope">
                     <span  >{{scope.row.pay_method_code_str}}</span>
