@@ -4,14 +4,16 @@
             <el-date-picker  class="filter-item"
                              v-model="listQuery.dateStart"
                              align="right"
-                             type="date"
+                             type="datetime"
+                             format="yyyy-MM-dd"
                              placeholder="开始日期"
                              :picker-options="pickerOptions">
             </el-date-picker>
             <el-date-picker  class="filter-item"
                              v-model="listQuery.dateEnd"
                              align="right"
-                             type="date"
+                             type="datetime"
+                             format="yyyy-MM-dd"
                              placeholder="结束日期"
                              :picker-options="pickerOptions">
             </el-date-picker>
@@ -122,8 +124,8 @@
                     page: 1,
                     limit: 10,
                     importance: undefined,
-                    dateStart: null,//.getDateStr(-3),
-                    dateEnd: null,
+                    dateStart: new Date(),//.getDateStr(-3),
+                    dateEnd: new Date(),
                     orderNo: null,
                     merchantOrderNo: null,
                     status: null,
