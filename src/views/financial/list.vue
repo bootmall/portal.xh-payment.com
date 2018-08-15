@@ -5,8 +5,7 @@
                     v-model="listQuery.dateStart"
                     align="right"
                     type="date"
-                    format="yyyy-MM-dd"
-                    style="width: 210px;"
+                    style="width: 180px;"
                     placeholder="开始日期"
                     :picker-options="pickerOptions">
             </el-date-picker>
@@ -14,8 +13,7 @@
                     v-model="listQuery.dateEnd"
                     align="right"
                     type="date"
-                    format="yyyy-MM-dd"
-                    style="width: 210px;"
+                    style="width: 180px;"
                     placeholder="结束日期"
                     :picker-options="pickerOptions">
             </el-date-picker>
