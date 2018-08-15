@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container calendar-list-container">
+    <div class="app-container calendar-list-container" v-loading="isLoading">>
         <div v-show="uploadVisible">
             <h4 style="color: red" align="center">批量提款一次最多300条</h4>
             <el-row >
@@ -98,7 +98,8 @@
                 tableKey:0,
                 excelData:[],
                 financial_password_hash:null,
-                key_2fa:null
+                key_2fa:null,
+                isLoading:false
             }
         },
         created(){
@@ -158,6 +159,7 @@
                 this.confirmVisible = false;
             },
             batchSubmit(){
+              let self = this
                 let status = 0;
                 for(let i in this.excelData){
                     if(this.excelData[i].status == 1){
@@ -177,12 +179,20 @@
                 if(!regKey.test(this.key_2fa)){
                     this.$message.error({message:'安全令牌格式不正确'})
                     return
-                }
+
+                self.isLoading = true
                 let data={financial_password_hash:this.financial_password_hash,key_2fa:this.key_2fa,remitData:this.excelData}
                 axios.post('/remit/single-batch-remit',data).then(
                     res=>{
+                        self.isLoading = false
                         if(res.code == 0){
-                            this.$message.success({message:'操作成功'})
+                          self.$confirm('出款申请成功,请稍候在出款列表查询最新状态.', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                          }).then(() => {
+                            this.$router.push({name:'vue_my_remit'});
+                          })
                         }else {
                             this.$message.error({message:res.message})
                         }

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container calendar-list-container" v-loading="isLoading">>
     <div v-show="formVisible">
       <h4 style="color: red" align="center">逐笔提款一次最多300条</h4>
       <el-alert
@@ -61,6 +61,9 @@
   import axios from '@/utils/http'
   import {checkCanRemit} from '@/api/user'
 
+  const remitFormDefault = [
+    {bank_code: null, bank_name: null, bank_number: null, real_name: null, amount: null, status: 0},
+  ]
   export default {
     name: "vue_add_remit_single",
     directives: {
@@ -68,9 +71,7 @@
     },
     data() {
       return {
-        remitForm: [
-          {bank_code: null, bank_name: null, bank_number: null, real_name: null, amount: null, status: 0},
-        ],
+        remitForm: remitFormDefault,
         formVisible: true,
         confirmVisible: false,
         bankOptions: {},
@@ -81,6 +82,7 @@
         channel_account_remit_quota_pertime: null,
         canRemit: true,
         remitNoticeStr: '',
+        isLoading:false
       }
     },
     created() {
@@ -230,6 +232,7 @@
         this.remitForm.splice(index, 1)
       },
       batchSubmit() {
+        let self = this
         let regPass = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
         if (!regPass.test(this.financial_password_hash)) {
           this.$message.error({message: '资金密码格式不正确'})
@@ -249,10 +252,19 @@
           key_2fa: this.key_2fa,
           remitData: this.remitForm
         }
+        self.isLoading = true
         axios.post('/remit/single-batch-remit', data).then(
           res => {
+            self.isLoading = false
             if (res.code == 0) {
-              this.$message.success({message: '操作成功'})
+              self.$confirm('出款申请成功,请稍候在出款列表查询最新状态.', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                this.remitForm = remitFormDefault
+                this.$router.push({name:'vue_my_remit'});
+              })
             } else {
               this.$message.error({message: res.message})
             }

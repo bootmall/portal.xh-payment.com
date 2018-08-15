@@ -46,7 +46,6 @@
             <el-table-column prop="amount" label="金额（元）" width="100"></el-table-column>
             <el-table-column prop="bank_name" label="银行" width="50"></el-table-column>
             <el-table-column prop="status_str" label="订单状态" width="130"></el-table-column>
-            <el-table-column prop="channel_order_no" label="凭证" width="165"></el-table-column>
             <el-table-column prop="bak" label="备注" width="100"></el-table-column>
             <el-table-column prop="created_at" label="建立时间" width="160"></el-table-column>
 
