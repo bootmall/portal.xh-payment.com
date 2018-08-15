@@ -302,12 +302,10 @@
     mounted() {
       //设置定时器，每30秒刷新一次
       setInterval(this.checkRemitStatus,10 * 1000)
-      // //资金等检测
+      //资金等检测
       setInterval(this.getInitData, 10 * 1000)
     },
     methods: {
-
-
       handleTopMenuSelect(key, keyPath) {
         console.log(key, keyPath);
       },
