@@ -106,6 +106,7 @@
           username: [{required: true, trigger: 'blur', validator: isvalidUsername}],
           //password: [{ required: true, trigger: 'blur', message: '请输入密码'}],
           group_id: [{required: true, trigger: 'blur', message: '请选择账户类型'}],
+          email: [{required: true, trigger: 'blur', message: '请输入邮件地址'}],
           remit_fee: [{required: true, trigger: 'blur', message: '请输入结算手续费'}],
           recharge_rate: [{required: true, trigger: 'blur', message: '请输入收款手续费率'}],
           pay_method: [{required: true, trigger: 'blur', message: '请输入结算手续费'}],

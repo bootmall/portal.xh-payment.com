@@ -139,6 +139,7 @@
             <el-button type="primary" @click="handleUnbind">解绑安全令牌</el-button>
             <el-button type="primary" @click="handleSetRate">设置费率</el-button>
             <el-button type="primary" @click="handleBindIp">绑定API接口IP</el-button>
+            <el-button type="primary" @click="handleBindLoginIp">绑定登录IP</el-button>
             <el-button type="primary" @click="apiVisible=true">收款出款接口开关</el-button>
         </el-row>
         <el-row>
@@ -311,12 +312,12 @@
             </span>
         </el-dialog>
         <el-dialog
-                title="修改商户邮箱"
+                title="绑定接口IP"
                 :visible.sync="ipVisible"
                 width="40%">
             <template>
                 <el-form :model="ipForm">
-                    <p style="color: red">提示：IP，域名有多个 以英文符号分号(;) 分隔</p>
+                    <p style="color: red;padding-left: 180px;">提示：IP，域名有多个 以英文符号分号(;) 分隔</p>
                     <el-form-item label="API接口IP地址：" label-width="180px">
                         <el-input size="small" type="textarea" :rows="3" v-model="ipForm.app_server_ips" style="width: 300px"></el-input>
                     </el-form-item>
@@ -330,6 +331,23 @@
                 <el-button type="primary" @click="updateIps">确 定</el-button>
             </span>
         </el-dialog>
+      <el-dialog
+          title="绑定登录IP"
+          :visible.sync="loginIpFormVisible"
+          width="40%">
+        <template>
+          <el-form :model="loginIpForm">
+            <p style="color: red;padding-left: 180px;">提示：IP有多个 以英文符号分号(;) 分隔</p>
+            <el-form-item label="登录IP地址：" label-width="180px">
+              <el-input size="small" type="textarea" :rows="3" v-model="loginIpForm.bind_login_ip" style="width: 300px"></el-input>
+            </el-form-item>
+          </el-form>
+        </template>
+        <span slot="footer" class="dialog-footer">
+                <el-button @click="loginIpFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateLoginIp">确 定</el-button>
+            </span>
+      </el-dialog>
         <el-dialog
                 title="切换上级代理"
                 :visible.sync="agentVisible"
@@ -488,6 +506,10 @@
         accountOpenInfo:{
           fee:0
         },
+        loginIpFormVisible:false,
+        loginIpForm:{
+          bind_login_ip:[]
+        }
       }
     },
     created() {
@@ -697,6 +719,7 @@
             res => {
               if (res.code == 0) {
                 this.$message.success({message: '开户费已设置'});
+                this.accountOpenFeeVisible = false
               } else {
                 this.$message.error({message: res.message});
                 this.getInitData()
@@ -836,6 +859,44 @@
               self.$message.success({message: '修改状态成功'});
               self.getInitData()
               self.ipVisible = false;
+            }
+          },
+        )
+      },
+
+      handleBindLoginIp() {
+        this.loginIpFormVisible = true;
+        this.loginIpForm.bind_login_ip = this.userInfo.bind_login_ip == ''?'':JSON.parse(this.userInfo.bind_login_ip).join(";")
+      },
+
+      updateLoginIp() {
+        let self = this
+        if (self.loginIpForm.bind_login_ip.length < 1) {
+          self.$message.error({message: 'ip不能为空'});
+          return false;
+        }
+        if (self.loginIpForm.bind_login_ip.length > 0) {
+          var tmpIp = self.loginIpForm.bind_login_ip.split(';');
+          let regIp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+          for (let i = 0; i < tmpIp.length; i++) {
+            if (!regIp.test(tmpIp[i])) {
+              self.$message.error({message: tmpIp[i]+' IP地址格式不正确，请检查'});
+              return false;
+            }
+          }
+        }
+        let data = {
+          merchantId: self.userInfo.id,
+          ip: tmpIp,
+        }
+        axios.post('/admin/user/bind-login-ip', data).then(
+          res => {
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              self.$message.success({message: '绑定成功'});
+              self.getInitData()
+              self.loginIpFormVisible = false;
             }
           },
         )

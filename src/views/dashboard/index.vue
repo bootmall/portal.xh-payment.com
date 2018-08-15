@@ -1,19 +1,7 @@
 <template>
     <div>
-        <el-dialog
-                title="公告"
-                :visible.sync="noticeVisible"
-                width="50%">
-            <el-container v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%;font-size: 12px">
-                <el-aside width="200px">
-                    <p  style="border-bottom:1px solid #ececec;cursor:pointer;" v-for="(item,key) in notice" v-text="item.title" @click="content = item.content"></p>
-                </el-aside>
-                <el-main border v-html="content" style="border:1px solid #ececec;margin-left: 5px"></el-main>
-            </el-container>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="noticeVisible = false">关闭</el-button>
-            </span>
-        </el-dialog>
+
+
         <!--:show-close="false"-->
         <el-dialog
             title="请支付开户费用"
@@ -32,13 +20,11 @@
 
         <div style="width: 90%;margin-left: 50px"><order-census></order-census></div>
         <div style="width: 90%;margin-left: 50px;margin-bottom: 20px;" v-if="user.group_id != 10 " class="rate-list">
-            <el-alert
-                    title="费率列表"
-                    type="success"
-                    :closable="false"
-                    style="margin-bottom: 10px;"
-            >
-            </el-alert>
+              <h4
+                  title="费率列表"
+                  class="el-alert el-alert--success"
+                  style="margin-bottom: 10px;line-height: 25px"
+              >费率列表</h4>
             <!--<el-row :gutter="10">-->
                 <!--<el-col :span="2" align="right">-->
                     <!--<span>出款费率</span>-->
@@ -47,13 +33,29 @@
                 <!--</el-col>-->
                 <!--<el-col :span="2"></el-col>-->
             <!--</el-row>-->
-            <el-row :gutter="10">
+            <el-row :gutter="10" style="text-align: left">
                 <el-col :span="24" align="center">
                     <el-button type="success"><span class="rate-list-name">出款费率</span>:{{remit_fee}}</el-button>
                     <el-button v-for="(item,key) in rate" :key="key" type="info"><span class="rate-list-name">{{item.name}}</span>:{{item.rate}}</el-button>
                 </el-col>
             </el-row>
         </div>
+        <el-row :gutter="20" style="margin-left: 50px;line-height: 60px;width: 90%;">
+          <h4
+              title="最新公告"
+              class="el-alert el-alert--success"
+              style="margin-bottom: 10px;line-height: 25px"
+          >最新公告</h4>
+          <!--<el-container v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%;font-size: 12px">-->
+            <!--<el-aside width="200px">-->
+              <!--<p  style="border-bottom:1px solid #ececec;cursor:pointer;" v-for="(item,key) in notice" v-text="item.title" @click="content = item.content"></p>-->
+            <!--</el-aside>-->
+            <!--<el-main border v-html="content" style="border:1px solid #ececec;margin-left: 5px"></el-main>-->
+          <!--</el-container>-->
+          <el-tabs tab-position="left" style="height: 200px;" class="notice-list">
+            <el-tab-pane :label="item.title" v-for="(item,key) in notice" :key="key" v-text="item.title" @click="content = item.content">{{item.content}}</el-tab-pane>
+          </el-tabs>
+        </el-row>
         <el-row :gutter="20" style="margin-left: 50px;line-height: 60px;width: 90%;background-color: #eee;color: #333;">
             <el-col :span="6" align="center">最后登陆时间</el-col>
             <el-col :span="6">{{user.last_login_time}}</el-col>
@@ -303,6 +305,7 @@
 .rate-list{
     .el-alert__title {
         font-size: 18px !important;
+      font-weight: bolder;
     }
     .el-button--medium {
         padding: 5px 10px;
@@ -313,6 +316,16 @@
     .rate-list-name{
         color: #ffffff;
     }
+   .el-row .el-col-24{
+    text-align: left;
+  }
 }
+  .notice-list{
+    .el-alert__title, .el-alert__content{
+      font-size: 18px !important;
+      font-weight: bolder;
+      line-height: 25px !important;
+    }
+  }
 
 </style>

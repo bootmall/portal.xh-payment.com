@@ -84,7 +84,9 @@
           <el-dropdown-item divided v-if="group_id != 10">
             <span @click="handleFinancial" style="display:block;">设置/修改资金密码</span>
           </el-dropdown-item>
-
+          <el-dropdown-item divided v-if="loginIpForm.bind_login_ip.length==0">
+            <span @click="handleBindLoginIp" style="display:block;">{{loginIpForm.bind_login_ip}}绑定登录IP</span>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登录</span>
           </el-dropdown-item>
@@ -183,6 +185,24 @@
         <el-button size="small" type="primary" @click="sessionSecurityCheckForm.handle">提交</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog
+        title="绑定登录IP"
+        :visible.sync="loginIpFormVisible"
+        width="40%">
+      <template>
+        <el-form :model="loginIpForm">
+          <p style="color: red;padding-left: 180px;">提示：IP有多个 以英文符号分号(;) 分隔</p>
+          <el-form-item label="登录IP地址：" label-width="180px">
+            <el-input size="small" type="textarea" :rows="3" v-model="loginIpForm.bind_login_ip" style="width: 300px"></el-input>
+          </el-form-item>
+        </el-form>
+      </template>
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="loginIpFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateLoginIp">确 定</el-button>
+            </span>
+    </el-dialog>
   </el-menu>
 
 </template>
@@ -250,7 +270,11 @@
           },
         },
         activeIndex: '1',
-        activeIndex2: '1'
+        activeIndex2: '1',
+        loginIpFormVisible:false,
+        loginIpForm:{
+          bind_login_ip:''
+        }
       }
     },
     computed: {
@@ -273,6 +297,7 @@
       if (typeof siteInfo.siteName != 'undefined') {
         document.title = siteInfo.siteName
       }
+      this.loginIpForm.bind_login_ip = this.user.user.bind_login_ip == ''?'':JSON.parse(this.user.user.bind_login_ip).join(";")
     },
     mounted() {
       //设置定时器，每30秒刷新一次
@@ -330,6 +355,41 @@
         this.$store.dispatch('LogOut').then(() => {
           location.reload()// 为了重新实例化vue-router对象 避免bug
         })
+      },
+      handleBindLoginIp() {
+        this.loginIpFormVisible = true;
+      },
+
+      updateLoginIp() {
+        let self = this
+        if (self.loginIpForm.bind_login_ip.length < 1) {
+          self.$message.error({message: 'ip不能为空'});
+          return false;
+        }
+        if (self.loginIpForm.bind_login_ip.length > 0) {
+          var tmpIp = self.loginIpForm.bind_login_ip.split(';');
+          let regIp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+          for (let i = 0; i < tmpIp.length; i++) {
+            if (!regIp.test(tmpIp[i])) {
+              self.$message.error({message: tmpIp[i]+' IP地址格式不正确，请检查'});
+              return false;
+            }
+          }
+        }
+        let data = {
+          ip: tmpIp,
+        }
+        axios.post('/user/bind-login-ip', data).then(
+          res => {
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              self.$message.success({message: '绑定成功'});
+              self.getInitData()
+              self.loginIpFormVisible = false;
+            }
+          },
+        )
       },
       editPassHandle() {
         let self = this

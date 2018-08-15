@@ -16,11 +16,14 @@
                                 <p>成功笔数</p>
                                 <p>{{user.order_today_total}}</p>
                             </span>
-                            <span style="float: left;margin-top: 15px; text-align: center">
-                                <p>手续费</p>
-                                <p>{{user.order_today_total}}</p>
+                            <!--<span style="float: left;margin-top: 15px; text-align: center">-->
+                                <!--<p>手续费</p>-->
+                                <!--<p>{{user.order_today_fee_amount}}</p>-->
+                            <!--</span>-->
+                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px">
+                                <p>待结算金额</p>
+                                <p>{{user.order_today_paid_total}}</p>
                             </span>
-
                         </div>
                     </div>
                 </div>
@@ -69,11 +72,14 @@
                                 <p>成功笔数</p>
                                 <p>{{user.order_yesterday_total}}</p>
                             </span>
-                            <span style="float: left;margin-top: 15px; text-align: center">
-                                <p>手续费</p>
-                                <p>{{user.order_yesterday_total}}</p>
+                            <!--<span style="float: left;margin-top: 15px; text-align: center">-->
+                                <!--<p>手续费</p>-->
+                                <!--<p>{{user.order_yesterday_fee_amount}}</p>-->
+                            <!--</span>-->
+                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px">
+                                <p>待结算金额</p>
+                                <p>{{user.order_yesterday_paid_total}}</p>
                             </span>
-
                         </div>
                     </div>
                 </div>
