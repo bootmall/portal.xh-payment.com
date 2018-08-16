@@ -202,6 +202,8 @@
             this.$message.error({message: '第' + (index + 1) + '条；提款金额不正确'})
             return status = 0
           }
+          console.log(typeof item.amount)
+          console.log(typeof this.balance)
           if (item.amount > this.balance) {
             this.$message.error({message: '第' + (index + 1) + '条；提款金额大于商户余额'})
             return status = 0
