@@ -417,39 +417,51 @@
       },
       setSuccess(row) {
         self = this
-
-        axios.post('/admin/remit/set-success', {id: row.id}).then(
-          res => {
-            if (res.code != 0) {
+        self.$confirm('此操作将设置订单成功, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios.post('/admin/remit/set-success', {id: row.id}).then(
+            res => {
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                row.status = 20
+                self.getList()
+              }
+            },
+            res => {
               self.$message.error({message: res.message})
-            } else {
-              self.$message.success({message: res.message})
-              row.status = 20
-              self.getList()
             }
-          },
-          res => {
-            self.$message.error({message: res.message})
-          }
-        )
+          )
+        })
+
       },
       setFail(row) {
         self = this
-
-        axios.post('/admin/remit/set-fail', {id: row.id}).then(
-          res => {
-            if (res.code != 0) {
+        self.$confirm('此操作将设置订单为失败并退款, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios.post('/admin/remit/set-fail', {id: row.id}).then(
+            res => {
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                row.status = 20
+                self.getList()
+              }
+            },
+            res => {
               self.$message.error({message: res.message})
-            } else {
-              self.$message.success({message: res.message})
-              row.status = 20
-              self.getList()
             }
-          },
-          res => {
-            self.$message.error({message: res.message})
-          }
-        )
+          )
+        })
+
       },
       setChecked(id) {
         self = this

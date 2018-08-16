@@ -131,7 +131,7 @@
                       self.submitBtnDisableStatus = false
                     })
                   } else {
-                      self.$message.error(self.saveBtnTitle + '失败:' + res.message);
+                      self.$message.error('失败:' + res.message);
                       self.submitBtnDisableStatus = false
                   }
               })

@@ -181,14 +181,14 @@
         })
       },
       handleKey() {
-        this.loadingKey = true;
-        if (this.key_2fa.length != 6) {
+        if (!this.key_2fa || this.key_2fa.length != 6) {
           this.$message.error({message: '请填写6位安全码'})
           return;
         }
         let data = {
           key_2fa: this.key_2fa,
         }
+        this.loadingKey = true;
         axios.post('/user/verify-key', data).then(
           res => {
             if (res.code == 0) {
