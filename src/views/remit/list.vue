@@ -479,8 +479,14 @@
             if (res.code != 0) {
               self.$message.error({message: res.message})
             } else {
-              self.$message.success({message: res.message})
-              self.getList()
+              // self.$message.success({message: res.message})
+              self.$confirm(res.message, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                self.getList()
+              })
             }
           },
           res => {
