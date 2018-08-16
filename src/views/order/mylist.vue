@@ -101,8 +101,8 @@
                 </template>
             </el-table-column>
             <el-table-column fixed="right" width="80" align="center" label="操作" class="action-btns">
-                <template slot-scope="scope">{{scope.row.status}}
-                    <el-button class="filter-item" size="mini" type="info" v-if="scope.row.status == 20" @click="sendNotify(scope.row)" circle>通知</el-button>
+                <template slot-scope="scope">
+                    <el-button class="filter-item" size="mini" type="info" v-if="scope.row.status == 20 || scope.row.status == 60 " @click="sendNotify(scope.row)" circle>通知</el-button>
                 </template>
             </el-table-column>
         </el-table>

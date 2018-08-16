@@ -173,7 +173,7 @@ export const asyncRouterMap = [
       //   添加商户功能入口需要移到商户管理页面
       {path: 'merchant_add', component: _import("admin/user/edit"),view: "admin/user/edit", name: 'vue_merchant_add', meta: {title: '新增商户', icon: 'excel', role: ['admin'], noCache: true},hidden:true},
       {path: 'list', component: _import("admin/user/list"),view: "admin/user/list", name: 'vue_merchant_list', meta: {title: '商户管理', icon: 'excel', role: ['admin'], noCache: true}},
-      {path: 'merchant_detail', component: _import("admin/user/detail"),view: "admin/user/detail", name: 'vue_merchant_detail', meta: {title: '商户详情', icon: 'excel', role: ['admin'], noCache: true},hidden:true},
+      {path: 'merchant_detail', component: _import("admin/user/detail"),view: "admin/user/detail", name: 'vue_merchant_detail', meta: {title: '商户详情', icon: 'excel', role: ['admin'], noCache: false},hidden:true},
 
     ]
   },

@@ -128,6 +128,12 @@
         <el-form-item label="单日充值限额：" label-width="160px">
           <el-input size="small" v-model="editForm.recharge_quota_perday" style="width: 300px"></el-input>
         </el-form-item>
+        <el-form-item label="单次提款最低金额：" label-width="160px">
+          <el-input size="small" v-model="editForm.min_remit_pertime" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="单次充值最低金额：" label-width="160px">
+          <el-input size="small" v-model="editForm.min_recharge_pertime" style="width: 300px"></el-input>
+        </el-form-item>
         <el-form-item label="单次提款限额：" label-width="160px">
           <el-input size="small" v-model="editForm.remit_quota_pertime" style="width: 300px"></el-input>
         </el-form-item>
@@ -192,6 +198,8 @@
           recharge_quota_perday: null,//单日充值限额
           recharge_quota_pertime: null,//单次充值限额
           remit_quota_pertime: null,//单次提款限额
+          min_recharge_pertime: null,
+          min_remit_pertime: null,
         },
         tableKey: 0,
         constFalse: false,
@@ -330,6 +338,8 @@
         this.editForm.recharge_quota_perday = row.recharge_quota_perday;
         this.editForm.recharge_quota_pertime = row.recharge_quota_pertime;
         this.editForm.remit_quota_pertime = row.remit_quota_pertime;
+        this.editForm.min_recharge_pertime = row.min_recharge_pertime;
+        this.editForm.min_remit_pertime = row.min_remit_pertime;
       },
       editChannelAccount() {
         let self = this
@@ -338,6 +348,7 @@
         for (let i in self.editForm.pay_methods) {
           payMethods.push({id: i, rate: self.editForm.pay_methods[i]})
         }
+
         let data = {
           id: self.editForm.id,
           channelId: self.editForm.channel_id,
@@ -350,8 +361,11 @@
           remitQuotaPerday: self.editForm.remit_quota_perday,
           rechargeQuotaPerday: self.editForm.recharge_quota_perday,
           rechargeQuotaPertime: self.editForm.recharge_quota_pertime,
-          remitQuotaPertime: self.editForm.remit_quota_pertime
+          remitQuotaPertime: self.editForm.remit_quota_pertime,
+          minRechargePertime: self.editForm.min_recharge_pertime,
+          minRemitPertime: self.editForm.min_remit_pertime
         };
+
         axios.post('/admin/channel/account-edit', data).then(
           res => {
             self.listLoading = false
@@ -382,6 +396,8 @@
           recharge_quota_perday: null,//单日充值限额
           recharge_quota_pertime: null,//单次充值限额
           remit_quota_pertime: null,//单次提款限额
+          min_recharge_pertime: null,
+          min_remit_pertime: null,
         };
         this.methodStatus = []
         this.app_secrets_template = {}
