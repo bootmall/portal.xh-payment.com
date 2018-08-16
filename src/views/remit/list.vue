@@ -483,7 +483,8 @@
               self.$confirm(res.message, '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'warning'
+                type: 'warning',
+                dangerouslyUseHTMLString: true
               }).then(() => {
                 self.getList()
               })
