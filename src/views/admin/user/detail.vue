@@ -872,8 +872,8 @@
       updateLoginIp() {
         let self = this
         if (self.loginIpForm.bind_login_ip.length < 1) {
-          self.$message.error({message: 'ip不能为空'});
-          return false;
+          // self.$message.error({message: 'ip不能为空'});
+          // return false;
         }
         if (self.loginIpForm.bind_login_ip.length > 0) {
           var tmpIp = self.loginIpForm.bind_login_ip.split(';');
