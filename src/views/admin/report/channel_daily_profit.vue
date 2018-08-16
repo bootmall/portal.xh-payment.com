@@ -38,7 +38,11 @@
                     <span>{{scope.row.channel_account_name}}</span>
                 </template>
             </el-table-column>
-
+            <el-table-column label="日期">
+                <template slot-scope="scope">
+                    <span>{{scope.row.date}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="收款利润">
                 <template slot-scope="scope">
                     <span>{{scope.row.recharge_plat_fee_profit}}</span>
@@ -67,11 +71,6 @@
             <el-table-column label="结算总额">
                 <template slot-scope="scope">
                     <span>{{scope.row.remit_total}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="日期">
-                <template slot-scope="scope">
-                    <span>{{scope.row.date}}</span>
                 </template>
             </el-table-column>
 

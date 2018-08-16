@@ -1,5 +1,5 @@
 <template xmlns="http://www.w3.org/1999/html">
-    <div class="dashboard-container">
+    <div class="dashboard-container" v-loading="isLoading">
         <el-form class="el-form" ref="commonForm" :model="commonForm" label-width="180px">
             <h4 class="title"></h4>
             <el-row :gutter="20">
@@ -18,6 +18,12 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
+                        <el-alert v-if="showNotice"
+                            title="请在弹出窗口进行支付.如果浏览器没有弹窗,请检查浏览器设置."
+                            type="error"
+                            center
+                            show-icon>
+                        </el-alert>
                     </div>
                 </el-col>
             </el-row>
@@ -74,6 +80,7 @@
         isIndeterminate: true,
         isNewRecord: true,
         isLoading: false,
+        showNotice: false,
       }
     },
     computed:{
@@ -110,11 +117,19 @@
                   self.$message.error('请填写充值金额！');
                   return;
                 }
-
+                self.isLoading = true
               axios.post('/order/add', formData).then((res) => {
+                self.isLoading = false
                   if (res.code == 0 && typeof res.data.cashier_url != 'undefined' && res.data.cashier_url!='') {
                     window.open(res.data.cashier_url);
-                    self.submitBtnDisableStatus = false
+                    self.showNotice = true
+                    self.$confirm('请在弹出窗口进行支付.如果浏览器没有弹窗,请检查浏览器设置.', '提示', {
+                      confirmButtonText: '确定',
+                      cancelButtonText: '取消',
+                      type: 'warning'
+                    }).then(() => {
+                      self.submitBtnDisableStatus = false
+                    })
                   } else {
                       self.$message.error(self.saveBtnTitle + '失败:' + res.message);
                       self.submitBtnDisableStatus = false

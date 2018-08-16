@@ -29,6 +29,11 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%">
 
+            <el-table-column label="日期">
+                <template slot-scope="scope">
+                    <span>{{scope.row.date}}</span>
+                </template>
+            </el-table-column>
 
             <el-table-column label="商户ID">
                 <template slot-scope="scope">
@@ -49,11 +54,6 @@
             <el-table-column label="收款笔数">
                 <template slot-scope="scope">
                     <span>{{scope.row.success_count}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="日期">
-                <template slot-scope="scope">
-                    <span>{{scope.row.date}}</span>
                 </template>
             </el-table-column>
 

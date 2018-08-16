@@ -116,11 +116,6 @@
                     <span>{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="操作" class="action-btns">
-                <template slot-scope="scope">
-                    <el-button class="filter-item" size="mini" type="warning" v-waves @click="showDetailDialog(scope.row)">详情</el-button>
-                </template>
-            </el-table-column>
 
         </el-table>
         <div v-show="!listLoading" class="pagination-container">
