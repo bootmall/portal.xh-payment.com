@@ -185,33 +185,33 @@
         var status = 1;
         this.remitForm.forEach((item, index) => {
           if (item.bank_code == null) {
-            this.$message.error({message: '第' + (index + 1) + '条；请选择银行'})
+            this.$message.error({message: '第' + (index + 1) + '条:请选择银行'})
             return status = 0
           }
           item.bank_name = this.bankOptions[item.bank_code];
           if (item.bank_number == null || item.bank_number.length < 16 || item.bank_number.length > 19) {
-            this.$message.error({message: '第' + (index + 1) + '条；银行卡长度必须是16-19位之间'})
+            this.$message.error({message: '第' + (index + 1) + '条:银行卡长度必须是16-19位之间'})
             return status = 0
           }
 
           if (item.real_name == null) {
-            this.$message.error({message: '第' + (index + 1) + '条；请填写正确的开户名'})
+            this.$message.error({message: '第' + (index + 1) + '条:请填写正确的开户名'})
             return status = 0
           }
           if (!this.checkNumber(item.amount)) {
-            this.$message.error({message: '第' + (index + 1) + '条；提款金额不正确'})
+            this.$message.error({message: '第' + (index + 1) + '条:提款金额不正确'})
             return status = 0
           }
           if (parseFloat(item.amount) > parseFloat(this.balance)) {
-            this.$message.error({message: '第' + (index + 1) + '条；提款金额大于商户余额'})
+            this.$message.error({message: '第' + (index + 1) + '条:提款金额大于商户余额,提款金额：' + parseFloat(item.amount) + ' 余额：' + parseFloat(this.balance)})
             return status = 0
           }
           if (parseFloat(this.remit_quota_pertime) > 0 && parseFloat(item.amount) > parseFloat(this.remit_quota_pertime)) {
-            this.$message.error({message: '第' + (index + 1) + '条；提款金额大于商户单次提款限额'})
+            this.$message.error({message: '第' + (index + 1) + '条:提款金额大于商户单次提款限额' + parseFloat(this.remit_quota_pertime)})
             return status = 0
           }
           if (parseFloat(this.channel_account_remit_quota_pertime) > 0 && parseFloat(item.amount) > parseFloat(this.channel_account_remit_quota_pertime)) {
-            this.$message.error({message: '第' + (index + 1) + '条；提款金额大于出款渠道单次提款限额'})
+            this.$message.error({message: '第' + (index + 1) + '条:提款金额大于出款渠道单次提款限额' + parseFloat(this.channel_account_remit_quota_pertime)})
             return status = 0
           }
         });

@@ -69,11 +69,12 @@
                     <span class="link-type" @click="showDetail(scope.row)">{{scope.row.username}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" v-for="(item,key) in payTypeOptions" :key="key" :label="item" v-if="key != '__ALL__'">
+            <el-table-column width="100px" align="center" v-for="(item,key) in payTypeOptions" :key="key" :label="item" v-if="key != '__ALL__'">
                 <template slot-scope="scope" >
                     <em v-for="(value,index) in scope.row.pay_config" v-if="value.id == key">
                         <span v-if="value.status == 0" style="color: red">{{value.rate}}</span>
                         <span v-else>{{value.rate}}</span>
+                        <!--<span v-if="value.rate == 0" ><i class="el-icon-edit" @click="editChildRate(value)"></i></span>-->
                     </em>
                 </template>
             </el-table-column>
@@ -135,13 +136,14 @@
     import common from '@/utils/common'
     import axios from '@/utils/http'
     import { mapGetters } from 'vuex'
+    import Icons from "../../svg-icons/index";
 
     export default {
         name: 'vue_sub_account_list',
         directives: {
             waves
         },
-        components: {},
+        components: {Icons},
         data() {
             return {
                 rules: {
