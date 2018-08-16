@@ -47,7 +47,7 @@
 
             <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
             <el-button class="filter-item" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
-            <el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>
+            <!--<el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>-->
             <el-button class="filter-item" size="small" type="primary" v-waves @click="setChecked()">批量审核</el-button>
             <el-button class="filter-item" size="small" type="primary" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
         </div>
@@ -94,7 +94,7 @@
                     </el-button>
                     <el-button class="filter-item" size="mini" icon="el-icon-edit" type="danger" v-if="scope.row.track == 0" @click="handleTrack(scope.row)" v-waves>录入</el-button>
                     <!--<el-button class="filter-item" size="mini" v-waves>IP</el-button>-->
-                    <el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[30].indexOf(scope.row.status) !== -1" @click="syncStatus()" v-waves>同步</el-button>
+                    <el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[10,20,30,60].indexOf(scope.row.status) !== -1" @click="syncStatus(scope.row.id)" v-waves>同步</el-button>
                     <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
                     <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
                 </template>
@@ -471,10 +471,10 @@
           }
         )
       },
-      syncStatus() {
+      syncStatus(id) {
         self = this
 
-        axios.post('/remit/sync-status', {idList: self.listQuery.idList}).then(
+        axios.post('/admin/remit/sync-status', {id: id}).then(
           res => {
             if (res.code != 0) {
               self.$message.error({message: res.message})
