@@ -80,13 +80,6 @@
                     <span >{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-
-            <el-table-column align="center" label="备注" class="action-btns">
-                <template slot-scope="scope">
-                    <span class="link-type" @click="showNotifyRet(scope.row)">{{scope.row.bak}}</span>
-                </template>
-            </el-table-column>
-
         </el-table>
         <el-row>
             <el-tag type="warning" v-for="(v,k) in summery" :key="v.event_id">{{v.event_type_str}}:{{v.amount}}</el-tag>

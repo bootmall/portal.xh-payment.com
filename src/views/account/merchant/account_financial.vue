@@ -55,32 +55,14 @@
                     <span >{{scope.row.event_type_str}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="变动前余额" width="160">
-                <template slot-scope="scope">
-                    <span>{{scope.row.balance_before}}</span>
-                </template>
-            </el-table-column>
             <el-table-column label="金额" width="100">
                 <template slot-scope="scope">
                     <span >{{scope.row.amount}}</span>
                 </template>
             </el-table-column>
-
-            <el-table-column align="center" label="当前余额" width="160">
-                <template slot-scope="scope">
-                    <span>{{scope.row.balance}}</span>
-                </template>
-            </el-table-column>
-
             <el-table-column align="center" label="时间" width="180">
                 <template slot-scope="scope">
                     <span >{{scope.row.created_at}}</span>
-                </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="备注" class="action-btns">
-                <template slot-scope="scope">
-                    <span class="link-type" @click="showNotifyRet(scope.row)">{{scope.row.bak}}</span>
                 </template>
             </el-table-column>
 

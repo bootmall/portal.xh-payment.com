@@ -36,18 +36,17 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%;font-size: 12px" :summary-method="getSummaries" show-summary stripe>
 
-            <el-table-column align="center" fixed type="selection" width="55" @selection-change="handleSelectionChange"></el-table-column>
-            <el-table-column prop="merchant_id" label="商户编号" width="80"></el-table-column>
-            <el-table-column prop="merchant_account" label="商户账号" width="100"></el-table-column>
-            <el-table-column prop="order_no" label="结算订单号" width="165"></el-table-column>
-            <el-table-column prop="merchant_order_no" label="商户订单号" width="160"></el-table-column>
-            <el-table-column prop="bank_account" label="持卡人" width="80"></el-table-column>
-            <el-table-column prop="bank_no" label="卡号" width="170"></el-table-column>
-            <el-table-column prop="amount" label="金额（元）" width="100"></el-table-column>
+            <el-table-column align="center" fixed type="selection" @selection-change="handleSelectionChange"></el-table-column>
+            <el-table-column prop="merchant_id" label="商户编号"></el-table-column>
+            <el-table-column prop="merchant_account" label="商户账号"></el-table-column>
+            <el-table-column prop="order_no" label="结算订单号"></el-table-column>
+            <el-table-column prop="merchant_order_no" label="商户订单号"></el-table-column>
+            <el-table-column prop="bank_account" label="持卡人"></el-table-column>
+            <el-table-column prop="bank_no" label="卡号"></el-table-column>
+            <el-table-column prop="amount" label="金额（元"></el-table-column>
             <el-table-column prop="bank_name" label="银行" width="50"></el-table-column>
-            <el-table-column prop="status_str" label="订单状态" width="130"></el-table-column>
-            <el-table-column prop="bak" label="备注" width="100"></el-table-column>
-            <el-table-column prop="created_at" label="建立时间" width="160"></el-table-column>
+            <el-table-column prop="status_str" label="订单状态"></el-table-column>
+            <el-table-column prop="created_at" label="建立时间"></el-table-column>
 
         </el-table>
 
