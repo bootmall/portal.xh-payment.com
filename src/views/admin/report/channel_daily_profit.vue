@@ -41,7 +41,7 @@
 
             <el-table-column label="收款利润">
                 <template slot-scope="scope">
-                    <span>{{scope.row.recharge_amount}}</span>
+                    <span>{{scope.row.recharge_plat_fee_profit}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="收款笔数">
@@ -56,7 +56,7 @@
             </el-table-column>
             <el-table-column label="结算利润">
                 <template slot-scope="scope">
-                    <span>{{scope.row.remit_amount}}</span>
+                    <span>{{scope.row.remit_plat_fee_profit}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="结算笔数">
