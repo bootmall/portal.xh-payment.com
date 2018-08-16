@@ -74,7 +74,7 @@
                     <em v-for="(value,index) in scope.row.pay_config" v-if="value.id == key">
                         <span v-if="value.status == 0" style="color: red">{{value.rate}}</span>
                         <span v-else>{{value.rate}}</span>
-                        <!--<span v-if="value.rate == 0" ><i class="el-icon-edit" @click="editChildRate(value)"></i></span>-->
+                        <span class="link-type" v-if="value.rate == 0" ><i class="el-icon-edit" @click="editChildRate(value,item,scope.row.id)"></i></span>
                     </em>
                 </template>
             </el-table-column>
@@ -120,7 +120,17 @@
                 </template>
             </el-table-column>
         </el-table>
-
+        <el-dialog :title="editRateTitle" :visible.sync="editRateVisible" width="30%">
+            <el-form :model="editRateForm">
+                <el-form-item :label="editRateForm.method_name" label-width="120px">
+                    <el-input size="small" type="number" v-model="editRateForm.rate" style="width: 200px"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="small" @click="editRateVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="editRateHandle">提交</el-button>
+            </div>
+        </el-dialog>
         <div v-show="!listLoading" class="pagination-container">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
                            :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
@@ -205,7 +215,16 @@
                         }
                     }]
                 },
+                editRateForm:{
+                    merchantId:null,
+                    rate:null,
+                    method_id:null,
+                    method_name:null,
+                },
+                editRateVisible:false,
+                editRateTitle:null
             }
+
         },
         filters: {
             filterMerchantPayMethod:function (data,key) {
@@ -405,7 +424,32 @@
             go(key=''){
                 this.listQuery.merchantId = key;
                 this.getList()
-            }
+            },
+            editChildRate(data,item,merchantId){
+                this.editRateTitle = '设置 商户' + merchantId + ' ' + item + ' 收款费率'
+                this.editRateVisible = true
+                this.editRateForm.merchantId = merchantId
+                this.editRateForm.method_id = data.id
+                this.editRateForm.method_name = item
+            },
+            editRateHandle(){
+                var self = this
+                axios.post('/account/edit-child-rate',self.editRateForm).then(
+                    res => {
+                        // self.close()
+                        if (res.code != 0) {
+                            self.$message.error({message: res.message})
+                        } else {
+                            self.editRateVisible = false
+                            self.$message.success({message: res.message})
+                            self.getList();
+                        }
+                    },
+                )
+            },
+            // close(){
+            //
+            // }
         }
     }
 </script>
