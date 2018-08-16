@@ -68,7 +68,7 @@
               self.list = res.data.list
               self.channel_total_balance = parseFloat(res.data.channel_total_balance).toFixed(2)
               self.merchant_total_balance = parseFloat(res.data.merchant_total_balance.balance).toFixed(2)
-              self.total_profit = self.channel_total_balance-self.merchant_total_balance
+              self.total_profit = (self.channel_total_balance-self.merchant_total_balance).toFixed(2)
             }
             // self.$message.error({message: res.message})
             self.balaneUpdateMsg = res.message
