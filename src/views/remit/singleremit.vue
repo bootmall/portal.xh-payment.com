@@ -202,17 +202,15 @@
             this.$message.error({message: '第' + (index + 1) + '条；提款金额不正确'})
             return status = 0
           }
-          console.log(typeof item.amount)
-          console.log(typeof this.balance)
-          if (item.amount > this.balance) {
+          if (parseFloat(item.amount) > parseFloat(this.balance)) {
             this.$message.error({message: '第' + (index + 1) + '条；提款金额大于商户余额'})
             return status = 0
           }
-          if (this.remit_quota_pertime > 0 && item.amount > this.remit_quota_pertime) {
+          if (parseFloat(this.remit_quota_pertime) > 0 && parseFloat(item.amount) > parseFloat(this.remit_quota_pertime)) {
             this.$message.error({message: '第' + (index + 1) + '条；提款金额大于商户单次提款限额'})
             return status = 0
           }
-          if (this.channel_account_remit_quota_pertime > 0 && item.amount > this.channel_account_remit_quota_pertime) {
+          if (parseFloat(this.channel_account_remit_quota_pertime) > 0 && parseFloat(item.amount) > parseFloat(this.channel_account_remit_quota_pertime)) {
             this.$message.error({message: '第' + (index + 1) + '条；提款金额大于出款渠道单次提款限额'})
             return status = 0
           }
