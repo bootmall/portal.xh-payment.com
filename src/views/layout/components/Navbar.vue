@@ -548,7 +548,8 @@
               if (res.code == 0 && res.data.length > 0) {
                 let audio = document.getElementById('remind')
                 if (audio !== null) {
-                  audio.currentTime = 1;
+                  audio.currentTime = 0;
+                  audio.volume = 1;
                   audio.play();
                 }
               }
