@@ -22,7 +22,7 @@
                 <el-option
                         v-for="item in typeOptions"
                         :key="item.key"
-                        :label="item.value"
+                        :label="item.val"
                         :value="item.key">
                 </el-option>
             </el-select>
@@ -130,18 +130,18 @@
                 constFalse: false,
                 constTrue: true,
                 typeOptions:[
-                    {key:'0',value:'全部'},
-                    {key:'10',value:'充值订单'},
-                    {key:'11',value:'充值订单-手续费'},
-                    {key:'12',value:'充值订单-分润'},
-                    {key:'20',value:'代付订单'},
-                    {key:'21',value:'代付订单-手续费'},
-                    {key:'22',value:'代付订单-分润'},
-                    {key:'23',value:'代付失败-退款'},
-                    {key:'24',value:'代付失败-手续费返还'},
-                    {key:'25',value:'代付失败-分润返还'},
-                    {key:'30',value:'系统加款'},
-                    {key:'31',value:'系统扣款'},
+                    {key:'0', val:'全部'},
+                    {key:'10',val:'充值订单'},
+                    {key:'11',val:'充值订单-手续费'},
+                    {key:'12',val:'充值订单-分润'},
+                    {key:'20',val:'代付订单'},
+                    {key:'21',val:'代付订单-手续费'},
+                    {key:'22',val:'代付订单-分润'},
+                    {key:'23',val:'代付失败-退款'},
+                    {key:'24',val:'代付失败-手续费返还'},
+                    {key:'25',val:'代付失败-分润返还'},
+                    {key:'30',val:'系统加款'},
+                    {key:'31',val:'系统扣款'},
                     // {"10":"收款","11":"收款手续费","20":"分润","30":"提款","31":"提款手续费","40":"系统调整","51":"结算失败退款","52":"结算失败手续费退款"}
                 ],
                 pickerOptions: {
@@ -203,7 +203,7 @@
                             self.list = res.data.data
                             self.summery = res.data.summery
                             self.total = res.data.pagination.total
-                          self.typeOptions = res.data.options.typeOptions;
+                            // self.typeOptions = res.data.options.typeOptions;
                         }
 
                     },

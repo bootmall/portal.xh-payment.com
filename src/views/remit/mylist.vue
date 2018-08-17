@@ -19,8 +19,6 @@
             </el-date-picker>
             <el-input class="filter-item" style="width: 200px;" @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="金额"></el-input> -
             <el-input class="filter-item" style="width: 200px;" @change.native="checkNumber()" v-model="listQuery.maxMoney" ></el-input>
-            <el-input class="filter-item" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
-            <el-input class="filter-item" style="width: 200px;" v-model="listQuery.merchantAccount" placeholder="商户账号"></el-input>
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="卡号" v-model="listQuery.bankNo"></el-input>
             <el-select class="filter-item" v-model="listQuery.status" placeholder="状态" >
                 <el-option
