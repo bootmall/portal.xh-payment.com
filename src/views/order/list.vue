@@ -149,6 +149,7 @@
                         trigger="click">
                         <p><span>通知地址：</span><span v-text="notify_url"></span></p>
                         <p><span>通知次数：</span><span v-text="notify_times"></span></p>
+                        <p><span>通知时间：</span><span v-if="scope.row.notify_at>0">{{scope.row.notify_at|parseTime}}</span><span v-else>-</span></p>
                         <p><span>商户响应：</span><span v-text="notify_ret"></span></p>
                         <span class="link-type" slot="reference" @click="showDetail(scope.row)">{{scope.row.notify_status_str}}</span>
                     </el-popover>
@@ -170,9 +171,9 @@
                             trigger="click">
                         <p><span>通知地址：</span><span v-text="notify_url"></span></p>
                         <p><span>通知次数：</span><span v-text="notify_times"></span></p>
+                        <p><span>通知时间：</span><span v-if="scope.row.notify_at>0">{{scope.row.notify_at|parseTime}}</span><span v-else>-</span></p>
                         <p><span>商户响应：</span><span v-text="notify_ret"></span></p>
-
-                        <el-button class="filter-item" slot="reference" size="mini" type="primary" @click="showDetail(scope.row)"  v-waves>详情</el-button>
+                        <!--<el-button class="filter-item" slot="reference" size="mini" type="primary" @click="showDetail(scope.row)"  v-waves>详情</el-button>-->
                     </el-popover>
 
                     <el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" @click="handleTrack(scope.row)" v-waves>录入</el-button>
