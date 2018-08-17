@@ -53,7 +53,11 @@
             <!--</el-table-column>-->
 
         </el-table>
-
+        <div v-show="!listLoading" class="pagination-container">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -80,7 +84,7 @@
                 uploadUrl: common.pageMap.baseDomain+'/upload/upload',
                 listQuery: {
                     page: 1,
-                    limit: 10,
+                    limit: 20,
                     importance: undefined,
                     dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
                     dateEnd: null,
