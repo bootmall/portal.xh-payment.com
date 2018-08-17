@@ -1,30 +1,34 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
             <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName"></el-input>
+            <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName"></el-input>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
                             type="datetime"
                             placeholder="开始日期"
+                            size="small"
+                            style="width: 200px;"
                             :picker-options="pickerOptions">
             </el-date-picker>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateEnd"
                             align="right"
                             type="datetime"
+                            size="small"
+                            style="width: 200px;"
                             placeholder="结束日期"
                             :picker-options="pickerOptions">
             </el-date-picker>
 
-            <el-input style="width: 100px;" class="filter-item" clearable placeholder="最小金额" @change.native="checkNumber()" v-model="listQuery.minMoney"></el-input>
+            <el-input style="width: 100px;" class="filter-item" size="small" clearable placeholder="最小金额" @change.native="checkNumber()" v-model="listQuery.minMoney"></el-input>
             -
-            <el-input style="width: 100px;" class="filter-item" clearable placeholder="最大金额" @change.native="checkNumber()" v-model="listQuery.maxMoney"></el-input>
-            <el-input style="width: 120px;" class="filter-item" placeholder="代理账号" v-model="listQuery.agentAccount"></el-input>
-            <el-select class="filter-item" v-model="listQuery.status" placeholder="订单状态">
+            <el-input style="width: 100px;" class="filter-item" size="small" clearable placeholder="最大金额" @change.native="checkNumber()" v-model="listQuery.maxMoney"></el-input>
+            <el-input style="width: 120px;" class="filter-item" size="small" placeholder="代理账号" v-model="listQuery.agentAccount"></el-input>
+            <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态">
                 <el-option
                         v-for="(item,key) in statusOptions"
                         :key="item.id"
@@ -32,7 +36,7 @@
                         :value="item.id">
                 </el-option>
             </el-select>
-            <el-select class="filter-item" v-model="listQuery.notifyStatus" placeholder="通知状态">
+            <el-select class="filter-item" size="small" v-model="listQuery.notifyStatus" placeholder="通知状态">
                 <el-option
                         v-for="(item,key) in notifyStatusOptions"
                         :key="item.id"
@@ -40,7 +44,7 @@
                         :value="item.id">
                 </el-option>
             </el-select>
-            <el-select class="filter-item" v-model="listQuery.channelAccount" placeholder="通道号">
+            <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号">
                 <el-option
                         v-for="(item,key) in channelAccountOptions"
                         :key="item.id"
@@ -48,7 +52,7 @@
                         :value="item.id">
                 </el-option>
             </el-select>
-            <el-select class="filter-item" v-model="listQuery.method" placeholder="支付类型">
+            <el-select class="filter-item" size="small" v-model="listQuery.method" placeholder="支付类型">
                 <el-option
                         v-for="(item,key) in methodOptions"
                         :key="item.id"
@@ -246,7 +250,7 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: null,//.getDateStr(-3),
+          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
           dateEnd: null,
           orderNo: null,
           merchantNo: null,

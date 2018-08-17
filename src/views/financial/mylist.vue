@@ -1,7 +1,7 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            <el-date-picker  class="filter-item"
+            <el-date-picker  class="filter-item" style="width: 200px;"
                              v-model="listQuery.dateStart"
                              align="right"
                              type="datetime"
@@ -9,7 +9,7 @@
                              placeholder="开始日期"
                              :picker-options="pickerOptions">
             </el-date-picker>
-            <el-date-picker  class="filter-item"
+            <el-date-picker  class="filter-item" style="width: 200px;"
                              v-model="listQuery.dateEnd"
                              align="right"
                              type="datetime"
@@ -117,8 +117,8 @@
                     page: 1,
                     limit: 10,
                     importance: undefined,
-                    dateStart: new Date(),//.getDateStr(-3),
-                    dateEnd: new Date(),
+                    dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
+                    dateEnd: null,
                     orderNo: null,
                     merchantOrderNo: null,
                     status: null,

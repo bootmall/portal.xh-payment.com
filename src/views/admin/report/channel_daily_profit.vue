@@ -108,7 +108,7 @@
           limit: 10,
           channelAccountId: '',
           sort: '',
-          dateStart: null,//.getDateStr(-1),
+          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-1),
           dateEnd: null,//.getDateStr(-1),
         },
         pickerOptions: {

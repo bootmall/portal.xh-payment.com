@@ -91,7 +91,7 @@
           event_id: '',
           merchant_name: '',
           sort: '',
-          dateStart: null,
+          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
           dateEnd: null,
         },
         pickerOptions: {

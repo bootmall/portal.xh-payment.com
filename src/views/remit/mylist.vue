@@ -1,59 +1,73 @@
 <template>
-    <div class="app-container calendar-list-container">
-        <div class="filter-container" >
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="结算订单号" v-model="listQuery.orderNo"></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
-            <el-date-picker  class="filter-item"
-                    v-model="listQuery.dateStart"
-                    align="right"
-                    type="date"
-                    placeholder="开始日期"
-                    :picker-options="pickerOptions">
-            </el-date-picker>
-            <el-date-picker  class="filter-item"
-                    v-model="listQuery.dateEnd"
-                    align="right"
-                    type="date"
-                    placeholder="结束日期"
-                    :picker-options="pickerOptions">
-            </el-date-picker>
-            <el-input class="filter-item" style="width: 200px;" @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="金额"></el-input> -
-            <el-input class="filter-item" style="width: 200px;" @change.native="checkNumber()" v-model="listQuery.maxMoney" ></el-input>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="卡号" v-model="listQuery.bankNo"></el-input>
-            <el-select class="filter-item" v-model="listQuery.status" placeholder="状态" >
-                <el-option
-                        v-for="(item,key) in statusOptions"
-                        :key="key"
-                        :label="item"
-                        :value="key">
-                </el-option>
-            </el-select>
+  <div class="app-container calendar-list-container">
+    <div class="filter-container">
+      <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
+                placeholder="结算订单号" v-model="listQuery.orderNo"></el-input>
+      <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
+                placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
+      <el-date-picker class="filter-item" style="width: 200px;"
+                      v-model="listQuery.dateStart"
+                      align="right"
+                      type="date"
+                      placeholder="开始日期"
+                      size="small"
+                      :picker-options="pickerOptions">
+      </el-date-picker>
+      <el-date-picker class="filter-item" style="width: 200px;"
+                      v-model="listQuery.dateEnd"
+                      align="right"
+                      type="date"
+                      placeholder="结束日期"
+                      size="small"
+                      :picker-options="pickerOptions">
+      </el-date-picker>
+      <el-input class="filter-item" size="small" style="width: 200px;" @change.native="checkNumber()"
+                v-model="listQuery.minMoney" placeholder="金额"></el-input>
+      -
+      <el-input class="filter-item" size="small" style="width: 200px;" @change.native="checkNumber()"
+                v-model="listQuery.maxMoney"></el-input>
+      <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
+                placeholder="卡号" v-model="listQuery.bankNo"></el-input>
+      <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="状态">
+        <el-option
+            v-for="(item,key) in statusOptions"
+            :key="key"
+            :label="item"
+            :value="key">
+        </el-option>
+      </el-select>
 
-            <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-        </div>
-
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%;font-size: 12px" :summary-method="getSummaries" show-summary stripe>
-
-            <el-table-column align="center" fixed type="selection" @selection-change="handleSelectionChange"></el-table-column>
-            <el-table-column prop="merchant_id" label="商户编号"></el-table-column>
-            <el-table-column prop="merchant_account" label="商户账号"></el-table-column>
-            <el-table-column prop="order_no" label="结算订单号"></el-table-column>
-            <el-table-column prop="merchant_order_no" label="商户订单号"></el-table-column>
-            <el-table-column prop="bank_account" label="持卡人"></el-table-column>
-            <el-table-column prop="bank_no" label="卡号"></el-table-column>
-            <el-table-column prop="amount" label="金额（元"></el-table-column>
-            <el-table-column prop="bank_name" label="银行" width="50"></el-table-column>
-            <el-table-column prop="status_str" label="订单状态"></el-table-column>
-            <el-table-column prop="created_at" label="建立时间"></el-table-column>
-
-        </el-table>
-
-        <div v-show="!listLoading" class="pagination-container">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
-                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
-        </div>
+      <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索
+      </el-button>
     </div>
+
+    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit
+              highlight-current-row style="width: 100%;font-size: 12px" :summary-method="getSummaries" show-summary
+              stripe>
+
+      <el-table-column align="center" fixed type="selection"
+                       @selection-change="handleSelectionChange"></el-table-column>
+      <el-table-column prop="merchant_id" label="商户编号"></el-table-column>
+      <el-table-column prop="merchant_account" label="商户账号"></el-table-column>
+      <el-table-column prop="order_no" label="结算订单号"></el-table-column>
+      <el-table-column prop="merchant_order_no" label="商户订单号"></el-table-column>
+      <el-table-column prop="bank_account" label="持卡人"></el-table-column>
+      <el-table-column prop="bank_no" label="卡号"></el-table-column>
+      <el-table-column prop="amount" label="金额（元"></el-table-column>
+      <el-table-column prop="bank_name" label="银行" width="50"></el-table-column>
+      <el-table-column prop="status_str" label="订单状态"></el-table-column>
+      <el-table-column prop="created_at" label="建立时间"></el-table-column>
+
+    </el-table>
+
+    <div v-show="!listLoading" class="pagination-container">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                     :current-page.sync="listQuery.page"
+                     :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                     layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -61,7 +75,7 @@
   import {parseTime} from '@/utils'
   import common from '@/utils/common'
   import axios from '@/utils/http'
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'vue_my_remit',
@@ -71,36 +85,35 @@
     components: {},
     data() {
       return {
-        rules: {
-        },
+        rules: {},
         list: null,
         total: null,
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 10,
+          limit: 20,
           importance: undefined,
-          dateStart: null,//.getDateStr(-3),
+          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
           dateEnd: null,
           orderNo: null,
           merchantOrderNo: null,
           status: null,
           bankAccount: null,
           bankNo: null,
-            minMoney: null,
+          minMoney: null,
           maxMoney: null,
           merchantNo: null,
           merchantAccount: null,
           sort: ''
         },
         summery: {
-          'amount':0,
+          'amount': 0,
         },
         tableKey: 0,
         constFalse: false,
         constTrue: true,
-          channelAccountOptions:[],
-        statusOptions:[],
+        channelAccountOptions: [],
+        statusOptions: [],
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -128,21 +141,19 @@
         },
       }
     },
-    filters: {
-
-    },
+    filters: {},
     created() {
       this.getList()
     },
-    mounted(){
+    mounted() {
       // console.log('mounted',this.$route.path)
     },
-    updated(){
+    updated() {
 
     },
     computed: {
       ...mapGetters([
-        'roles','uid','user'
+        'roles', 'uid', 'user'
       ])
     },
     methods: {
@@ -150,8 +161,8 @@
         var self = this
 
         self.listLoading = true
-        for(let i in self.listQuery){
-          if(self.listQuery[i]=='__ALL__') self.listQuery[i] = ''
+        for (let i in self.listQuery) {
+          if (self.listQuery[i] == '__ALL__') self.listQuery[i] = ''
         }
         axios.post('/remit/my-list', self.listQuery).then(
           res => {
@@ -163,8 +174,8 @@
               self.list = res.data.data
               self.summery = res.data.summery
               self.total = res.data.pagination.total
-                self.statusOptions = res.data.condition.statusOptions
-                self.channelAccountOptions = res.data.condition.channelAccountOptions
+              self.statusOptions = res.data.condition.statusOptions
+              self.channelAccountOptions = res.data.condition.channelAccountOptions
             }
 
           },
@@ -174,10 +185,10 @@
           }
         )
       },
-      sendNotify(row){
+      sendNotify(row) {
         self = this
 
-        axios.post('/order/send-notify',{id:row.id}).then(
+        axios.post('/order/send-notify', {id: row.id}).then(
           res => {
             if (res.code != 0) {
               self.$message.error({message: res.message})
@@ -190,7 +201,7 @@
           }
         )
       },
-      showNotifyRet(row){
+      showNotifyRet(row) {
         // self.$message.error({message: res.message})
         this.$alert(row.notify_ret, '商户服务器响应内容', {
           confirmButtonText: '确定',
@@ -200,7 +211,7 @@
         });
       },
       getSummaries(param) {
-        const { columns, data } = param;
+        const {columns, data} = param;
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
@@ -209,7 +220,7 @@
           }
           sums[index] = 'N/A';
         });
-        sums[3] = this.summery.amount+'元'
+        sums[3] = this.summery.amount + '元'
         return sums;
       },
       handleFilter() {
@@ -233,29 +244,30 @@
         this.listQuery.start = parseInt(+time[0] / 1000)
         this.listQuery.end = parseInt((+time[1] + 3600 * 1000 * 24) / 1000)
       },
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-        checkNumber:function(){
-          // console.log(this.listQuery.minMoney);
-          let reg = /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/;
-          if(!reg.test(this.listQuery.minMoney)){
-            this.listQuery.minMoney = '';
-          }
-          if (!reg.test(this.listQuery.maxMoney)){
-              this.listQuery.maxMoney = '';
-          }
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+      checkNumber: function () {
+        // console.log(this.listQuery.minMoney);
+        let reg = /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/;
+        if (!reg.test(this.listQuery.minMoney)) {
+          this.listQuery.minMoney = '';
         }
+        if (!reg.test(this.listQuery.maxMoney)) {
+          this.listQuery.maxMoney = '';
+        }
+      }
     }
 
   }
 </script>
 
 <style>
-    .action-btns a {
-        margin-left: 5px;
-    }
-    .el-table td, .el-table th {
-        padding: 5px 0 !important;
-    }
+  .action-btns a {
+    margin-left: 5px;
+  }
+
+  .el-table td, .el-table th {
+    padding: 5px 0 !important;
+  }
 </style>

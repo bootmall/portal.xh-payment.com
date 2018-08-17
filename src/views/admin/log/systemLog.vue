@@ -116,7 +116,7 @@
           importance: undefined,
           title: null,
           sort: '',
-          dateStart: null,
+          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
           dateEnd: null,
         },
         pickerOptions: {

@@ -22,14 +22,14 @@
                         :value="key">
                 </el-option>
             </el-select>
-            <el-date-picker class="filter-item" size="small"
+            <el-date-picker class="filter-item" size="small" style="width: 200px;"
                             v-model="listQuery.dateStart"
                             align="right"
                             type="datetime"
                             placeholder="开始日期"
                             :picker-options="pickerOptions">
             </el-date-picker>
-            <el-date-picker class="filter-item" size="small"
+            <el-date-picker class="filter-item" size="small" style="width: 200px;"
                             v-model="listQuery.dateEnd"
                             align="right"
                             type="datetime"
@@ -46,7 +46,7 @@
             <!--</el-select>-->
 
             <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-            <el-button class="filter-item" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
+            <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
             <!--<el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>-->
             <el-button class="filter-item" size="small" type="primary" v-waves @click="setChecked()">批量审核</el-button>
             <el-button class="filter-item" size="small" type="primary" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
@@ -183,7 +183,7 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: null,//.getDateStr(-3),
+          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
           dateEnd: null,
           orderNo: null,
           merchantOrderNo: null,
