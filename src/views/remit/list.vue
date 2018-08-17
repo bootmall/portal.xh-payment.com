@@ -60,7 +60,24 @@
             <el-table-column prop="order_no" label="结算订单号" width="165"></el-table-column>
             <el-table-column prop="merchant_order_no" label="商户订单号" width="160"></el-table-column>
             <el-table-column prop="bank_account" label="持卡人" width="80"></el-table-column>
-            <el-table-column prop="bank_no" label="卡号" width="170"></el-table-column>
+            <el-table-column prop="bank_no" label="卡号" width="200">
+                <template slot-scope="scope">
+                    <el-popover
+                        v-loading="bankCardTodayStatisticLoading"
+                        placement="right"
+                        title="该卡今日出款统计"
+                        width="400"
+                        trigger="click"
+                        >
+                        <el-table :data="bankCardTodayStatisticList">
+                            <el-table-column width="150" property="status_str" label="状态"></el-table-column>
+                            <el-table-column width="100" property="nums" label="数量"></el-table-column>
+                            <el-table-column width="100" property="amount" label="金额"></el-table-column>
+                        </el-table>
+                        <span class="link-type" slot="reference" @click="getBankCardTodayStatistic(scope.row)">{{scope.row.bank_no}}</span>
+                    </el-popover>
+                </template>
+            </el-table-column>
             <el-table-column prop="channel_account_name" label="通道" width="100"></el-table-column>
             <el-table-column prop="amount" label="金额（元）" width="100"></el-table-column>
             <el-table-column prop="bank_name" label="银行" width="130">
@@ -183,7 +200,7 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
+          dateStart: null,//new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
           dateEnd: null,
           orderNo: null,
           merchantOrderNo: null,
@@ -219,6 +236,8 @@
         currentRemit:{},
         dialogSwitchRemitVisible:false,
         remitIdSwitchTo:'',
+        bankCardTodayStatisticList:'',
+        bankCardTodayStatisticLoading:false,
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -304,6 +323,24 @@
               console.log('self.orderDetailBarCodeStr', self.orderDetailBarCodeStr)
               this.dialogOrderVisible = true
               if (cb) cb()
+            }
+          },
+          res => {
+            self.$message.error({message: res.message})
+          }
+        )
+      },
+      getBankCardTodayStatistic(row) {
+        self = this
+        self.bankCardTodayStatisticList = []
+        self.bankCardTodayStatisticLoading = true
+        axios.post('/admin/remit/bank-card-today-statistic', {cardNo: row.bank_no}).then(
+          res => {
+            self.bankCardTodayStatisticLoading = false
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              self.bankCardTodayStatisticList = res.data
             }
           },
           res => {
