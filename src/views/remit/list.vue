@@ -118,6 +118,9 @@
             </el-table-column>
 
         </el-table>
+        <el-row class="summary-list">
+            <el-tag type="warning" v-for="(v,k) in summery.all_status_list" :key="v.status"><span>{{v.status_str}}:{{v.amount}}</span></el-tag>
+        </el-row>
         <el-dialog title="调单录入" :visible.sync="trackVisible" width="30%">
             <el-form :model="trackForm">
                 <el-form-item label="调单类型：">
@@ -200,7 +203,7 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: null,//new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
+          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
           dateEnd: null,
           orderNo: null,
           merchantOrderNo: null,
@@ -579,7 +582,7 @@
   }
 </script>
 
-<style>
+<style rel="stylesheet/scss" lang="scss" scoped>
     .action-btns a {
         margin-left: 5px;
     }
@@ -594,5 +597,11 @@
     .op-column .cell{
         padding-left: 0;
         text-align: left;
+    }
+    .summary-list{
+        margin-top: 10px;
+        .el-tag  + .el-tag{
+            margin-left: 10px;
+        }
     }
 </style>

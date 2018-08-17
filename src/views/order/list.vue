@@ -184,8 +184,10 @@
                     <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves @click="setSettlement(scope.row)">结算</el-button>
                 </template>
             </el-table-column>
-
         </el-table>
+        <el-row class="summary-list">
+            <el-tag type="warning" v-for="(v,k) in summery.all_status_list" :key="v.status"><span>{{v.status_str}}:{{v.amount}}</span></el-tag>
+        </el-row>
         <el-dialog title="调单录入" :visible.sync="trackVisible" width="30%">
             <el-form :model="trackForm">
                 <el-form-item label="调单类型：">
@@ -693,7 +695,7 @@
   }
 </script>
 
-<style>
+<style rel="stylesheet/scss" lang="scss" scoped>
     .el-table td, .el-table th {
         padding: 5px 0 !important;
     }
@@ -703,5 +705,11 @@
         float: left;
         display: inline-block;
         margin-top: 5px;
+    }
+    .summary-list{
+        margin-top: 10px;
+    .el-tag  + .el-tag{
+        margin-left: 10px;
+    }
     }
 </style>
