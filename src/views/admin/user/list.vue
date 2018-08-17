@@ -197,6 +197,7 @@
                             <el-dropdown-item @click.native="handleClearPass(scope.row)">清除资金密码</el-dropdown-item>
                             <el-dropdown-item @click.native="handleUnbind(scope.row)">解绑安全令牌</el-dropdown-item>
                             <el-dropdown-item @click.native="handleSetRate(scope.row)">设置费率</el-dropdown-item>
+                            <!--<el-dropdown-item @click="handleSetApiStatus(scope.row)">收款出款接口开关</el-dropdown-item>-->
                             <el-dropdown-item @click.native="handleUserStatus(scope.row)">修改商户状态</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -349,8 +350,67 @@
                     <el-button type="primary" @click="updateUserStatus">确 定</el-button>
                 </span>
         </el-dialog>
-
+      <el-dialog
+          title="修改API开关"
+          :visible.sync="apiVisible"
+          width="40%">
+        <template>
+          <el-form :model="apiForm">
+            <el-form-item label="API出款免审核最高金额：" label-width="180px">
+              <el-input size="small" v-model="apiForm.allow_api_fast_remit" ></el-input>
+            </el-form-item>
+            <el-form-item label="手工出款免审核最高金额：" label-width="180px">
+              <el-input size="small" v-model="apiForm.allow_manual_fast_remit" ></el-input>
+            </el-form-item>
+            <el-form-item label="支持接口充值：" label-width="180px">
+              <el-switch style="margin-left: 20px"
+                         v-model="apiForm.allow_api_recharge"
+                         active-text="启用"
+                         inactive-text="停用"
+                         active-color="#13ce66"
+                         inactive-color="#ff4949"
+                         active-value="1"
+                         inactive-value="0">
+              </el-switch>
+            </el-form-item>
+            <el-form-item label="支持接口提款：" label-width="180px">
+              <el-switch style="margin-left: 20px"
+                         v-model="apiForm.allow_api_remit"
+                         active-text="启用"
+                         inactive-text="停用"
+                         active-color="#13ce66"
+                         inactive-color="#ff4949"
+                         active-value="1"
+                         inactive-value="0">
+              </el-switch>
+            </el-form-item>
+            <el-form-item label="支持手工充值：" label-width="180px">
+              <el-switch style="margin-left: 20px"
+                         v-model="apiForm.allow_manual_recharge"
+                         active-text="启用"
+                         inactive-text="停用"
+                         active-color="#13ce66"
+                         inactive-color="#ff4949"
+                         active-value="1"
+                         inactive-value="0">
+              </el-switch>
+            </el-form-item>
+            <el-form-item label="支持手工提款：" label-width="180px">
+              <el-switch style="margin-left: 20px"
+                         v-model="apiForm.allow_manual_remit"
+                         active-text="启用"
+                         inactive-text="停用"
+                         active-color="#13ce66"
+                         inactive-color="#ff4949"
+                         active-value="1"
+                         inactive-value="0">
+              </el-switch>
+            </el-form-item>
+          </el-form>
+        </template>
+      </el-dialog>
     </div>
+
 </template>
 
 <script>
@@ -376,7 +436,7 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
+          dateStart: null,//new Date(new Date().setHours(0, 0, 0, 0)),
           dateEnd: null,
           orderNo: null,
           userId: null,
@@ -964,6 +1024,7 @@
         });
 
       },
+
       onMethodStatusChange(key){
       },
       handleSetRate(user){
@@ -983,6 +1044,29 @@
           }
         )
 
+      },
+      handleSetApiStatus(user){
+        let self = this
+        self.getUserEditDetail(
+          user,
+          function () {
+            self.apiVisible = true;
+          }
+        )
+
+      },
+      updateApi() {
+        let self = this
+        axios.post('/admin/user/update-api', self.apiForm).then(
+          res => {
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              self.$message.success({message: '更新成功'});
+              self.apiVisible = false;
+            }
+          },
+        )
       },
       checkRate(rate, method_id) {
         let self = this

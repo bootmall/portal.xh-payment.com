@@ -174,7 +174,7 @@
                 uploadUrl: common.pageMap.baseDomain+'/upload/upload',
                 listQuery: {
                     page: 1,
-                    limit: 10,
+                    limit: 20,
                     importance: undefined,
                     dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
                     dateEnd: null,
