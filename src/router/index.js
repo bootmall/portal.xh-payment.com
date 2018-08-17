@@ -122,21 +122,21 @@ export const asyncRouterMap = [
     meta: {title: '统计报表', icon: 'excel', role: ['merchant', 'agent', 'admin']},
     children: [
       //  代理交易(收款)明细 根据收款订单表统计所有代理的交易成功金额和笔数，按日统计，每日凌晨进行生成前日报表数据 管理平台使用
-      {path: 'index', component: _import("admin/report/agent_daily_recharge"),view: "admin/report/agent_daily_recharge", name: 'vue_trade_statistic_index', meta: {title: '代理交易(收款)明细', icon: 'excel', role: [ 'admin'], noCache: true}},
+      {path: 'index', component: _import("admin/report/agent_daily_recharge"),view: "admin/report/agent_daily_recharge", name: 'vue_trade_statistic_index', meta: {title: '代理交易(收款)明细(每天)', icon: 'excel', role: [ 'admin'], noCache: true}},
 
       // 收支统计管理-管理平台使用 根据帐变表数据对代理、商户的收入支出类型进行统计，按日统计，每日凌晨进行生成前日报表数据 管理平台使用
-      {path: 'finacial', component: _import("report/daily_financial"),view: "report/daily_financial", name: 'vue_trade_statistic_finacial', meta: {title: '收支统计管理', icon: 'excel', role: ['admin'], noCache: true}},
+      {path: 'finacial', component: _import("report/daily_financial"),view: "report/daily_financial", name: 'vue_trade_statistic_finacial', meta: {title: '收支统计管理(每天)', icon: 'excel', role: ['admin'], noCache: true}},
 
-      //商户交易量统计  根据商户统计各自商户的收款总金额和笔数 代理使用
+      //商户交易量统计  根据商户统计各自商户的收款总金额和笔数 代理使用 实时
       {path: 'agent', component: _import("account/merchant/account_recharge_sum"),view: "account/merchant/account_recharge_sum", name: 'vue_agent_trade_statistic', meta: {title: '代理交易明细', icon: 'excel', role: ['agent'], noCache: true}},
 
-      // 渠道号交易统计 根据各渠道号的支付类型进行统计各自类型的交易量 管理平台使用
-      {path: 'channel_account', component: _import("admin/report/channel_recharge"),view: "admin/report/channel_recharge", name: 'vue_channel_account_trade_statistic', meta: {title: '渠道号交易统计', icon: 'excel', role: ['admin'], noCache: true}},
+      // 渠道号交易统计 根据各渠道号的支付类型进行统计各自类型的交易量 管理平台使用 实时
+      {path: 'channel_account', component: _import("admin/report/channel_recharge"),view: "admin/report/channel_recharge", name: 'vue_channel_account_trade_statistic', meta: {title: '渠道号交易统计(实时)', icon: 'excel', role: ['admin'], noCache: true}},
 
       //渠道号利润  分别计算收款、结算利润 按每个渠道号每日统计 每日凌晨进行生成前日报表数据 管理平台使用
-      {path: 'profit', component: _import("admin/report/channel_daily_profit"),view: "admin/report/channel_daily_profit", name: 'vue_channel_account_trade_profit', meta: {title: '渠道号利润', icon: 'excel', role: ['admin'], noCache: true}},
-      //渠道号对账
-      {path: 'reconciliations', component: _import("admin/report/channel_daily_reconciliations"),view: "admin/report/channel_daily_reconciliations", name: 'vue_channel_daily_reconciliations', meta: {title: '渠道号对账', icon: 'excel', role: ['admin'], noCache: true}},
+      {path: 'profit', component: _import("admin/report/channel_daily_profit"),view: "admin/report/channel_daily_profit", name: 'vue_channel_account_trade_profit', meta: {title: '渠道号利润(每天)', icon: 'excel', role: ['admin'], noCache: true}},
+      //渠道号对账 每日凌晨进行生成前日报表数据
+      {path: 'reconciliations', component: _import("admin/report/channel_daily_reconciliations"),view: "admin/report/channel_daily_reconciliations", name: 'vue_channel_daily_reconciliations', meta: {title: '渠道号对账(每天)', icon: 'excel', role: ['admin'], noCache: true}},
 
       // 统计充值数据汇总 todo 需求搞不清楚
       // {path: 'index', component: _import("layout/empty"),view: "layout/empty", name: 'vue_merchant_recharge_index', meta: {title: '充值汇总', icon: 'excel', role: ['merchant','agent'], noCache: true}},

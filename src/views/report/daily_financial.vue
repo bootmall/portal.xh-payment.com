@@ -51,7 +51,7 @@
                     <span>{{scope.row.remit}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="结算总额">
+            <el-table-column label="奖金总额">
                 <template slot-scope="scope">
                     <span>{{scope.row.bonus}}</span>
                 </template>
@@ -151,7 +151,7 @@
           user_id: '',
           username: '',
           sort: '',
-          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-1),
+          dateStart: new Date(new Date((new Date()).getTime() - 86400000*3).setHours(0, 0, 0, 0)),//.getDateStr(-1),
           dateEnd: null,//.getDateStr(-1),
         },
         pickerOptions: {
