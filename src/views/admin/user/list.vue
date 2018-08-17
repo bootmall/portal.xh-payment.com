@@ -197,7 +197,7 @@
                             <el-dropdown-item @click.native="handleClearPass(scope.row)">清除资金密码</el-dropdown-item>
                             <el-dropdown-item @click.native="handleUnbind(scope.row)">解绑安全令牌</el-dropdown-item>
                             <el-dropdown-item @click.native="handleSetRate(scope.row)">设置费率</el-dropdown-item>
-                            <!--<el-dropdown-item @click="handleSetApiStatus(scope.row)">收款出款接口开关</el-dropdown-item>-->
+                            <el-dropdown-item @click.native="handleSetApiStatus(scope.row)">接口开关</el-dropdown-item>
                             <el-dropdown-item @click.native="handleUserStatus(scope.row)">修改商户状态</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -357,10 +357,10 @@
         <template>
           <el-form :model="apiForm">
             <el-form-item label="API出款免审核最高金额：" label-width="180px">
-              <el-input size="small" v-model="apiForm.allow_api_fast_remit" ></el-input>
+              <el-input size="small" v-model="apiForm.allow_api_fast_remit" style="width: 200px" ></el-input>
             </el-form-item>
             <el-form-item label="手工出款免审核最高金额：" label-width="180px">
-              <el-input size="small" v-model="apiForm.allow_manual_fast_remit" ></el-input>
+              <el-input size="small" v-model="apiForm.allow_manual_fast_remit" style="width: 200px" ></el-input>
             </el-form-item>
             <el-form-item label="支持接口充值：" label-width="180px">
               <el-switch style="margin-left: 20px"
@@ -408,6 +408,10 @@
             </el-form-item>
           </el-form>
         </template>
+        <span slot="footer" class="dialog-footer">
+                <el-button @click="apiVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateApi">确 定</el-button>
+            </span>
       </el-dialog>
     </div>
 
@@ -1046,6 +1050,7 @@
 
       },
       handleSetApiStatus(user){
+        console.log(user)
         let self = this
         self.getUserEditDetail(
           user,

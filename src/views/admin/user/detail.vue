@@ -239,10 +239,10 @@
             <template>
                 <el-form :model="apiForm">
                     <el-form-item label="API出款免审核最高金额：" label-width="180px">
-                        <el-input size="small" v-model="apiForm.allow_api_fast_remit" ></el-input>
+                        <el-input size="small" v-model="apiForm.allow_api_fast_remit" style="width: 200px" ></el-input>
                     </el-form-item>
                     <el-form-item label="手工出款免审核最高金额：" label-width="180px">
-                        <el-input size="small" v-model="apiForm.allow_manual_fast_remit" ></el-input>
+                        <el-input size="small" v-model="apiForm.allow_manual_fast_remit" style="width: 200px" ></el-input>
                     </el-form-item>
                     <el-form-item label="支持接口充值：" label-width="180px">
                         <el-switch style="margin-left: 20px"
