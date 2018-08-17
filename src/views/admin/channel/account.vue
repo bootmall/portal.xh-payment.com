@@ -53,6 +53,11 @@
           <span>{{scope.row.recharge_quota_pertime}}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="是否显示">
+        <template slot-scope="scope">
+          <span>{{scope.row.visible_str}}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">
           <span>{{scope.row.created_at}}</span>
@@ -86,7 +91,7 @@
                 </span>
     </el-dialog>
     <el-dialog title="渠道号编辑" :visible.sync="editVisible" width="40%">
-      <el-form :model="editForm">
+      <el-form :model="editForm" v-loading="editLoading" element-loading-text="数据更新中，请稍候...">
         <el-form-item label="名称：" label-width="160px">
           <el-input size="small" v-model="editForm.channel_name" style="width: 300px"></el-input>
         </el-form-item>
@@ -140,6 +145,19 @@
         <el-form-item label="单次充值限额：" label-width="160px">
           <el-input size="small" v-model="editForm.recharge_quota_pertime" style="width: 300px"></el-input>
         </el-form-item>
+        <el-form-item label="是否显示：" label-width="160px">
+          <el-switch
+              style="display: block"
+              v-model="editForm.visible"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="显示"
+              inactive-text="隐藏"
+              active-value=1
+              inactive-value=0
+          >
+          </el-switch>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="editVisible = false">取 消</el-button>
@@ -158,6 +176,25 @@
   import axios from '@/utils/http'
   import {mapGetters} from 'vuex'
 
+  const editFormInitData = {
+    id: null,
+    channel_name: null,//渠道名称
+    channel_id: null,//三方渠道ID
+    merchant_account: null,//三方渠道对应的商户账户
+    merchant_id: null,//三方渠道对应的商户ID
+    app_id: null,//三方渠道对应的APPID
+    app_secrets: {},//三方渠道对应的配置
+    methods: null,//支持的支付方式,json
+    remit_fee: null,//提现费率
+    pay_methods: [],
+    remit_quota_perday: null,//单日提款限额
+    recharge_quota_perday: null,//单日充值限额
+    recharge_quota_pertime: null,//单次充值限额
+    remit_quota_pertime: null,//单次提款限额
+    min_recharge_pertime: null,
+    min_remit_pertime: null,
+    visible: "1",
+  }
   export default {
     name: 'vue_channel_account',
     directives: {
@@ -183,27 +220,11 @@
           newStatus: null
         },
         app_secrets_template: {},
-        editForm: {
-          id: null,
-          channel_name: null,//渠道名称
-          channel_id: null,//三方渠道ID
-          merchant_account: null,//三方渠道对应的商户账户
-          merchant_id: null,//三方渠道对应的商户ID
-          app_id: null,//三方渠道对应的APPID
-          app_secrets: {},//三方渠道对应的配置
-          methods: null,//支持的支付方式,json
-          remit_fee: null,//提现费率
-          pay_methods: [],
-          remit_quota_perday: null,//单日提款限额
-          recharge_quota_perday: null,//单日充值限额
-          recharge_quota_pertime: null,//单次充值限额
-          remit_quota_pertime: null,//单次提款限额
-          min_recharge_pertime: null,
-          min_remit_pertime: null,
-        },
+        editForm: JSON.parse(JSON.stringify(editFormInitData)),
         tableKey: 0,
         constFalse: false,
         constTrue: true,
+        editLoading: false,
       }
     },
     filters: {
@@ -320,6 +341,7 @@
         this.closeDialog();
       },
       editHandle(row) {
+        // row = JSON.parse(JSON.stringify(row))
         this.editVisible = true;
         this.editForm.id = row.id;
         this.editForm.channel_name = row.channel_name;
@@ -334,12 +356,15 @@
           this.editForm.pay_methods[row.pay_methods[i].id] = row.pay_methods[i].rate;
           // this.methodStatus[row.pay_methods[i].id] = row.pay_methods[i].status.toString()
         }
+
         this.editForm.remit_quota_perday = row.remit_quota_perday;
         this.editForm.recharge_quota_perday = row.recharge_quota_perday;
         this.editForm.recharge_quota_pertime = row.recharge_quota_pertime;
         this.editForm.remit_quota_pertime = row.remit_quota_pertime;
         this.editForm.min_recharge_pertime = row.min_recharge_pertime;
         this.editForm.min_remit_pertime = row.min_remit_pertime;
+
+        this.editForm.visible = row.visible+'';
       },
       editChannelAccount() {
         let self = this
@@ -363,12 +388,13 @@
           rechargeQuotaPertime: self.editForm.recharge_quota_pertime,
           remitQuotaPertime: self.editForm.remit_quota_pertime,
           minRechargePertime: self.editForm.min_recharge_pertime,
-          minRemitPertime: self.editForm.min_remit_pertime
+          minRemitPertime: self.editForm.min_remit_pertime,
+          visible: self.editForm.visible,
         };
-
+        self.editLoading = true
         axios.post('/admin/channel/account-edit', data).then(
           res => {
-            self.listLoading = false
+            self.editLoading = false
             if (res.code != 0) {
               self.$message.error({message: res.message})
               self.submitBtnDisableStatus = false
@@ -382,23 +408,7 @@
         )
       },
       addhandle() {
-        this.editForm = {
-          id: null,
-          channel_name: null,//渠道名称
-          channel_id: null,//三方渠道ID
-          merchant_account: null,//三方渠道对应的商户账户
-          merchant_id: null,//三方渠道对应的商户ID
-          app_id: null,//三方渠道对应的APPID
-          app_secrets: null,//三方渠道对应的APPID
-          remit_fee: null,//三方渠道对应的APPID
-          pay_methods: [],
-          remit_quota_perday: null,//单日提款限额
-          recharge_quota_perday: null,//单日充值限额
-          recharge_quota_pertime: null,//单次充值限额
-          remit_quota_pertime: null,//单次提款限额
-          min_recharge_pertime: null,
-          min_remit_pertime: null,
-        };
+        this.editForm = JSON.parse(JSON.stringify(editFormInitData));
         this.methodStatus = []
         this.app_secrets_template = {}
 

@@ -83,10 +83,10 @@
 
             <el-table-column align="center" label="操作" class="action-btns" fixed="right" width="200px" class-name="op-column">
                 <template slot-scope="scope">
-                    <el-button class="filter-item" size="mini" v-if="[10,20,30,60].indexOf(scope.row.status) !== -1" icon="el-icon-warning" type="warning"
+                    <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1" icon="el-icon-warning" type="warning"
                                @click="setFail(scope.row)" v-waves>退款
                     </el-button>
-                    <el-button class="filter-item" size="mini" v-if="[10,20,30,60].indexOf(scope.row.status) !== -1" type="success" icon="el-icon-check"
+                    <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1" type="success" icon="el-icon-check"
                                @click="setSuccess(scope.row)" v-waves>成功
                     </el-button>
                     <el-button class="filter-item" size="mini" v-if="[0,20].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
