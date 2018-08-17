@@ -85,7 +85,7 @@
             <el-tag type="warning" v-for="(v,k) in summery" :key="v.event_id">{{v.event_type_str}}:{{v.amount}}</el-tag>
         </el-row>
         <div v-show="!listLoading" class="pagination-container">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
                            :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
