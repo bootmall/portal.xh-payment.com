@@ -22,8 +22,10 @@
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
             商户订单号：
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
+            商户编号：
+            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
             商户账号：
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantAccount"></el-input>
             订单状态：
             <el-select class="filter-item" v-model="listQuery.status" placeholder="订单状态" >
                 <el-option
@@ -155,6 +157,8 @@
                     dateEnd: null,
                     orderNo: null,
                     merchantOrderNo: null,
+                    merchantAccount:null,
+                    merchantNo:null,
                     status: null,
                     notifyStatus: null,
                     sort: ''
