@@ -19,7 +19,8 @@
         </el-dialog>
 
         <!--<div style="width: 90%;margin-left: 50px"><order-census></order-census></div>-->
-        <div style="width: 90%;margin-left: 50px"><el-row class="panel-group" :gutter="40">
+        <div style="width: 90%;margin-left: 50px"  v-show="isMainAccount">
+            <el-row class="panel-group" :gutter="40">
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
                 <div class='card-panel'>
                     <div class="card-panel-icon-wrapper icon-shoppingCard">
@@ -130,8 +131,9 @@
                         </div>
                     </div>
                 </el-col>
-            </el-row></div>
-        <div style="width: 90%;margin-left: 50px;margin-bottom: 20px;" v-if="user.group_id != 10 " class="rate-list">
+            </el-row>
+        </div>
+        <div style="width: 90%;margin-left: 50px;margin-bottom: 20px;" v-if="user.group_id != 10 " class="rate-list"  v-show="isMainAccount">
               <h4
                   title="费率列表"
                   class="el-alert el-alert--success"
@@ -219,6 +221,8 @@
       // BoxCard
         addRecharge
     },
+    computed: {
+    },
     data() {
       return {
         groupPanel:{},
@@ -235,6 +239,7 @@
         needPayAccountOpenFeeVisible: false,
         needPayAccountOpenFee: false,
         needPayAccountOpenAmount: 0,
+        isMainAccount:false
       }
     },
     methods: {
@@ -255,7 +260,7 @@
               self.$message.error({message: res.message})
             } else {
               self.groupPanel = res.data.groupPanel
-              self.company = res.data.company
+              self.isMainAccount = res.data.isMainAccount
               self.user = res.data.user
               self.notice = res.data.notice
               if (self.notice.length > 0){

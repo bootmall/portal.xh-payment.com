@@ -147,7 +147,7 @@
         statusOptions: [],
         listQuery: {
           page: 1,
-          limit: 10,
+          limit: 20,
           user_id: '',
           username: '',
           sort: '',

@@ -85,7 +85,7 @@
         eventTypeOptions: [],
         listQuery: {
           page: 1,
-          limit: 10,
+          limit: 20,
           importance: undefined,
           event_type: '',
           event_id: '',

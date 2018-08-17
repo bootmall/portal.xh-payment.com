@@ -105,7 +105,7 @@
         channelList: [],
         listQuery: {
           page: 1,
-          limit: 10,
+          limit: 20,
           channelAccountId: '',
           sort: '',
           dateStart: new Date(new Date((new Date()).getTime() - 86400000*3).setHours(0, 0, 0, 0)),
