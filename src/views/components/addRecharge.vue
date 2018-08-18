@@ -6,7 +6,7 @@
                 <el-col :span="22" :offset="1">
                     <div class="grid-content bg-purple">
                         <el-form-item label="金额" prop="amount" class="el-form-item-input">
-                            <el-input v-model="commonForm.amount" :disabled="true"></el-input>
+                            <el-input v-model="commonForm.amount" :disabled="commonForm.amountDisabled"></el-input>
                         </el-form-item>
                         <el-form-item label="请选择支付类型" prop="method" class="el-form-item-input">
                             <el-select class="filter-item" v-model="commonForm.method" label="支付类型" placeholder="支付类型">
@@ -63,7 +63,7 @@
         default: 0
       },
       amountDisabled:{
-        default: false
+        default: 1
       }
     },
     data() {
@@ -72,7 +72,7 @@
           type:this.type,
           amount:this.amount,
           method:'',
-          amountDisabled: this.amountDisabled,
+          amountDisabled: this.amountDisabled=='1',
         },
         dialogAvatarVisible: false,
         showStepOneBtn: true,
@@ -90,7 +90,7 @@
       getFormOptions(){
         self = this
 
-        axios.post('/account/my-recharge-method-list',{all:0}).then(
+        axios.post('/account/my-recharge-method-list',{all:0,type:self.type}).then(
           res => {
             if (res.code != 0) {
               self.$message.error({message: res.message})
@@ -137,7 +137,6 @@
                     })
                   } else {
                       self.$message.error('失败:' + res.message);
-                      self.showStepOneBtn = false
                   }
               })
           } else {

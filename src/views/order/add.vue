@@ -1,37 +1,39 @@
 <template xmlns="http://www.w3.org/1999/html">
     <div class="dashboard-container" v-loading="isLoading">
-        <el-form class="el-form" ref="commonForm" :model="commonForm" label-width="180px">
-            <h4 class="title"></h4>
-            <el-row :gutter="20">
-                <el-col :span="22" :offset="1">
-                    <div class="grid-content bg-purple">
-                        <el-form-item label="金额" prop="amount" class="el-form-item-input">
-                            <el-input v-model="commonForm.amount"></el-input>
-                        </el-form-item>
-                        <el-form-item label="支付类型" prop="amount" class="el-form-item-input">
-                            <el-select class="filter-item" v-model="commonForm.method" label="支付类型" placeholder="支付类型">
-                                <el-option
-                                        v-for="(item,key) in methodOptions"
-                                        :key="item.method_id"
-                                        :label="item.method_name"
-                                        :value="item.method_id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </div>
-                </el-col>
-            </el-row>
+        <!--<el-form class="el-form" ref="commonForm" :model="commonForm" label-width="180px">-->
+            <!--<h4 class="title"></h4>-->
+            <!--<el-row :gutter="20">-->
+                <!--<el-col :span="22" :offset="1">-->
+                    <!--<div class="grid-content bg-purple">-->
+                        <!--<el-form-item label="金额" prop="amount" class="el-form-item-input">-->
+                            <!--<el-input v-model="commonForm.amount"></el-input>-->
+                        <!--</el-form-item>-->
+                        <!--<el-form-item label="支付类型" prop="amount" class="el-form-item-input">-->
+                            <!--<el-select class="filter-item" v-model="commonForm.method" label="支付类型" placeholder="支付类型">-->
+                                <!--<el-option-->
+                                        <!--v-for="(item,key) in methodOptions"-->
+                                        <!--:key="item.method_id"-->
+                                        <!--:label="item.method_name"-->
+                                        <!--:value="item.method_id">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                    <!--</div>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
 
-            <el-row :gutter="20">
-                <el-col :span="22" :offset="1">
-                    <div class="grid-content">
-                        <el-form-item>
-                            <el-button style="margin: 0 auto;" type="primary" @click="onSubmit" :disabled="submitBtnDisableStatus">充值</el-button>
-                        </el-form-item>
-                    </div>
-                </el-col>
-            </el-row>
-        </el-form>
+            <!--<el-row :gutter="20">-->
+                <!--<el-col :span="22" :offset="1">-->
+                    <!--<div class="grid-content">-->
+                        <!--<el-form-item>-->
+                            <!--<el-button style="margin: 0 auto;" type="primary" @click="onSubmit" :disabled="submitBtnDisableStatus">充值</el-button>-->
+                        <!--</el-form-item>-->
+                    <!--</div>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
+        <!--</el-form>-->
+
+        <add-recharge :type="2" :amount-disabled="0"></add-recharge>
 
     </div>
 </template>
@@ -42,10 +44,10 @@
   import common from '@/utils/common'
   import { isvalidUsername } from '@/utils/validate'
   import _ from 'lodash'
-
+  import addRecharge from '@/views/components/addRecharge'
   export default {
-    name: 'addRecharge',
-    components: { },
+    name: 'add_recharge',
+    components: { addRecharge},
     data() {
       return {
         commonForm:{
