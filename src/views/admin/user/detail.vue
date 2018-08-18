@@ -822,11 +822,12 @@
       updateIps() {
         let self = this
         if (self.ipForm.app_server_ips.length < 1 || self.ipForm.app_server_domains.length < 1) {
-          self.$message.error({message: 'ip,或者域名不能为空'});
-          return false;
+          // self.$message.error({message: 'ip,或者域名不能为空'});
+          // return false;
         }
+        let tmpIp = []
         if (self.ipForm.app_server_ips.length > 0) {
-          var tmpIp = self.ipForm.app_server_ips.split(';');
+          tmpIp = self.ipForm.app_server_ips.split(';');
           let regIp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
           for (let i = 0; i < tmpIp.length; i++) {
             if (!regIp.test(tmpIp[i])) {
@@ -835,9 +836,10 @@
             }
           }
         }
+        let tmpUrl = []
         if (self.ipForm.app_server_domains.length > 0) {
           let regUrl = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
-          var tmpUrl = self.ipForm.app_server_domains.split(';');
+          tmpUrl = self.ipForm.app_server_domains.split(';');
           for (let i = 0; i < tmpUrl.length; i++) {
             if (!regUrl.test(tmpUrl[i])) {
               self.$message.error({message: '有域名格式不正确，请检查'});
@@ -875,8 +877,9 @@
           // self.$message.error({message: 'ip不能为空'});
           // return false;
         }
+        let tmpIp = []
         if (self.loginIpForm.bind_login_ip.length > 0) {
-          var tmpIp = self.loginIpForm.bind_login_ip.split(';');
+          tmpIp = self.loginIpForm.bind_login_ip.split(';');
           let regIp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
           for (let i = 0; i < tmpIp.length; i++) {
             if (!regIp.test(tmpIp[i])) {
