@@ -33,41 +33,45 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%" >
 
-            <el-table-column label="订单号" width="180">
+            <el-table-column label="订单号" >
                 <template slot-scope="scope">
                     <span>{{scope.row.event_id}}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column label="商户号" width="100">
+            <el-table-column label="商户号" >
                 <template slot-scope="scope">
                     <span>{{scope.row.uid}}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column label="商户账号" width="180" >
+            <el-table-column label="商户账号">
                 <template slot-scope="scope">
                     <span >{{scope.row.username}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="项目类型" width="180">
+            <el-table-column label="项目类型">
                 <template slot-scope="scope">
                     <span >{{scope.row.event_type_str}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="金额" width="100">
+            <el-table-column label="金额" >
                 <template slot-scope="scope">
                     <span >{{scope.row.amount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="时间" width="180">
+            <el-table-column align="center" label="时间">
                 <template slot-scope="scope">
                     <span >{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
 
         </el-table>
-
+        <div v-show="!listLoading" class="pagination-container">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
