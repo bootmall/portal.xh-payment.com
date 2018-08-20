@@ -60,7 +60,6 @@
             <el-table-column prop="order_no" label="结算订单号" width="165"></el-table-column>
             <el-table-column prop="merchant_order_no" label="商户订单号" width="160"></el-table-column>
             <el-table-column prop="bank_account" label="持卡人" width="80"></el-table-column>
-            <el-table-column prop="merchant_check_status_str" label="审核状态" width="80"></el-table-column>
             <el-table-column prop="bank_no" label="卡号" width="200">
                 <template slot-scope="scope">
                     <el-popover
@@ -97,6 +96,7 @@
             </el-table-column>
             <el-table-column prop="channel_order_no" label="凭证" width="165"></el-table-column>
             <el-table-column prop="bak" label="备注" width="100"></el-table-column>
+            <el-table-column prop="merchant_check_status_str" label="商户审核" width="100"></el-table-column>
             <el-table-column prop="created_at" label="建立时间" width="160"></el-table-column>
 
             <el-table-column align="center" label="操作" class="action-btns" fixed="right" width="200px" class-name="op-column">
