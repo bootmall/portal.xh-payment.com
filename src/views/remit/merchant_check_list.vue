@@ -21,11 +21,6 @@
                       size="small"
                       :picker-options="pickerOptions">
       </el-date-picker>
-      <el-input class="filter-item" size="small" style="width: 200px;" @change.native="checkNumber()"
-                v-model="listQuery.minMoney" placeholder="金额"></el-input>
-      -
-      <el-input class="filter-item" size="small" style="width: 200px;" @change.native="checkNumber()"
-                v-model="listQuery.maxMoney"></el-input>
       <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
                 placeholder="卡号" v-model="listQuery.bankNo"></el-input>
       <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="状态">
@@ -37,28 +32,33 @@
         </el-option>
       </el-select>
 
-      <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索
-      </el-button>
+      <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" v-waves icon="search" @click="handleShowUpdateStatus(1,'')">批量审核通过</el-button>
+      <el-button class="filter-item" size="small" type="danger" v-waves icon="search" @click="handleShowUpdateStatus(2,'')">批量拒绝并退款</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit
               highlight-current-row style="width: 100%;font-size: 12px" :summary-method="getSummaries" show-summary
-              stripe>
+              stripe @selection-change="handleSelectionChange">
 
       <el-table-column align="center" fixed type="selection"
                        @selection-change="handleSelectionChange"></el-table-column>
-      <el-table-column v-if="user.user.group_id==20" prop="merchant_id" label="商户编号"></el-table-column>
-      <el-table-column v-if="user.user.group_id==20" prop="merchant_account" label="商户账号"></el-table-column>
+      <!--<el-table-column prop="merchant_id" label="商户编号"></el-table-column>-->
+      <!--<el-table-column prop="merchant_account" label="商户账号"></el-table-column>-->
       <el-table-column prop="order_no" label="结算订单号"></el-table-column>
       <el-table-column prop="merchant_order_no" label="商户订单号"></el-table-column>
       <el-table-column prop="bank_account" label="持卡人"></el-table-column>
       <el-table-column prop="bank_no" label="卡号"></el-table-column>
-      <el-table-column prop="amount" label="金额"></el-table-column>
+      <el-table-column prop="amount" label="金额（元"></el-table-column>
       <el-table-column prop="bank_name" label="银行" width="50"></el-table-column>
       <el-table-column prop="status_str" label="订单状态"></el-table-column>
-      <el-table-column v-if="canCheckRemitStatus == 1" prop="check_status_str" label="审核信息"></el-table-column>
       <el-table-column prop="created_at" label="建立时间"></el-table-column>
-
+      <el-table-column fixed="right" width="160" align="center" label="操作" class-name="op-column">
+        <template slot-scope="scope">
+          <el-button class="filter-item" size="small" type="success" v-waves icon="search" @click="handleShowUpdateStatus(1,scope.row.id)">通过</el-button>
+          <el-button class="filter-item" size="small" type="danger" v-waves icon="search" @click="handleShowUpdateStatus(2,scope.row.id)">拒绝</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <div v-show="!listLoading" class="pagination-container">
@@ -68,6 +68,31 @@
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+
+
+    <el-dialog title="结算订单审核" :visible.sync="checkVisible" width="30%">
+      <el-alert
+          :title=checkFormAlert
+          type="warning">
+      </el-alert>
+      <el-form :model="checkForm" v-loading="checkLoading">
+        <el-form-item label="资金密码：">
+          <el-input type="password" style="width: 280px" v-model="checkForm.pwd">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :model="checkForm">
+        <el-form-item label="安全令牌：">
+          <el-input type="text" style="width: 280px" v-model="checkForm.t2fa">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="checkVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleUpdateStatus">提交</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -79,7 +104,7 @@
   import {mapGetters} from 'vuex'
 
   export default {
-    name: 'vue_my_remit',
+    name: 'vue_merchant_check_remit',
     directives: {
       waves
     },
@@ -101,21 +126,28 @@
           status: null,
           bankAccount: null,
           bankNo: null,
-          minMoney: null,
-          maxMoney: null,
           merchantNo: null,
           merchantAccount: null,
-          sort: ''
+          sort: '',
+          selfCheck:1,
         },
         summery: {
           'amount': 0,
         },
         tableKey: 0,
         constFalse: false,
-        canCheckRemitStatus: 0,
         constTrue: true,
-        channelAccountOptions: [],
         statusOptions: [],
+        multipleSelection:[],
+        checkVisible:false,
+        canCheckRemitStatus:0,
+        checkLoading:false,
+        checkForm:{
+          'status':'',
+          't2fa':'',
+          'pwd':'',
+        },
+        checkFormAlert:'',
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -188,6 +220,42 @@
           }
         )
       },
+      handleShowUpdateStatus(status,id){
+        let self = this
+        self.checkForm.status = status
+        self.checkForm.remitIdList =  self.multipleSelection
+        if(id){
+          self.checkForm.remitIdList = [id]
+        }
+        let msg = '通过审核'
+        if(status==2){
+          msg = '拒绝提交并退款'
+        }
+        self.checkFormAlert = "您将要把结算订单设置为: "+msg
+        self.checkVisible = true
+      },
+      handleUpdateStatus() {
+        self = this
+        self.checkLoading = true
+        axios.post('/remit/check', self.checkForm).then(
+          res => {
+            self.checkLoading = false
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              self.$message.success({message: res.message})
+              self.checkVisible = false
+              self.getList();
+              self.checkForm.t2fa = ''
+              self.checkForm.pwd = ''
+            }
+          },
+          res => {
+            self.$message.error({message: res.message})
+          }
+        )
+
+      },
       showNotifyRet(row) {
         // self.$message.error({message: res.message})
         this.$alert(row.notify_ret, '商户服务器响应内容', {
@@ -207,7 +275,7 @@
           }
           sums[index] = 'N/A';
         });
-        sums[7] = this.summery.amount + '元'
+        sums[3] = this.summery.amount + '元'
         return sums;
       },
       handleFilter() {
@@ -232,7 +300,10 @@
         this.listQuery.end = parseInt((+time[1] + 3600 * 1000 * 24) / 1000)
       },
       handleSelectionChange(val) {
-        this.multipleSelection = val;
+        this.multipleSelection = []
+        for(let v of val){
+          this.multipleSelection.push(v.id)
+        }
       },
       checkNumber: function () {
         // console.log(this.listQuery.minMoney);

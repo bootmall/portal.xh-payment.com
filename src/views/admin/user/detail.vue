@@ -141,6 +141,7 @@
             <el-button type="primary" @click="handleBindIp">绑定API接口IP</el-button>
             <el-button type="primary" @click="handleBindLoginIp">绑定登录IP</el-button>
             <el-button type="primary" @click="apiVisible=true">收款出款接口开关</el-button>
+            <el-button type="primary" @click="merchantRemitCheckFormVisible=true">允许商户审核出款订单</el-button>
         </el-row>
         <el-row>
             <el-button type="primary" @click="handleUserStatus">修改商户状态</el-button>
@@ -415,6 +416,26 @@
                 </span>
 
         </el-dialog>
+        <el-dialog
+                title="设置出款订单审核权限"
+                :visible.sync="merchantRemitCheckFormVisible"
+                width="600px">
+            <el-form>
+                <template>
+                    <el-form-item label="允许用户审核出款订单：" label-width="180px" style="margin-top: 20px;width: 400px">
+                        <el-radio-group v-model="userInfo.can_check_remit_status">
+                            <el-radio-button label="1">允许</el-radio-button>
+                            <el-radio-button label="0">不允许</el-radio-button>
+                        </el-radio-group>
+                    </el-form-item>
+                </template>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                    <el-button @click="merchantRemitCheckFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="setMerchantRemitCheck">确 定</el-button>
+                </span>
+
+        </el-dialog>
     </div>
 
 </template>
@@ -509,7 +530,8 @@
         loginIpFormVisible:false,
         loginIpForm:{
           bind_login_ip:[]
-        }
+        },
+        merchantRemitCheckFormVisible:false
       }
     },
     created() {
@@ -904,6 +926,26 @@
           },
         )
       },
+
+      setMerchantRemitCheck() {
+        let self = this
+        let data = {
+          merchantId: self.userInfo.id,
+          status: self.userInfo.can_check_remit_status,
+        }
+        axios.post('/admin/user/set-merchant-remit-check', data).then(
+          res => {
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              self.$message.success({message: '绑定成功'});
+              self.getInitData()
+              self.merchantRemitCheckFormVisible = false;
+            }
+          },
+        )
+      },
+
       handleAgent() {
         let self = this
         if (self.agentOptions.length == 0) {

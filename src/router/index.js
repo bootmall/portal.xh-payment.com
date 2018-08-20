@@ -64,6 +64,7 @@ export const asyncRouterMap = [
       {path: 'myorder', component: _import("order/mylist"),view: "order/mylist", name: 'vue_my_order', meta: {title: '我的收款', icon: 'excel', role: ['merchant', 'agent'], noCache: true}},
       //   agent user只能查询自己的订单
       {path: 'my_remit', component: _import("remit/mylist"),view: "remit/mylist", name: 'vue_my_remit', meta: {title: '我的结算', icon: 'excel', role: ['merchant', 'agent'], noCache: true}},
+      {path: 'merchant_check_remit', component: _import("remit/merchant_check_list"),view: "remit/merchant_check_list", name: 'vue_merchant_check_remit', meta: {title: '结算审核', icon: 'excel', role: ['merchant'], noCache: true}},
       //  通过admin登陆可以查询全部用户的订单
       {path: 'order', component: _import("order/list"),view: "order/list", name: 'vue_admin_order_list', meta: {title: '收款订单', icon: 'excel', role: ['admin'], noCache: true}},
       //  通过admin登陆可以查询全部用户的订单
