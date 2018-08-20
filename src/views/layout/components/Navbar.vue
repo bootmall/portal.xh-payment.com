@@ -42,8 +42,6 @@
       </el-menu>
     </div>
     <div class="right-menu">
-
-
             <span style="font-size: 14px;margin-left: 20px;">
                 商户号：<span style="color:#F56C6C">{{user.user.main_merchant_id}}</span>
             </span>
@@ -76,16 +74,16 @@
             <span @click="editPassDialog" style="display:block;">修改密码</span>
           </el-dropdown-item>
           <el-dropdown-item divided v-if="group_id != 10">
-            <span @click="showHandleAuthKeyDialog" style="display:block;">修改商户KEY</span>
+            <span @click="showHandleAuthKeyDialog" v-if="user.user.main_merchant_id == user.user.id" style="display:block;">修改商户KEY</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="getGoogleCode" style="display:block;">安全令牌</span>
           </el-dropdown-item>
           <el-dropdown-item divided v-if="group_id != 10">
-            <span @click="handleFinancial" style="display:block;">设置/修改资金密码</span>
+            <span v-if="user.user.main_merchant_id == user.user.id" @click="handleFinancial" style="display:block;">设置/修改资金密码</span>
           </el-dropdown-item>
-          <el-dropdown-item divided v-if="loginIpForm.bind_login_ip.length==0">
-            <span @click="handleBindLoginIp" style="display:block;">{{loginIpForm.bind_login_ip}}绑定登录IP</span>
+          <el-dropdown-item divided>
+            <span @click="handleBindLoginIp" style="display:block;">绑定登录IP</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登录</span>
@@ -189,17 +187,21 @@
     <el-dialog
         title="绑定登录IP"
         :visible.sync="loginIpFormVisible"
+        @close="close"
         width="40%">
       <template>
         <el-form :model="loginIpForm">
           <p style="color: red;padding-left: 180px;">提示：IP有多个 以英文符号分号(;) 分隔</p>
+          <el-form-item v-if="loginIpForm.bind_login_ip.length > 0" label="已绑定IP：" label-width="180px">
+            {{loginIpForm.bind_login_ip}}
+          </el-form-item>
           <el-form-item label="登录IP地址：" label-width="180px">
-            <el-input size="small" type="textarea" :rows="3" v-model="loginIpForm.bind_login_ip" style="width: 300px"></el-input>
+            <el-input size="small" type="textarea" :rows="3" v-model="add_login_ip" style="width: 300px"></el-input>
           </el-form-item>
         </el-form>
       </template>
       <span slot="footer" class="dialog-footer">
-                <el-button @click="loginIpFormVisible = false">取 消</el-button>
+                <el-button @click="close">取 消</el-button>
                 <el-button type="primary" @click="updateLoginIp">确 定</el-button>
             </span>
     </el-dialog>
@@ -239,6 +241,7 @@
         asset: null,
         frozen_balance: null,
         balance: null,
+          main_merchant_id:null,
         // log: errLogStore.state.errLog,
         shoppingCartVisible: false,
         orderFormVisible: false,
@@ -274,7 +277,8 @@
         loginIpFormVisible:false,
         loginIpForm:{
           bind_login_ip:''
-        }
+        },
+          add_login_ip:''
       }
     },
     computed: {
@@ -297,7 +301,6 @@
       if (typeof siteInfo.siteName != 'undefined') {
         document.title = siteInfo.siteName
       }
-      this.loginIpForm.bind_login_ip = this.user.user.bind_login_ip == ''?'':JSON.parse(this.user.user.bind_login_ip).join(";")
     },
     mounted() {
       //设置定时器，每30秒刷新一次
@@ -358,13 +361,20 @@
       },
       handleBindLoginIp() {
         this.loginIpFormVisible = true;
+          this.loginIpForm.bind_login_ip = this.user.user.bind_login_ip == ''?'':JSON.parse(this.user.user.bind_login_ip).join(";")
       },
 
       updateLoginIp() {
         let self = this
-        if (self.loginIpForm.bind_login_ip.length < 1) {
+          self.loginIpFormVisible = false;
+        if (self.add_login_ip.length < 1) {
           self.$message.error({message: 'ip不能为空'});
           return false;
+        }
+        if(self.loginIpForm.bind_login_ip.length == 0){
+            self.loginIpForm.bind_login_ip = self.add_login_ip
+        }else{
+            self.loginIpForm.bind_login_ip = self.loginIpForm.bind_login_ip + ";" + self.add_login_ip
         }
         if (self.loginIpForm.bind_login_ip.length > 0) {
           var tmpIp = self.loginIpForm.bind_login_ip.split(';');
@@ -381,16 +391,21 @@
         }
         axios.post('/user/bind-login-ip', data).then(
           res => {
+              self.close()
             if (res.code != 0) {
               self.$message.error({message: res.message})
             } else {
               self.$message.success({message: '绑定成功'});
               self.getInitData()
-              self.loginIpFormVisible = false;
             }
           },
         )
       },
+        close(){
+            this.add_login_ip = ''
+            this.loginIpForm.bind_login_ip = []
+            this.loginIpFormVisible = false
+        },
       editPassHandle() {
         let self = this
         let reg = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
@@ -444,6 +459,10 @@
         );
       },
       showHandleAuthKeyDialog() {
+          if(this.user.user.main_merchant_id != this.user.user.id){
+              this.$message.error({message: '您没有此操作权限'})
+              return false
+          }
         this.sessionSecurityCheckDialogVisible = true
         this.sessionSecurityCheckForm.handle = this.handleAuthKey
       },
