@@ -78,7 +78,7 @@
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 10,
+          limit: 20,
           description:null,
           name:null,
           sort: ''

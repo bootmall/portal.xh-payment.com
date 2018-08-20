@@ -589,9 +589,10 @@
         return false
       },
       handleSelectionChange(val) {
-        this.multipleSelection = val;
+        let self = this
+        self.multipleSelection = val;
         self.listQuery.appIds = []
-        this.multipleSelection.forEach((u) => {
+        self.multipleSelection.forEach((u) => {
           self.listQuery.appIds.push(u.id)
         })
       },

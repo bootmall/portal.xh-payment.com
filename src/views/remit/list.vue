@@ -60,6 +60,7 @@
             <el-table-column prop="order_no" label="结算订单号" width="165"></el-table-column>
             <el-table-column prop="merchant_order_no" label="商户订单号" width="160"></el-table-column>
             <el-table-column prop="bank_account" label="持卡人" width="80"></el-table-column>
+            <el-table-column prop="merchant_check_status_str" label="审核状态" width="80"></el-table-column>
             <el-table-column prop="bank_no" label="卡号" width="200">
                 <template slot-scope="scope">
                     <el-popover
@@ -79,7 +80,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="channel_account_name" label="通道" width="100"></el-table-column>
-            <el-table-column prop="amount" label="金额（元）" width="100"></el-table-column>
+            <el-table-column prop="amount" label="金额" width="100"></el-table-column>
             <el-table-column prop="bank_name" label="银行" width="130">
                 <template slot-scope="scope">
                     <span>{{scope.row.bank_code}}/{{scope.row.bank_name}}</span>
@@ -241,6 +242,7 @@
         remitIdSwitchTo:'',
         bankCardTodayStatisticList:'',
         bankCardTodayStatisticLoading:false,
+        canCheckRemitStatus:0,
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -594,10 +596,14 @@
     .el-table__row button{
         margin-top: 5px;
     }
+    .op-column .el-button{
+        margin: 5px;
+    }
     .op-column .cell{
         padding-left: 0;
         text-align: left;
     }
+
     .summary-list{
         margin-top: 10px;
         .el-tag  + .el-tag{

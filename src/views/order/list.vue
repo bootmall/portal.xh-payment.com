@@ -160,7 +160,7 @@
                     <span>{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" width="160" align="center" label="操作" class="action-btns">
+            <el-table-column fixed="right" width="180" align="center" label="操作" class-name="op-column">
                 <template slot-scope="scope">
                     <el-button class="filter-item" size="mini" type="success" v-if="scope.row.status == 10" v-waves @click="setSuccess(scope.row)">成功</el-button>
                     <el-button class="filter-item" size="mini" v-if="scope.row.status == 10" @click="syncStatus(scope.row)" v-waves>同步
@@ -707,10 +707,17 @@
         display: inline-block;
         margin-top: 5px;
     }
+    .op-column .el-button{
+        margin: 5px;
+    }
+    .op-column .cell{
+        padding-left: 0;
+        text-align: left;
+    }
     .summary-list{
         margin-top: 10px;
-    .el-tag  + .el-tag{
-        margin-left: 10px;
-    }
+        .el-tag  + .el-tag{
+            margin-left: 10px;
+        }
     }
 </style>
