@@ -145,6 +145,9 @@
         <el-form-item label="单次充值限额：" label-width="160px">
           <el-input size="small" v-model="editForm.recharge_quota_pertime" style="width: 300px"></el-input>
         </el-form-item>
+        <el-form-item label="余额报警阀值：" label-width="160px">
+          <el-input size="small" v-model="editForm.balance_alert_threshold" style="width: 300px"></el-input>
+        </el-form-item>
         <el-form-item label="是否显示：" label-width="160px">
           <el-switch
               style="display: block"
@@ -193,6 +196,7 @@
     remit_quota_pertime: null,//单次提款限额
     min_recharge_pertime: null,
     min_remit_pertime: null,
+    balance_alert_threshold: null,
     visible: "1",
   }
   export default {
@@ -363,6 +367,7 @@
         this.editForm.remit_quota_pertime = row.remit_quota_pertime;
         this.editForm.min_recharge_pertime = row.min_recharge_pertime;
         this.editForm.min_remit_pertime = row.min_remit_pertime;
+        this.editForm.balance_alert_threshold = row.balance_alert_threshold;
 
         this.editForm.visible = row.visible+'';
       },
@@ -389,6 +394,7 @@
           remitQuotaPertime: self.editForm.remit_quota_pertime,
           minRechargePertime: self.editForm.min_recharge_pertime,
           minRemitPertime: self.editForm.min_remit_pertime,
+          balanceAlertThreshold: self.editForm.balance_alert_threshold,
           visible: self.editForm.visible,
         };
         self.editLoading = true

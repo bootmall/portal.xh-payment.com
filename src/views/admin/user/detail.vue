@@ -142,6 +142,7 @@
             <el-button type="primary" @click="handleBindLoginIp">绑定登录IP</el-button>
             <el-button type="primary" @click="apiVisible=true">收款出款接口开关</el-button>
             <el-button type="primary" @click="merchantRemitCheckFormVisible=true">允许商户审核出款订单</el-button>
+            <el-button type="primary" @click="apiResponseFormatFormVisible=true">设置API数据格式</el-button>
         </el-row>
         <el-row>
             <el-button type="primary" @click="handleUserStatus">修改商户状态</el-button>
@@ -436,6 +437,25 @@
                 </span>
 
         </el-dialog>
+        <el-dialog
+            class="api-response-format"
+                title="设置商户API接口响应格式"
+                :visible.sync="apiResponseFormatFormVisible"
+                width="600px">
+            <p style="" class="el-alert--info">post form: <b>{"method":"post","format":"form"}</b><br />post json: <b>{"method":"post","format":"json"}</b><br />get: <b>{"method":"get","format":"form"}</b></p>
+            <el-form>
+                <template>
+                    <el-form-item label="商户API接口响应格式：" label-width="180px" style="margin-top: 20px;width: 400px">
+                        <el-input size="small" type="text" v-model="userInfo.api_response_rule" style="width: 300px"></el-input>
+                    </el-form-item>
+                </template>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                    <el-button @click="apiResponseFormatFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="setApiResponseFormat">确 定</el-button>
+                </span>
+
+        </el-dialog>
     </div>
 
 </template>
@@ -531,7 +551,8 @@
         loginIpForm:{
           bind_login_ip:[]
         },
-        merchantRemitCheckFormVisible:false
+        merchantRemitCheckFormVisible:false,
+        apiResponseFormatFormVisible:false,
       }
     },
     created() {
@@ -946,6 +967,25 @@
         )
       },
 
+      setApiResponseFormat() {
+        let self = this
+        let data = {
+          merchantId: self.userInfo.id,
+          rule: self.userInfo.api_response_rule,
+        }
+        axios.post('/admin/user/set-api-response-format', data).then(
+          res => {
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              self.$message.success({message: '绑定成功'});
+              self.getInitData()
+              self.merchantRemitCheckFormVisible = false;
+            }
+          },
+        )
+      },
+
       handleAgent() {
         let self = this
         if (self.agentOptions.length == 0) {
@@ -1255,6 +1295,10 @@
         }
     }
 
+    .api-response-format .el-alert--info{
+        padding-left: 30px;
+    }
+
     .error {
         color: #F56C6C !important;
     }
@@ -1262,8 +1306,8 @@
         width:80px;
         margin-left: 10px;
     }
-.user-attr .grid-content{
-    /*padding-left: 15px;*/
-    background: none;
-}
+    .user-attr .grid-content{
+        /*padding-left: 15px;*/
+        background: none;
+    }
 </style>

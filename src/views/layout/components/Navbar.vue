@@ -191,7 +191,7 @@
         width="40%">
       <template>
         <el-form :model="loginIpForm">
-          <p style="color: red;padding-left: 180px;">提示：IP有多个 以英文符号分号(;) 分隔</p>
+          <p style="color: red;padding-left: 180px;">提示：请务必先行添加当前登录IP!IP有多个 以英文符号分号(;) 分隔</p>
           <el-form-item v-if="loginIpForm.bind_login_ip.length > 0" label="已绑定IP：" label-width="180px">
             {{loginIpForm.bind_login_ip}}
           </el-form-item>
