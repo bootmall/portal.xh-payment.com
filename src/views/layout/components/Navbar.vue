@@ -192,7 +192,7 @@
         width="40%">
       <template>
         <el-form :model="loginIpForm">
-          <p style="color: red;padding-left: 180px;">提示：IP有多个 以英文符号分号(;) 分隔</p>
+          <p style="color: red;padding-left: 180px;">提示：务必先添加当前登录IP,防止设置后无法登录! IP有多个以英文符号分号(;) 分隔</p>
           <el-form-item label="登录IP地址：" label-width="180px">
             <el-input size="small" type="textarea" :rows="3" v-model="loginIpForm.bind_login_ip" style="width: 300px"></el-input>
           </el-form-item>

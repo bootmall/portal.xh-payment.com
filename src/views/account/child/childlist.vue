@@ -6,16 +6,16 @@
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row
                   style="width: 100%;font-size: 12px" stripe>
             <!--<el-table-column align="center" fixed type="selection" width="55" ></el-table-column>-->
-            <el-table-column align="center" prop="id" label="编号" width="120"></el-table-column>
-            <el-table-column align="center" prop="username" label="用户名" width="120"></el-table-column>
-            <el-table-column align="center" prop="nickname" label="昵称" width="120"></el-table-column>
-            <el-table-column align="center" prop="is_key_2fa" label="是否设置安全令牌" width="160"></el-table-column>
-            <el-table-column align="center" prop="is_financial" label="是否设置资金密码" width="160"></el-table-column>
-            <el-table-column align="center" prop="last_login_ip" label="上次登陆IP" width="180"></el-table-column>
-            <el-table-column align="center" prop="last_login_time" label="上次登陆时间" width="180"></el-table-column>
-            <el-table-column align="center" prop="status_name" label="状态" width="80"></el-table-column>
-            <el-table-column align="center" prop="created_at" label="创建时间" width="180"></el-table-column>
-            <el-table-column align="center" label="操作" class="action-btns" width="160px" fixed="right">
+            <el-table-column align="center" prop="id" label="编号"></el-table-column>
+            <el-table-column align="center" prop="username" label="用户名"></el-table-column>
+            <el-table-column align="center" prop="nickname" label="昵称" ></el-table-column>
+            <el-table-column align="center" prop="is_key_2fa" label="是否设置安全令牌"></el-table-column>
+            <el-table-column align="center" prop="is_financial" label="是否设置资金密码"></el-table-column>
+            <el-table-column align="center" prop="last_login_ip" label="上次登陆IP"></el-table-column>
+            <el-table-column align="center" prop="last_login_time" label="上次登陆时间"></el-table-column>
+            <el-table-column align="center" prop="status_name" label="状态"></el-table-column>
+            <el-table-column align="center" prop="created_at" label="创建时间"></el-table-column>
+            <el-table-column align="center" label="操作" class="action-btns" width="180px" fixed="right">
                 <template slot-scope="scope">
                     <el-button class="filter-item" v-if="scope.row.key_2fa" size="mini" type="primary" @click="handleclear(scope.row,1)" v-waves>清空安全令牌</el-button>
                     <el-button class="filter-item" v-if="scope.row.financial_password_hash" size="mini" type="primary" @click="handleclear(scope.row,2)" v-waves>清空资金密码</el-button>
@@ -74,7 +74,7 @@
                 :visible.sync="permissionVisible"
                 width="60%">
             <template>
-                <el-checkbox-group v-model="userRole" size="small">
+                <el-checkbox-group v-model="userRole" size="small" class="permission-list">
                     <el-checkbox border :label="v.name" v-for="(v,k) in allRoles" :key="k">{{v.description}}</el-checkbox>
                 </el-checkbox-group>
                 <!--<el-radio-group v-model="userRole" size="small">-->
@@ -290,5 +290,8 @@
     }
     .el-button--mini, .el-button--mini.is-round {
         margin-top: 5px;
+    }
+    .permission-list .el-checkbox{
+        margin: 5px;
     }
 </style>

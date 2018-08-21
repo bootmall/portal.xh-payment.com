@@ -2,9 +2,9 @@
     <div class="components-container">
         <div class="filter-container">
             类型：
-            <el-input style="width: 100px;" class="filter-item" v-model="listQuery.title"></el-input>
+            <el-input style="width: 200px;" class="filter-item" v-model="listQuery.title"></el-input>
             用户名
-            <el-input style="width: 100px;" class="filter-item" v-model="listQuery.username"></el-input>
+            <el-input style="width: 200px;" class="filter-item" v-model="listQuery.username"></el-input>
             开始时间：
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
@@ -51,6 +51,11 @@
             <el-table-column label="请求action">
                 <template slot-scope="scope">
                     <span class="link-type">{{scope.row.type}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="IP">
+                <template slot-scope="scope">
+                    <span class="link-type">{{scope.row.ip}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="时间">

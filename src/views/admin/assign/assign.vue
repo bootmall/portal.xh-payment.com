@@ -3,7 +3,7 @@
         <div class="filter-container">
             <el-row>
                 <el-col :span="24">
-                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="名称" v-model="listQuery.name"></el-input>
+                    <el-input @keyup.enter.native="handleFilter" class="filter-item" style="width: 300px" placeholder="名称" v-model="listQuery.name"></el-input>
 
                     <el-button class="" type="primary" v-waves icon="search" @click="handleFilter">搜索角色</el-button>
                 </el-col>
@@ -19,7 +19,7 @@
             <!--<h4>{{v}}</h4>-->
             <h4 class="permission_group_title">{{v.name}}-{{v.description}}</h4>
             <!--<el-checkbox-group >-->
-                <el-checkbox @change="handleCheckedPermissionChange" v-for="p in v.children" :label="p.name" :key="p.name">{{p.description}}</el-checkbox>
+                <el-checkbox style="margin-left: 0" @change="handleCheckedPermissionChange" v-for="p in v.children" :label="p.name" :key="p.name">{{p.description}}</el-checkbox>
             <!--</el-checkbox-group>-->
         </div>
         </el-checkbox-group>
@@ -72,6 +72,29 @@
       console.log(this.$route.params.role)
       this.listQuery.name = this.$route.params.role
       this.getList()
+    },
+    watch: {
+      '$route'(to, from) {
+        // 对路由变化作出响应...
+        let role = ''
+        console.log(to.query,from.query,to.role == from.role)
+        if(to.name == from.name){
+
+          if(to.query.role!=from.query.role){
+            role = to.query.role
+          }
+          else if(to.params.role!=from.params.role){
+            role = to.params.role
+          }
+        }else{
+          role = to.query.role ? to.query.role : to.params.role
+        }
+
+        if(role){
+          this.listQuery.name = role
+          this.getList()
+        }
+      },
     },
     computed: {
       ...mapGetters([
@@ -226,6 +249,7 @@
     .el-checkbox {
         line-height: 30px;
         width: 14%;
+        margin-left: 0px;
     }
     .permission_group_title{
         display: block;
