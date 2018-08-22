@@ -56,12 +56,18 @@ axios.interceptors.response.use(
             errMsg = '系统权限验证失败'
             if(response.data.message) errMsg+=':'+response.data.message
             errMsg+='(401-2)'
-            store.dispatch('LogOut')
-            window.location.href = loginUrl
-            console.log('window.location.href = '+loginUrl)
+            store.dispatch('LogOut').then(function () {
+              alert(errMsg);
+              window.location.href = loginUrl
+            })
           }
 
           // return response.data;
+      }
+
+      if(response.data.__token__){
+        common.setStorage('access_token',response.data.__token__)
+
       }
 
       if(errMsg==''){
@@ -77,9 +83,12 @@ axios.interceptors.response.use(
         if (error.response) {
             switch (error.response.status) {
                 case 401:
-                  alert('系统需要登录，即将前往登录页面:3');
+
                   errMsg = '系统需要登录，即将前往登录页面:3'
-                  store.dispatch('LogOut')
+                  store.dispatch('LogOut').then(function () {
+                    alert(errMsg);
+                    window.location.href = loginUrl
+                  })
                   // window.location.href = loginUrl
                   // return {'code':1,'message':'系统需要登录，即将前往登录页面:3'};
                   break;

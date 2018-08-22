@@ -150,7 +150,6 @@
             this.loading = true
             this.$store.dispatch('LoginByUsername', this.loginForm).then(
               response => {
-                  console.log(response.data.key_2fa)
                 if (typeof response.data.key_2fa != 'undefined' && response.data.key_2fa.length > 0) {
                   this.keyVisible = true;
                 } else {
@@ -312,6 +311,7 @@
             background-color:rgba(0,0,0,0.2); /* IE6和部分IE7内核的浏览器(如QQ浏览器)会读懂，但解析为透明 */
             border-radius:10px;
             -moz-border-radius:10px;
+            margin-left: 40%;
         }
         .el-form-item {
             /*border: 1px solid rgba(255, 255, 255, 0.1);*/

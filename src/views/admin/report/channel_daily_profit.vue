@@ -43,24 +43,9 @@
                     <span>{{scope.row.date}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="收款利润">
-                <template slot-scope="scope">
-                    <span>{{scope.row.recharge_plat_fee_profit}}</span>
-                </template>
-            </el-table-column>
             <el-table-column label="收款笔数">
                 <template slot-scope="scope">
                     <span>{{scope.row.recharge_count}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="收款总额">
-                <template slot-scope="scope">
-                    <span>{{scope.row.recharge_total}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="结算利润">
-                <template slot-scope="scope">
-                    <span>{{scope.row.remit_plat_fee_profit}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="结算笔数">
@@ -68,12 +53,31 @@
                     <span>{{scope.row.remit_count}}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="收款总额">
+                <template slot-scope="scope">
+                    <span>{{scope.row.recharge_total}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="收款利润">
+                <template slot-scope="scope">
+                    <span>{{scope.row.recharge_plat_fee_profit}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="结算总额">
                 <template slot-scope="scope">
                     <span>{{scope.row.remit_total}}</span>
                 </template>
             </el-table-column>
-
+            <el-table-column label="结算利润">
+                <template slot-scope="scope">
+                    <span>{{scope.row.remit_plat_fee_profit}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="总利润">
+                <template slot-scope="scope">
+                    <span>{{scope.row.total_profit}}</span>
+                </template>
+            </el-table-column>
         </el-table>
         <div v-show="!listLoading" class="pagination-container">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
@@ -88,6 +92,7 @@
   import {parseTime} from '@/utils'
   import axios from '@/utils/http'
   import common from '@/utils/common'
+  import math from 'mathjs'
 
   export default {
     name: 'vue_channel_account_trade_profit',
@@ -103,12 +108,13 @@
         listLoading: true,
         statusOptions: [],
         channelList: [],
+        summary: {},
         listQuery: {
           page: 1,
           limit: 20,
           channelAccountId: '',
           sort: '',
-          dateStart: new Date(new Date((new Date()).getTime() - 86400000*3).setHours(0, 0, 0, 0)),
+          dateStart: new Date(new Date((new Date()).getTime() - 86400000*30).setHours(0, 0, 0, 0)),
           dateEnd: null,
         },
         pickerOptions: {
@@ -147,13 +153,14 @@
         var self = this
         self.listLoading = true
         axios.post('/admin/report/channel-daily-profit', self.listQuery).then(
-          res => {
-            self.listLoading = false
-            if (res.code == 0) {
-              self.list = res.data.data
-              self.total = res.data.pagination.total
-            }
+        res => {
+          self.listLoading = false
+          if (res.code == 0) {
+            self.list= res.data.data
+            self.total = res.data.pagination.total
+            self.summary = res.data.summary
           }
+        }
         )
       },
         getChannelList() {

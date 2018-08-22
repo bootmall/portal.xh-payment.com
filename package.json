@@ -25,6 +25,7 @@
     "jsonlint": "1.6.2",
     "jszip": "3.1.4",
     "lodash": "latest",
+    "mathjs": "^5.1.1",
     "mockjs": "1.0.1-beta3",
     "normalize.css": "7.0.0",
     "npm": "^6.3.0",
