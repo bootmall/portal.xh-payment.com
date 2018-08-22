@@ -114,7 +114,7 @@
           limit: 20,
           channelAccountId: '',
           sort: '',
-          dateStart: new Date(new Date((new Date()).getTime() - 86400000*30).setHours(0, 0, 0, 0)),
+          dateStart: new Date(new Date((new Date()).getTime() - 86400000*1).setHours(0, 0, 0, 0)),
           dateEnd: null,
         },
         pickerOptions: {
