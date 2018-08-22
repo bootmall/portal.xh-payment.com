@@ -34,11 +34,11 @@
                 </el-col>
             </el-row>
         </el-form>
-        <el-dialog title="安全令牌" :visible.sync="keyVisible" width="30%">
+        <el-dialog title="安全令牌" :visible.sync="keyVisible" width="30%" :close-on-click-modal="false" @close="closeKey">
             令牌码：
             <el-input style="border: 1px solid #5a5e66;height: 26px;" class="key_2fa" v-model="key_2fa"></el-input>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="keyVisible = false">取 消</el-button>
+                <el-button @click="closeKey">取 消</el-button>
                 <el-button type="primary" :loading="loadingKey" @click="handleKey">确 定</el-button>
             </div>
         </el-dialog>
@@ -150,7 +150,7 @@
             this.loading = true
             this.$store.dispatch('LoginByUsername', this.loginForm).then(
               response => {
-
+                  console.log(response.data.key_2fa)
                 if (typeof response.data.key_2fa != 'undefined' && response.data.key_2fa.length > 0) {
                   this.keyVisible = true;
                 } else {
@@ -169,13 +169,16 @@
                 console.log('axios post err.', response);
                 this.$message.error({message: response.message})
                 this.loading = false
+                  if(response.message.indexOf('验证码') !== -1){
+                      this.refreshCaptcha()
+                  }
               }
             ).catch((error) => {
               this.loading = false
-              this.$message.error({message: '信息填写错误1，请检查'})
+              this.$message.error({message: '信息填写错误，请检查'})
             })
           } else {
-            this.$message.error({message: '信息填写错误2，请检查'})
+            this.$message.error({message: '信息填写错误，请检查'})
             return false
           }
         })
@@ -204,6 +207,15 @@
           },
         );
       },
+        closeKey(){
+            this.$store.dispatch('LogOut').then(() => {
+                //location.reload()// 为了重新实例化vue-router对象 避免bug
+            })
+            this.keyVisible = false
+            this.loading = false
+            this.loadingKey = false
+            this.refreshCaptcha()
+        },
     },
     created() {
       common.setDeviceClientId()
