@@ -226,7 +226,7 @@
         this.confirmVisible = false;
       },
       handleAppend() {
-        this.remitForm.push({bank_code: null, bank_name: null, bank_number: null, real_name: null, amount: null})
+        this.remitForm.push({bank_code: null, bank_name: null, bank_number: null, real_name: null, amount: null,status:0})
       },
       handleDel(index) {
         this.remitForm.splice(index, 1)
