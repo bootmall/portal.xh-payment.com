@@ -313,6 +313,9 @@
         console.log(key, keyPath);
       },
       getInitData() {
+          if(typeof this.user.user.from_profile == "undefined" || this.user.user.from_profile!='1'){
+            return
+          }
           if(this.group_id != 10){
               let self = this
               axios.post('/user/user-check').then(
@@ -561,6 +564,9 @@
         );
       },
       checkRemitStatus() {
+        if(typeof this.user.user.from_profile == "undefined" || this.user.user.from_profile!='1'){
+          return
+        }
         if (this.group_id == 10) {
           axios.post('/admin/remit/remind').then(
             res => {

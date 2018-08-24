@@ -3,6 +3,8 @@
     <div class="filter-container">
       <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="收款订单号"
                 v-model="listQuery.orderNo" size="small"></el-input>
+      <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
+                placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
       <el-date-picker class="filter-item"
                       v-model="listQuery.dateStart"
                       align="right"
@@ -22,13 +24,6 @@
                       style="width: 200px;"
                       :picker-options="pickerOptions">
       </el-date-picker>
-      <el-input style="width: 100px;" class="filter-item" size="small" clearable placeholder="最小金额"
-                @change.native="checkNumber()" v-model="listQuery.minMoney"></el-input>
-      -
-      <el-input style="width: 100px;" class="filter-item" size="small" clearable placeholder="最大金额"
-                @change.native="checkNumber()" v-model="listQuery.maxMoney"></el-input>
-      <el-input style="width: 120px;" class="filter-item" size="small" placeholder="代理账号"
-                v-model="listQuery.agentAccount"></el-input>
       <el-select class="filter-item" v-model="listQuery.status" placeholder="订单状态" size="small">
         <el-option
             v-for="(item,key) in statusOptions"
