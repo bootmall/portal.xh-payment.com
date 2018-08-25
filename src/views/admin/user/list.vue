@@ -101,7 +101,7 @@
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit stripe
-                  highlight-current-row style="width: 100%" :summary-method="getSummaries"
+                  highlight-current-row style="width: 100%" :summary-method="getSummaries" @sort-change="handleChangeSort"
                   @selection-change="handleSelectionChange">
             <el-table-column
                     type="selection"
@@ -141,7 +141,7 @@
                     <span v-for="(p,pk) in scope.row.tags" :key="pk">{{p.name}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="可用余额">
+            <el-table-column align="center" label="可用余额" sortable="custom" prop="balance" width="150px;">
                 <template slot-scope="scope">
                     <span>{{scope.row.balance==0?0:scope.row.balance}}</span>
                 </template>
@@ -450,7 +450,7 @@
           accountOpenFeeStatus: null,
           type: null,
           remit: null,
-            payChannel: null,
+          payChannel: null,
           tagId: '',
           sort: '',
           appIds: [],
@@ -595,6 +595,16 @@
         self.multipleSelection.forEach((u) => {
           self.listQuery.appIds.push(u.id)
         })
+      },
+      handleChangeSort(column, prop, order){
+console.log(column.order,column.prop)
+        this.listQuery.sort = ''
+        if(column.order == 'ascending'){
+          this.listQuery.sort=column.prop+'+'
+        }else if(column.order == 'descending'){
+          this.listQuery.sort=column.prop+'-'
+        }
+        this.getList()
       },
       getList() {
         var self = this
