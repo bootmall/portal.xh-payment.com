@@ -2,7 +2,7 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
             开始时间：
-            <el-date-picker  class="filter-item" style="width: 200px;"
+            <el-date-picker  class="filter-item" style="width: 200px;" size="small"
                              v-model="listQuery.dateStart"
                              align="right"
                              type="datetime"
@@ -10,7 +10,7 @@
                              :picker-options="pickerOptions">
             </el-date-picker>
             结束时间
-            <el-date-picker  class="filter-item" style="width: 200px;"
+            <el-date-picker  class="filter-item" style="width: 200px;" size="small"
                              v-model="listQuery.dateEnd"
                              align="right"
                              type="datetime"
@@ -19,15 +19,15 @@
             </el-date-picker>
 
             收款订单号：
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" size="small" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
             商户订单号：
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" size="small" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
             商户编号：
-            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
+            <el-input @keyup.enter.native="handleFilter" class="filter-item" style="width: 200px;" size="small" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
             商户账号：
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantAccount"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" size="small" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantAccount"></el-input>
             订单状态：
-            <el-select class="filter-item" v-model="listQuery.status" placeholder="订单状态" >
+            <el-select class="filter-item" v-model="listQuery.status" size="small" placeholder="订单状态" >
                 <el-option
                         v-for="(item,key) in statusOptions"
                         :key="key"
@@ -36,7 +36,7 @@
                 </el-option>
             </el-select>
             通知状态：
-            <el-select class="filter-item" v-model="listQuery.notifyStatus" placeholder="通知状态">
+            <el-select class="filter-item" v-model="listQuery.notifyStatus" size="small" placeholder="通知状态">
                 <el-option
                         v-for="(item,key) in notifyStatusOptions"
                         :key="key"
@@ -44,7 +44,7 @@
                         :value="key">
                 </el-option>
             </el-select>
-            <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+            <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
 
         <el-table  stripe :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%" >

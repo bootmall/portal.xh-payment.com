@@ -95,7 +95,14 @@
                 </template>
             </el-table-column>
             <el-table-column prop="channel_order_no" label="凭证" width="165"></el-table-column>
-            <el-table-column prop="bak" label="备注" width="100"></el-table-column>
+            <el-table-column prop="bak" label="备注" width="100">
+                <template slot-scope="scope">
+                    <el-tooltip v-if="scope.row.bak!=''" class="item" effect="light" placement="top">
+                        <span class="link-type">{{scope.row.bak.substr(0,32)}}...</span>
+                        <span slot="content" v-html="scope.row.bak"></span>
+                    </el-tooltip>
+                </template>
+            </el-table-column>
             <el-table-column prop="merchant_check_status_str" label="商户审核" width="100"></el-table-column>
             <el-table-column prop="created_at" label="建立时间" width="160"></el-table-column>
 
