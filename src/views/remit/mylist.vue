@@ -23,15 +23,14 @@
       </el-date-picker>
       <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
                 placeholder="卡号" v-model="listQuery.bankNo"></el-input>
-      <!--<el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="状态">-->
-        <!--<el-option-->
-            <!--v-for="(item,key) in statusOptions"-->
-            <!--:key="key"-->
-            <!--:label="item"-->
-            <!--:value="key">-->
-        <!--</el-option>-->
-      <!--</el-select>-->
-
+      <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="状态">
+        <el-option
+            v-for="(item,key) in statusOptions"
+            :key="key"
+            :label="item"
+            :value="key">
+        </el-option>
+      </el-select>
       <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索
       </el-button>
     </div>

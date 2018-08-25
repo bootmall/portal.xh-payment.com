@@ -39,7 +39,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-dialog title="安全令牌" :visible.sync="keyVisible" width="30%" :close-on-click-modal="false" @close="closeKey">
+    <el-dialog title="安全令牌" :visible.sync="keyVisible" width="30%" :close-on-click-modal="false"  :close-on-press-escape="false" :show-close="false">
       令牌码：
       <el-input style="border: 1px solid #5a5e66;height: 26px;" class="key_2fa" v-model="key_2fa"></el-input>
       <div slot="footer" class="dialog-footer">
@@ -191,7 +191,6 @@
         axios.post('/user/verify-key', data).then(
           res => {
             if (res.code == 0) {
-
               this.loginSuccess()
             } else {
               this.$message.error({message: res.message})
@@ -201,9 +200,8 @@
         );
       },
       closeKey() {
-        // this.$store.dispatch('LogOut').then(() => {
-        //
-        // })
+        this.$store.dispatch('LogOut').then(() => {
+        })
         this.keyVisible = false
         this.loading = false
         this.loadingKey = false

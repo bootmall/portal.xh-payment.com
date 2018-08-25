@@ -298,7 +298,7 @@ var getToken = function(){
 }
 
 var setToken = function(val){
-  return getStorage('access_token',val);
+  return setStorage('access_token',val);
 }
 var getPermissions = function(){
   return getStorage('permissions');
@@ -309,7 +309,7 @@ var setPermissions = function(val){
 }
 
 var removeToken = function(){
-  setStorage('access_token','');
+  setToken('');
 }
 
 var checkLogin = function () {
@@ -329,10 +329,6 @@ var checkLogin = function () {
 
         window.location.href = loginUrl;
     }
-}
-
-var getYesterdayStr = function(){
-  setStorage('access_token','');
 }
 
 var getDateStr = function(addDayCount) {

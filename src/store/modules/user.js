@@ -79,7 +79,7 @@ const user = {
           commit('SET_ID', data.id)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', '')
-          commit('SET_TOKEN', data.access_token)
+          // commit('SET_TOKEN', data.access_token)
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -117,9 +117,10 @@ const user = {
 
     // 登出
     LogOut({ commit, state }) {
+      console.log('user.LogOut')
+      let token = common.getToken()
       return new Promise((resolve, reject) => {
-        if(state.token){
-          let token = state.token
+        if(token){
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           common.removeToken()
@@ -137,6 +138,7 @@ const user = {
 
     // 前端 登出
     FedLogOut({ commit }) {
+      console.log('user.FedLogOut')
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         common.removeToken()

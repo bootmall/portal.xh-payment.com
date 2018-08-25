@@ -14,8 +14,8 @@ var loginUrl = common.pageMap.login;
 // http request 拦截器
 axios.interceptors.request.use(
     config => {
-        let accessToken = common.getStorage('access_token');
-        if (typeof accessToken != 'undefined' && accessToken && accessToken.length>0) {
+        let accessToken = common.getToken();
+        if (accessToken && accessToken.length>0) {
             config.headers.common['Authorization'] = "Bearer "+accessToken;
         }
 
@@ -40,7 +40,11 @@ axios.interceptors.response.use(
         // alert('系统需要登录，即将前往登录页面:2');
         errMsg = '系统需要登录，即将前往登录页面:401-1'
         router.replace({path: '/login'})
-        window.location.href = loginUrl
+        if(window.location.href.indexOf(loginUrl)==-1){
+          alert(errMsg);
+
+          window.location.href = loginUrl
+        }
       }
       else if(response.status != 200){
         errMsg = '服务器错误: http-'+response.status
@@ -56,18 +60,20 @@ axios.interceptors.response.use(
             errMsg = '系统权限验证失败'
             if(response.data.message) errMsg+=':'+response.data.message
             errMsg+='(401-2)'
+
             store.dispatch('LogOut').then(function () {
-              alert(errMsg);
-              window.location.href = loginUrl
+              if(window.location.href.indexOf(loginUrl)==-1){
+                alert(errMsg);
+
+                window.location.href = loginUrl
+              }
             })
           }
-
-          // return response.data;
       }
 
-      if(response.data.__token__){
-        common.setStorage('access_token',response.data.__token__)
-
+      //自动刷新登录token
+      if(typeof response.data.data['__token__'] != "undefined" && response.data.data['__token__'].length>12){
+        common.setToken(response.data.data['__token__'])
       }
 
       if(errMsg==''){
@@ -86,16 +92,15 @@ axios.interceptors.response.use(
 
                   errMsg = '系统需要登录，即将前往登录页面:3'
                   store.dispatch('LogOut').then(function () {
-                    alert(errMsg);
-                    window.location.href = loginUrl
+                    if(window.location.href.indexOf(loginUrl)==-1){
+                      alert(errMsg);
+
+                      window.location.href = loginUrl
+                    }
                   })
-                  // window.location.href = loginUrl
-                  // return {'code':1,'message':'系统需要登录，即将前往登录页面:3'};
                   break;
                 default:
-                    // alert('网络错误，请重试: unknown.err.http.axios');
-                  // return {'code':1,'message':'网络错误，请重试: err.http.axios'};
-                  errMsg = '网络错误，请重试: err.http.axios'
+                  errMsg = '网络错误，请重试: err.http.status'
                   break;
             }
 
@@ -106,9 +111,7 @@ axios.interceptors.response.use(
               errMsg = error.response.data.message
             }
         }else{
-            // alert('网络错误，请重试: err.http.axios');
-          errMsg = '网络错误，请重试: err.http.axios'
-          // return {'code':1,'message':'网络错误，请重试: err.http.axios'};
+          errMsg = '网络错误，请重试: err.http.no.response'
         }
 
         if(errMsg=='') errMsg = JSON.stringify(error)
