@@ -570,7 +570,7 @@
         if (this.group_id == 10) {
           axios.post('/admin/remit/remind').then(
             res => {
-              if (res.code == 0 && res.data.length > 0) {
+              if (res.code == 0 && res.data.count > 0) {
                 let audio = document.getElementById('remind')
                 if (audio !== null) {
                   audio.currentTime = 0;
