@@ -11,7 +11,7 @@
         </el-select>
             <!--商户 <el-input style="width: 100px;" class="filter-item" v-model="listQuery.merchant_name"></el-input>-->
             商户ID <el-input style="width: 100px;" class="filter-item" v-model="listQuery.merchant_id"></el-input>
-            订单号 <el-input style="width: 200px;" class="filter-item" v-model="listQuery.event_id"></el-input>
+            订单号/商户订单号 <el-input style="width: 200px;" class="filter-item" v-model="listQuery.event_id"></el-input>
             开始时间：
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
@@ -46,9 +46,14 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="对象ID">
+            <el-table-column label="订单号">
                 <template slot-scope="scope">
                     <span class="link-type">{{scope.row.event_id}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="商户订单号">
+                <template slot-scope="scope">
+                    <span class="link-type">{{scope.row.merchant_order_no}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="商户ID">

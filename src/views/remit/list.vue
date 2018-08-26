@@ -98,7 +98,7 @@
             <el-table-column prop="bak" label="备注" width="100">
                 <template slot-scope="scope">
                     <el-tooltip v-if="scope.row.bak!=''" class="item" effect="light" placement="top">
-                        <span class="link-type">{{scope.row.bak.substr(0,32)}}...</span>
+                        <span class="link-type">详情</span>
                         <span slot="content" v-html="scope.row.bak"></span>
                     </el-tooltip>
                 </template>
