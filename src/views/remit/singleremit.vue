@@ -232,27 +232,31 @@
         this.remitForm.splice(index, 1)
       },
       batchSubmit() {
-        let self = this
+          let self = this
+          self.isLoading = true
+          let data = {
+              financial_password_hash: self.financial_password_hash,
+              key_2fa: self.key_2fa,
+              remitData: self.remitForm
+          }
+          self.financial_password_hash = null
+          self.key_2fa = null
+
         let regPass = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
-        if (!regPass.test(this.financial_password_hash)) {
-          this.$message.error({message: '资金密码格式不正确'})
+        if (!regPass.test(data.financial_password_hash)) {
+            self.$message.error({message: '资金密码格式不正确'})
           return
         }
         let regKey = /^[0-9]{6}$/;
-        if (!regKey.test(this.key_2fa)) {
-          this.$message.error({message: '安全令牌格式不正确'})
+        if (!regKey.test(data.key_2fa)) {
+            self.$message.error({message: '安全令牌格式不正确'})
           return
         }
-        if (this.remitForm.length > 300) {
-          this.$message.error({message: '提款条数超过300条'})
+        if (self.remitForm.length > 300) {
+            self.$message.error({message: '提款条数超过300条'})
           return
         }
-        let data = {
-          financial_password_hash: this.financial_password_hash,
-          key_2fa: this.key_2fa,
-          remitData: this.remitForm
-        }
-        self.isLoading = true
+
         axios.post('/remit/single-batch-remit', data).then(
           res => {
             self.isLoading = false
@@ -262,11 +266,11 @@
                 cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                this.remitForm = remitFormDefault
-                this.$router.push({name:'vue_my_remit'});
+                  self.remitForm = remitFormDefault
+                  self.$router.push({name:'vue_my_remit'});
               })
             } else {
-              this.$message.error({message: res.message})
+                self.$message.error({message: res.message})
             }
           }
         );

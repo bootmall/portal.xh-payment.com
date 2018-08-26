@@ -160,28 +160,35 @@
             },
             batchSubmit(){
               let self = this
+                self.isLoading = true
+                let data={
+                    financial_password_hash:self.financial_password_hash,
+                    key_2fa:self.key_2fa,
+                    remitData:self.excelData
+                }
+                self.financial_password_hash = null
+                self.key_2fa = null
                 let status = 0;
-                for(let i in this.excelData){
-                    if(this.excelData[i].status == 1){
+                for(let i in self.excelData){
+                    if(self.excelData[i].status == 1){
                         status = 1
                     }
                 }
                 if(status == 1){
-                    this.$message.error({message:'提款方案有错，请检查'})
+                    self.$message.error({message:'提款方案有错，请检查'})
                     return
                 }
                 let regPass =/^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
-                if(!regPass.test(this.financial_password_hash)){
-                    this.$message.error({message:'资金密码格式不正确'})
+                if(!regPass.test(data.financial_password_hash)){
+                    self.$message.error({message:'资金密码格式不正确'})
                     return
                 }
                 let regKey = /^[0-9]{6}$/;
-                if(!regKey.test(this.key_2fa)) {
-                  this.$message.error({message: '安全令牌格式不正确'})
+                if(!regKey.test(data.key_2fa)) {
+                    self.$message.error({message: '安全令牌格式不正确'})
                   return
                 }
-                self.isLoading = true
-                let data={financial_password_hash:this.financial_password_hash,key_2fa:this.key_2fa,remitData:this.excelData}
+
                 axios.post('/remit/single-batch-remit',data).then(
                     res=>{
                         self.isLoading = false
@@ -191,10 +198,10 @@
                             cancelButtonText: '取消',
                             type: 'warning'
                           }).then(() => {
-                            this.$router.push({name:'vue_my_remit'});
+                              self.$router.push({name:'vue_my_remit'});
                           })
                         }else {
-                            this.$message.error({message:res.message})
+                            self.$message.error({message:res.message})
                         }
                     }
                 );
