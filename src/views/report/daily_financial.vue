@@ -29,41 +29,19 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%">
 
-
-            <el-table-column label="商户ID">
+            <el-table-column label="商户名">
                 <template slot-scope="scope">
-                    <span>{{scope.row.user_id}}</span>
+                    <span>{{scope.row.username}}</span>
                 </template>
             </el-table-column>
-
-            <el-table-column label="商户名">
-            <template slot-scope="scope">
-                <span>{{scope.row.username}}</span>
-            </template>
-        </el-table-column>
+            <el-table-column label="日期">
+                <template slot-scope="scope">
+                    <span>{{scope.row.date}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="收款总额">
                 <template slot-scope="scope">
                     <span>{{scope.row.recharge}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="结算总额">
-                <template slot-scope="scope">
-                    <span>{{scope.row.remit}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="奖金总额">
-                <template slot-scope="scope">
-                    <span>{{scope.row.bonus}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="增金总额">
-                <template slot-scope="scope">
-                    <span>{{scope.row.total_income}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="减金总额">
-                <template slot-scope="scope">
-                    <span>{{scope.row.total_cost}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="收款手续费">
@@ -71,14 +49,19 @@
                     <span>{{scope.row.recharge_fee}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="结算手续费总额">
+            <el-table-column label="结算总额">
+                <template slot-scope="scope">
+                    <span>{{scope.row.remit}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="结算手续费">
                 <template slot-scope="scope">
                     <span>{{scope.row.remit_fee}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="转账手续费总额">
+            <el-table-column label="分润金额">
                 <template slot-scope="scope">
-                    <span>{{scope.row.transfer_fee}}</span>
+                    <span>{{scope.row.bonus}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="失败返还总额">
@@ -101,14 +84,19 @@
                     <span>{{scope.row.transfer_out}}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="增金总额">
+                <template slot-scope="scope">
+                    <span>{{scope.row.total_income}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="减金总额">
+                <template slot-scope="scope">
+                    <span>{{scope.row.total_cost}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="今日余额">
                 <template slot-scope="scope">
                     <span>{{scope.row.balance}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="日期">
-                <template slot-scope="scope">
-                    <span>{{scope.row.date}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="统计时间">
@@ -116,6 +104,17 @@
                     <span>{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
+
+            <!--<el-table-column label="商户ID">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<span>{{scope.row.user_id}}</span>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column label="转账手续费总额">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<span>{{scope.row.transfer_fee}}</span>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
 
         </el-table>
         <div v-show="!listLoading" class="pagination-container">

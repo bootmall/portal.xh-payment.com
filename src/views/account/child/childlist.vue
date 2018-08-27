@@ -214,7 +214,7 @@
         axios.post('/user/add-child', data).then(
           res => {
             if (res.code == 0) {
-              self.$message.success({message: '添加成功'});
+              self.$message.success({message: '添加成功,子账号默认密码：'+res.data});
               self.addForm.username = null;
               self.addForm.nickname = null;
               self.addForm.email = null;
@@ -263,7 +263,11 @@
             axios.post('/user/clear-child-pass-key', data).then(
                 res => {
                     if (res.code == 0) {
-                        self.$message.success({message: '操作成功'});
+                        let msg = '操作成功'
+                        if(type == 3){
+                            msg = '操作成功，默认密码：' + res.data
+                        }
+                        self.$message.success({message: msg});
                         self.getList();
                         self.statusVisible = false;
                     } else {
