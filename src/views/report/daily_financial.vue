@@ -27,7 +27,16 @@
             <!--<el-button class="filter-item" type="primary" @click="editVisible = true">添加配置</el-button>-->
         </div>
 
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%">
+        <el-table
+                :key='tableKey'
+                :data="list"
+                v-loading="listLoading"
+                element-loading-text="数据加载中，请稍候..."
+                border
+                fit
+                highlight-current-row
+                @sort-change="handleChangeSort"
+                style="width: 100%">
 
             <el-table-column label="商户名">
                 <template slot-scope="scope">
@@ -39,7 +48,7 @@
                     <span>{{scope.row.date}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="收款总额">
+            <el-table-column prop="recharge" sortable="custom" label="收款总额">
                 <template slot-scope="scope">
                     <span>{{scope.row.recharge}}</span>
                 </template>
@@ -49,7 +58,7 @@
                     <span>{{scope.row.recharge_fee}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="结算总额">
+            <el-table-column prop="remit" sortable="custom" label="结算总额">
                 <template slot-scope="scope">
                     <span>{{scope.row.remit}}</span>
                 </template>
@@ -59,7 +68,7 @@
                     <span>{{scope.row.remit_fee}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="分润金额">
+            <el-table-column prop="bonus" sortable="custom" label="分润金额">
                 <template slot-scope="scope">
                     <span>{{scope.row.bonus}}</span>
                 </template>
@@ -94,7 +103,7 @@
                     <span>{{scope.row.total_cost}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="今日余额">
+            <el-table-column prop="balance" sortable="custom" label="今日结余">
                 <template slot-scope="scope">
                     <span>{{scope.row.balance}}</span>
                 </template>
@@ -209,6 +218,15 @@
         this.listQuery.page = val
         this.getInitData()
       },
+        handleChangeSort(column, prop, order){
+            this.listQuery.sort = ''
+            if(column.order == 'ascending'){
+                this.listQuery.sort=column.prop+'+'
+            }else if(column.order == 'descending'){
+                this.listQuery.sort=column.prop+'-'
+            }
+            this.getInitData()
+        },
     }
   }
 </script>
