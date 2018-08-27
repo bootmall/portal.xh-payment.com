@@ -421,7 +421,12 @@
             if (res.code != 0) {
               self.$message.error({message: res.message})
             } else {
-              self.$message.success({message: res.message})
+              // self.$message.success({message: res.message})
+              self.$alert(res.message, '提示', {
+                dangerouslyUseHTMLString: true
+              }).then(() => {
+                // self.getList()
+              })
             }
 
           },

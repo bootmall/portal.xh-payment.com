@@ -597,7 +597,6 @@
         })
       },
       handleChangeSort(column, prop, order){
-console.log(column.order,column.prop)
         this.listQuery.sort = ''
         if(column.order == 'ascending'){
           this.listQuery.sort=column.prop+'+'
