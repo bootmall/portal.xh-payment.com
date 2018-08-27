@@ -11,16 +11,16 @@
             </li>
         </ul>
         <el-row :gutter="20">
-            <el-col :span="3" :offset="19"><div class="grid-content grid-content-label bg-purple">渠道总余额:</div></el-col>
-            <el-col :span="2"><div class="grid-content grid-content-value bg-purple">{{channel_total_balance}}</div></el-col>
+            <el-col :span="4" :offset="16"><div class="grid-content grid-content-label bg-purple">渠道总余额:</div></el-col>
+            <el-col :span="4"><div class="grid-content grid-content-value bg-purple">{{channel_total_balance}}</div></el-col>
         </el-row>
         <el-row :gutter="20">
-            <el-col :span="3" :offset="19"><div class="grid-content grid-content-label bg-purple">商户总余额:</div></el-col>
-            <el-col :span="2"><div class="grid-content grid-content-value bg-purple">{{merchant_total_balance}}</div></el-col>
+            <el-col :span="4" :offset="16"><div class="grid-content grid-content-label bg-purple">商户总余额:</div></el-col>
+            <el-col :span="4"><div class="grid-content grid-content-value bg-purple">{{merchant_total_balance}}</div></el-col>
         </el-row>
         <el-row :gutter="20">
-            <el-col :span="3" :offset="19"><div class="grid-content grid-content-label bg-purple">结余:</div></el-col>
-            <el-col :span="2"><div class="grid-content grid-content-value bg-purple">{{total_profit}}</div></el-col>
+            <el-col :span="4" :offset="16"><div class="grid-content grid-content-label bg-purple">结余:</div></el-col>
+            <el-col :span="4"><div class="grid-content grid-content-value bg-purple">{{total_profit}}</div></el-col>
         </el-row>
     </div>
 </template>
