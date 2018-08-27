@@ -33,6 +33,7 @@
       </el-select>
       <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索
       </el-button>
+      <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit
@@ -153,6 +154,17 @@
       ])
     },
     methods: {
+      exportResult(type){
+        self = this
+        self.listQuery.export = 1
+        self.listQuery.exportType = type
+        let url = common.pageMap.baseDomain+'/remit/my-list?access-token='+common.getToken()
+
+        common.downloadFile(url,self.listQuery)
+        self.$message.success({message: '文件已导出'})
+        self.listQuery.export = 0
+        self.listQuery.exportType = ''
+      },
       getList() {
         var self = this
 
