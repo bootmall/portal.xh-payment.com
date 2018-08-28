@@ -142,7 +142,7 @@
             <el-button type="primary" @click="handleBindLoginIp">绑定登录IP</el-button>
             <el-button type="primary" @click="apiVisible=true">收款出款接口开关</el-button>
             <el-button type="primary" @click="merchantRemitCheckFormVisible=true">允许商户审核出款订单</el-button>
-            <el-button type="primary" @click="apiResponseFormatFormVisible=true">设置API数据格式</el-button>
+            <el-button type="primary" @click="showApiResponseFormatForm()">设置API数据格式</el-button>
         </el-row>
         <el-row>
             <el-button type="primary" @click="handleUserStatus">修改商户状态</el-button>
@@ -442,11 +442,16 @@
                 title="设置商户API接口响应格式"
                 :visible.sync="apiResponseFormatFormVisible"
                 width="600px">
-            <p style="" class="el-alert--info">post form: <b>{"method":"post","format":"form"}</b><br />post json: <b>{"method":"post","format":"json"}</b><br />get: <b>{"method":"get","format":"form"}</b></p>
+            <!--<p style="" class="el-alert&#45;&#45;info">post form: <b>{"method":"post","format":"form"}</b><br />post json: <b>{"method":"post","format":"json"}</b><br />get: <b>{"method":"get","format":"form"}</b></p>-->
             <el-form>
                 <template>
-                    <el-form-item label="商户API接口响应格式：" label-width="180px" style="margin-top: 20px;width: 400px">
-                        <el-input size="small" type="text" v-model="userInfo.api_response_rule" style="width: 300px"></el-input>
+                    <el-form-item label="商户API接口响应格式：" label-width="180px" style="margin-top: 20px;width: 600px">
+                        <!--<el-input size="small" type="text" v-model="userInfo.api_response_rule" style="width: 300px"></el-input>-->
+                        <el-radio-group v-model="userInfo.api_response_rule">
+                            <el-radio-button label="post_json">post_json</el-radio-button>
+                            <el-radio-button label="post_form">post_form</el-radio-button>
+                            <el-radio-button label="get">get</el-radio-button>
+                        </el-radio-group>
                     </el-form-item>
                 </template>
             </el-form>
@@ -462,7 +467,11 @@
 
 <script>
   import axios from '@/utils/http'
-
+  const apiResponseRules = {
+    'post_json':'{"method":"post","format":"json"}',
+    'post_form':'{"method":"post","format":"form"}',
+    'get':'{"method":"get","format":"form"}'
+  }
   export default {
     name: "vue_merchant_detail",
     data() {
@@ -967,11 +976,20 @@
         )
       },
 
+      showApiResponseFormatForm(){
+        let self = this
+        for(let r in apiResponseRules){
+          console.log(r,apiResponseRules[r],self.userInfo.api_response_rule)
+          if(apiResponseRules[r]==self.userInfo.api_response_rule) self.userInfo.api_response_rule = r
+        }
+        self.apiResponseFormatFormVisible = true;
+      },
+
       setApiResponseFormat() {
         let self = this
         let data = {
           merchantId: self.userInfo.id,
-          rule: self.userInfo.api_response_rule,
+          rule: apiResponseRules[self.userInfo.api_response_rule],
         }
         axios.post('/admin/user/set-api-response-format', data).then(
           res => {
@@ -980,7 +998,7 @@
             } else {
               self.$message.success({message: '绑定成功'});
               self.getInitData()
-              self.merchantRemitCheckFormVisible = false;
+              self.apiResponseFormatFormVisible = false;
             }
           },
         )
