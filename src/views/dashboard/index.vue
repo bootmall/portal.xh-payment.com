@@ -171,7 +171,7 @@
                   style="height: 300px;"
                   class="notice-list">
             <!--<el-tab-pane :label="item.title" v-for="(item,key) in notice" :key="key" v-text="item.title" @click="content = item.content">{{item.content}}</el-tab-pane>-->
-            <el-tab-pane style="height: 300px;overflow:auto;line-height: 12px;" :label="item.title" v-for="(item,key) in notice" :key="key" v-html="item.content" @click="content = item.content"></el-tab-pane>
+            <el-tab-pane style="height: 300px;overflow:auto;line-height: 18px;" :label="item.title" v-for="(item,key) in notice" :key="key" v-html="item.content" @click="content = item.content"></el-tab-pane>
           </el-tabs>
         </el-row>
         <el-row :gutter="20" style="margin-left: 50px;line-height: 60px;width: 90%;background-color: #eee;color: #333;">
