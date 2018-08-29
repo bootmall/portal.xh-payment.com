@@ -115,8 +115,9 @@
                                @click="setSuccess(scope.row)" v-waves>成功
                     </el-button>
                     <el-button class="filter-item" size="mini" v-if="[0,20].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
-" @click="setChecked(scope.row.id)" v-waves>审核
-                    </el-button>
+" @click="setChecked(scope.row.id)" v-waves>审核</el-button>
+                        <el-button type="warning" class="filter-item" size="mini" v-if="[60].indexOf(scope.row.status) !== -1" icon="el-icon-refresh
+" @click="reSubmit(scope.row.id)" v-waves>重提</el-button>
                     <el-button class="filter-item" size="mini" icon="el-icon-edit" type="danger" v-if="scope.row.track == 0" @click="handleTrack(scope.row)" v-waves>录入</el-button>
                     <!--<el-button class="filter-item" size="mini" v-waves>IP</el-button>-->
                     <!--v-if="[30,40,50,60,-10,-20].indexOf(parseInt(scope.row.status)) !== -1"-->
@@ -532,6 +533,38 @@
             self.$message.error({message: res.message})
           }
         )
+      },
+      reSubmit(id) {
+        self = this
+
+        self.$confirm('此操作将重新提交订单到上游, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          let idList = self.listQuery.idList
+          if (id) {
+            idList = [id]
+          }
+          self.listLoading = true
+          axios.post('/admin/remit/re-submit-to-bank', {idList: idList}).then(
+            res => {
+              self.listLoading = false
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                self.getList()
+              }
+            },
+            res => {
+              self.$message.error({message: res.message})
+            }
+          )
+
+        })
+
       },
       syncStatus(id) {
         self = this
