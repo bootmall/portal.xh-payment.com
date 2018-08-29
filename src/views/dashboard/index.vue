@@ -166,9 +166,12 @@
             <!--</el-aside>-->
             <!--<el-main border v-html="content" style="border:1px solid #ececec;margin-left: 5px"></el-main>-->
           <!--</el-container>-->
-          <el-tabs tab-position="left" style="height: 200px;" class="notice-list">
+          <el-tabs
+                  tab-position="left"
+                  style="height: 300px;"
+                  class="notice-list">
             <!--<el-tab-pane :label="item.title" v-for="(item,key) in notice" :key="key" v-text="item.title" @click="content = item.content">{{item.content}}</el-tab-pane>-->
-            <el-tab-pane style="height: 200px;overflow:auto;" :label="item.title" v-for="(item,key) in notice" :key="key" v-html="item.content" @click="content = item.content"></el-tab-pane>
+            <el-tab-pane style="height: 300px;overflow:auto;line-height: 12px;" :label="item.title" v-for="(item,key) in notice" :key="key" v-html="item.content" @click="content = item.content"></el-tab-pane>
           </el-tabs>
         </el-row>
         <el-row :gutter="20" style="margin-left: 50px;line-height: 60px;width: 90%;background-color: #eee;color: #333;">
