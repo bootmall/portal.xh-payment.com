@@ -423,7 +423,8 @@
             } else {
               // self.$message.success({message: res.message})
               self.$alert(res.message, '提示', {
-                dangerouslyUseHTMLString: true
+                dangerouslyUseHTMLString: true,
+                customClass: 'sync-box',
               }).then(() => {
                 // self.getList()
               })

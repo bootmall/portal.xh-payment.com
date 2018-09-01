@@ -160,7 +160,6 @@
             },
             batchSubmit(){
               let self = this
-                self.isLoading = true
                 let data={
                     financial_password_hash:self.financial_password_hash,
                     key_2fa:self.key_2fa,
@@ -188,7 +187,7 @@
                     self.$message.error({message: '安全令牌格式不正确'})
                   return
                 }
-
+              self.isLoading = true
                 axios.post('/remit/single-batch-remit',data).then(
                     res=>{
                         self.isLoading = false
