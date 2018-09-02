@@ -52,6 +52,11 @@
                         <span>出款费率(元/笔)：</span><span>{{userInfo.remit_fee | numberFormat}}</span>
                     </div>
                 </el-col>
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>转账手续费(元/笔)：</span><span>{{userInfo.account_transfer_fee | numberFormat}}</span>
+                    </div>
+                </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="8">
@@ -165,6 +170,9 @@
                     <span v-if="userInfo.lower_remit_fee > 0 " v-text="userInfo.lower_remit_fee"></span>
                     <span v-else></span>
                 </el-form-item>
+                <el-form-item label="转账手续费(元/每笔)：" label-width="180px">
+                    <el-input size="small" v-model="rateForm.account_transfer_fee" style="width: 200px"></el-input>
+                </el-form-item>
                 <el-form-item class="el-row-rate" label-width="100px" v-for="(item,key) in payMethodsOptions" :key="key" :label="item+'：'">
                     <el-input size="small" style="width: 200px" @change="checkRate(rateForm.pay_methods[key],key)" v-model="rateForm.pay_methods[key]"></el-input>
                     <el-switch style="margin-left: 20px"
@@ -245,6 +253,9 @@
                     </el-form-item>
                     <el-form-item label="手工出款免审核最高金额：" label-width="180px">
                         <el-input size="small" v-model="apiForm.allow_manual_fast_remit" style="width: 200px" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="免出款手续费最低金额：" label-width="180px">
+                        <el-input size="small" v-model="apiForm.remit_fee_free_quota" style="width: 200px" ></el-input>
                     </el-form-item>
                     <el-form-item label="支持接口充值：" label-width="180px">
                         <el-switch style="margin-left: 20px"
@@ -533,6 +544,7 @@
           allow_manual_recharge: "1",
           allow_manual_remit: "1",
           allow_manual_fast_remit: "0",
+          remit_fee_free_quota: "0",
         },
         agentId: null,
         channelOptions: {},
@@ -640,6 +652,7 @@
               self.apiForm.allow_api_remit = self.userInfo.allow_api_remit + ''
               self.apiForm.allow_manual_recharge = self.userInfo.allow_manual_recharge + ''
               self.apiForm.allow_manual_remit = self.userInfo.allow_manual_remit + ''
+              self.apiForm.remit_fee_free_quota = self.userInfo.remit_fee_free_quota + ''
 
               self.remitMaxFee = res.data.remitMaxFee
               self.rechargeMaxRate = res.data.rechargeMaxRate
@@ -789,6 +802,7 @@
       },
       handleSetRate() {
         this.rateForm.remit_fee = this.userInfo.remit_fee;
+        this.rateForm.account_transfer_fee = this.userInfo.account_transfer_fee;
         this.rateForm.channel_id = this.userInfo.channel_account_id;
         this.rateForm.remit_channel_id = this.userInfo.remit_channel_account_id;
         this.rateForm.parent_agent_id = this.userInfo.parent_agent_id;
@@ -839,7 +853,8 @@
           remitQuotaPerday: self.rateForm.remit_quota_perday,
           rechargeQuotaPerday: self.rateForm.recharge_quota_perday,
           rechargeQuotaPertime: self.rateForm.recharge_quota_pertime,
-          remitQuotaPertime: self.rateForm.remit_quota_pertime
+          remitQuotaPertime: self.rateForm.remit_quota_pertime,
+          account_transfer_fee: self.rateForm.account_transfer_fee
         };
         axios.post('/admin/user/update-rate', data).then(
           res => {
