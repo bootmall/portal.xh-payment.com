@@ -243,15 +243,8 @@
         self.listQuery.export = 1
         self.listQuery.exportType = type
         let url = common.pageMap.baseDomain+'/financial/list?access-token='+common.getToken()
-        // let str = [];
-        // for (var p in self.listQuery)
-        //   if (self.listQuery.hasOwnProperty(p)) {
-        //     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(self.listQuery[p]))
-        //   }
-        // let qs = str.join("&")
-        // window.open(url+'&'+qs)
-
-        common.downloadFile(url,self.listQuery)
+        let params = JSON.parse(JSON.stringify(self.listQuery))
+        common.downloadFile(url,params)
         self.$message.success({message: '文件已导出'})
         self.listQuery.export = 0
         self.listQuery.exportType = ''

@@ -391,7 +391,8 @@
         self.listQuery.exportType = type
         let url = common.pageMap.baseDomain + '/order/list?access-token=' + common.getToken()
 
-        common.downloadFile(url, self.listQuery)
+        let params = JSON.parse(JSON.stringify(self.listQuery))
+        common.downloadFile(url,params)
         self.$message.success({message: '文件已导出'})
         self.listQuery.export = 0
         self.listQuery.exportType = ''
