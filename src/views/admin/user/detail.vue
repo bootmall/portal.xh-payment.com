@@ -54,7 +54,7 @@
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content">
-                        <span>转账手续费(元/笔)：</span><span>{{userInfo.account_transfer_fee | numberFormat}}</span>
+                        <span>转账手续费：</span><span>{{userInfo.account_transfer_fee | numberFormat}}</span>
                     </div>
                 </el-col>
             </el-row>
