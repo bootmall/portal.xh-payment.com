@@ -313,7 +313,7 @@
         console.log(key, keyPath);
       },
       getInitData() {
-          if(typeof this.user.user.from_profile == "undefined" || this.user.user.from_profile!='1'){
+          if(!common.getToken() || typeof this.user.user.from_profile == "undefined" || this.user.user.from_profile!='1'){
             return
           }
           if(this.group_id != 10){

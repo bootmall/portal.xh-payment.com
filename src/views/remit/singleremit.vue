@@ -87,15 +87,16 @@
     },
     created() {
       checkCanRemit().then(res => {
+        console.log('ssssss')
         if (res.code != 0) {
-          // this.$alert(res.message, '系统提示', {type: 'error'})
+          this.$alert(res.message+",点击右上角用户名即可设置资金密码及安全令牌", '系统提示', {type: 'error'})
           this.canRemit = false
-          this.remitNoticeStr = res.message
+          this.remitNoticeStr = res.message+",点击右上角用户名即可设置资金密码及安全令牌"
         }
       }).catch(error => {
-        // this.$alert(error, '系统提示11', {type: 'error'})
+        this.$alert(error+",点击右上角用户名即可设置资金密码及安全令牌", '系统提示', {type: 'error'})
         this.canRemit = false
-        this.remitNoticeStr = error
+        this.remitNoticeStr = error+",点击右上角用户名即可设置资金密码及安全令牌"
       })
 
       this.getBankList()
