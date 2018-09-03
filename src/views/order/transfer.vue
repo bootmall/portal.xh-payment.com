@@ -10,6 +10,9 @@
               <el-form-item label="转入账户名" prop="transferIn" class="el-form-item-input" >
                 <el-input v-model="commonForm.transferIn"></el-input>
               </el-form-item>
+              <el-form-item label="转入商户号" prop="transferInUid" class="el-form-item-input" >
+                <el-input v-model="commonForm.transferInUid"></el-input>
+              </el-form-item>
               <el-form-item label="金额" prop="amount" class="el-form-item-input">
                 <el-input v-model="commonForm.amount"></el-input>
               </el-form-item>
@@ -56,7 +59,7 @@
     },
     data() {
       return {
-        commonForm: {transferIn: null, amount: null, financial_password_hash: null, key_2fa: null, bak: null},
+        commonForm: {transferIn: null, transferInUid: null, amount: null, financial_password_hash: null, key_2fa: null, bak: null},
         formVisible: true,
         confirmVisible: false,
         bankOptions: {},
@@ -69,6 +72,10 @@
           transferIn: [
             { required: true, message: '请输入转入账户名', trigger: 'blur' },
             { min: 6, max: 21, message: '用户名不合法', trigger: 'blur' }
+          ],
+          transferInUid: [
+            { required: true, message: '请输入转入商户号', trigger: 'blur' },
+            { min: 5, max: 21, message: '商户号不合法', trigger: 'blur' }
           ],
           amount: [
             { required: true,message: '请输入金额', trigger: 'change' }
