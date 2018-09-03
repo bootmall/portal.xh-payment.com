@@ -95,7 +95,11 @@
                     <span >{{scope.row.created_at}}</span>
                 </template>
             </el-table-column>
-
+            <el-table-column align="center" label="对方账户" width="160">
+                <template slot-scope="scope">
+                    <span>{{scope.row.to_username}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="备注" class="action-btns">
                 <template slot-scope="scope">
                     <span>{{scope.row.bak}}</span>

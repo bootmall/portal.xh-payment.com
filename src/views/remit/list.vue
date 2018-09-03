@@ -108,22 +108,24 @@
 
             <el-table-column align="center" label="操作" class="action-btns" fixed="right" width="200px" class-name="op-column">
                 <template slot-scope="scope">
-                    <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1" icon="el-icon-warning" type="warning"
-                               @click="setFail(scope.row)" v-waves>退款
+                    <div v-if="scope.row.merchant_check_status_str!='未审核'">
+                        <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1" icon="el-icon-warning" type="warning"
+                                                                                      @click="setFail(scope.row)" v-waves>退款
                     </el-button>
-                    <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1" type="success" icon="el-icon-check"
-                               @click="setSuccess(scope.row)" v-waves>成功
-                    </el-button>
-                    <el-button class="filter-item" size="mini" v-if="[0,20].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
+                        <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1" type="success" icon="el-icon-check"
+                                   @click="setSuccess(scope.row)" v-waves>成功
+                        </el-button>
+                        <el-button class="filter-item" size="mini" v-if="[0,20].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
 " @click="setChecked(scope.row.id)" v-waves>审核</el-button>
                         <el-button type="warning" class="filter-item" size="mini" v-if="[60].indexOf(scope.row.status) !== -1" icon="el-icon-refresh
 " @click="reSubmit(scope.row.id)" v-waves>重提</el-button>
-                    <el-button class="filter-item" size="mini" icon="el-icon-edit" type="danger" v-if="scope.row.track == 0" @click="handleTrack(scope.row)" v-waves>录入</el-button>
-                    <!--<el-button class="filter-item" size="mini" v-waves>IP</el-button>-->
-                    <!--v-if="[30,40,50,60,-10,-20].indexOf(parseInt(scope.row.status)) !== -1"-->
-                    <el-button class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatus(scope.row.id)" v-waves>同步</el-button>
-                    <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
-                    <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
+                        <el-button class="filter-item" size="mini" icon="el-icon-edit" type="danger" v-if="scope.row.track == 0" @click="handleTrack(scope.row)" v-waves>录入</el-button>
+                        <!--<el-button class="filter-item" size="mini" v-waves>IP</el-button>-->
+                        <!--v-if="[30,40,50,60,-10,-20].indexOf(parseInt(scope.row.status)) !== -1"-->
+                        <el-button class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatus(scope.row.id)" v-waves>同步</el-button>
+                        <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
+                        <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
+                    </div>
                 </template>
             </el-table-column>
 

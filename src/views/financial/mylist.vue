@@ -74,7 +74,16 @@
                     <span>{{scope.row.balance}}</span>
                 </template>
             </el-table-column>
-
+            <el-table-column align="center" label="对方账户" width="160">
+                <template slot-scope="scope">
+                    <span>{{scope.row.to_username}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="备注" width="160">
+                <template slot-scope="scope">
+                    <span>{{scope.row.bak}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="时间" width="180">
                 <template slot-scope="scope">
                     <span >{{scope.row.created_at}}</span>

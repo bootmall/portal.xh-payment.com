@@ -54,7 +54,7 @@
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content">
-                        <span>转账手续费：</span><span>{{userInfo.account_transfer_fee | numberFormat}}</span>
+                        <span>转账手续费(-1使用系统设置,0免费)：</span><span>{{userInfo.account_transfer_fee | numberFormat}}</span>
                     </div>
                 </el-col>
             </el-row>
@@ -170,8 +170,9 @@
                     <span v-if="userInfo.lower_remit_fee > 0 " v-text="userInfo.lower_remit_fee"></span>
                     <span v-else></span>
                 </el-form-item>
-                <el-form-item label="转账手续费(元/每笔)：" label-width="180px">
+                <el-form-item label="转账手续费(-1使用系统设置,0免费)：" label-width="180px">
                     <el-input size="small" v-model="rateForm.account_transfer_fee" style="width: 200px"></el-input>
+                    <span>系统当前{{userInfo.sys_account_transfer_fee}}</span>
                 </el-form-item>
                 <el-form-item class="el-row-rate" label-width="100px" v-for="(item,key) in payMethodsOptions" :key="key" :label="item+'：'">
                     <el-input size="small" style="width: 200px" @change="checkRate(rateForm.pay_methods[key],key)" v-model="rateForm.pay_methods[key]"></el-input>
