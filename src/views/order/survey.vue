@@ -202,7 +202,7 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: new Date().setTime((new Date()).getTime() - 3600 * 1000 * 24 * 25),
+          dateStart: new Date().setTime((new Date()).getTime() - 3600 * 1000 * 24 * 7),
           dateEnd: null,
           orderNo: null,
           merchantNo: null,
@@ -312,6 +312,7 @@
             break;
         }
 
+        this.parsteTxtVal = this.listQuery[filed]
         this.parsteTxtTitle = title
         this.parsteTxtField = filed
         this.parsteTxtVisible = true
