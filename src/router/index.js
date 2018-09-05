@@ -93,6 +93,33 @@ export const asyncRouterMap = [
       {path: 'index', component: _import("remit/list"),view: "remit/list", name: 'vue_admin_remit_list', meta: {title: '结算订单', icon: 'excel', role: ['admin'], noCache: true}},
     ]
   },
+  // 管理员使用
+  {
+    path: '/merchant/list',
+    component: Layout,
+    redirect: '',
+    name: 'vue_merchant_list',
+    meta: {title: '商户管理', icon: 'excel', role: ['admin']},
+    children: [
+      // {path: 'merchant_add', component: _import("admin/user/edit"),view: "admin/user/edit", name: 'vue_merchant_add', meta: {title: '新增商户', icon: 'excel', role: ['admin'], noCache: true},hidden:true},
+      {path: '', component: _import("admin/user/list"),view: "admin/user/list", name: 'vue_merchant_list', meta: {title: '商户管理', icon: 'excel', role: ['admin'], noCache: true}},
+
+    ]
+  },
+  {
+    path: '/merchant',
+    component: Layout,
+    redirect: 'list',
+    name: 'vue_merchant',
+    meta: {title: '商户管理', icon: 'excel', role: ['admin']},
+    hidden:true,
+    children: [
+      //   添加商户功能入口需要移到商户管理页面
+      {path: 'merchant_add', component: _import("admin/user/edit"),view: "admin/user/edit", name: 'vue_merchant_add', meta: {title: '新增商户', icon: 'excel', role: ['admin'], noCache: true},hidden:true},
+      {path: 'merchant_detail', component: _import("admin/user/detail"),view: "admin/user/detail", name: 'vue_merchant_detail', meta: {title: '商户详情', icon: 'excel', role: ['admin'], noCache: false},hidden:true},
+
+    ]
+  },
   {
     path: '/financial',
     component: Layout,
@@ -184,21 +211,6 @@ export const asyncRouterMap = [
       {path: 'merchant_key', component: _import("layout/empty"),view: "layout/empty", name: 'vue_merchant_key', meta: {title: '商户Key值', icon: 'excel', role: ['merchant', 'agent'], noCache: true},hidden:true},
       // google令牌绑定
       {path: 'th2fa', component: _import("layout/empty"),view: "layout/empty", name: 'vue_th2fa', meta: {title: '安全令牌', icon: 'excel', role: ['merchant', 'agent', 'admin'], noCache: true},hidden:true},
-    ]
-  },
-  // 管理员使用
-  {
-    path: '/merchant',
-    component: Layout,
-    redirect: 'list',
-    name: 'vue_merchant',
-    meta: {title: '商户管理', icon: 'excel', role: ['admin']},
-    children: [
-      //   添加商户功能入口需要移到商户管理页面
-      {path: 'merchant_add', component: _import("admin/user/edit"),view: "admin/user/edit", name: 'vue_merchant_add', meta: {title: '新增商户', icon: 'excel', role: ['admin'], noCache: true},hidden:true},
-      {path: 'list', component: _import("admin/user/list"),view: "admin/user/list", name: 'vue_merchant_list', meta: {title: '商户管理', icon: 'excel', role: ['admin'], noCache: true}},
-      {path: 'merchant_detail', component: _import("admin/user/detail"),view: "admin/user/detail", name: 'vue_merchant_detail', meta: {title: '商户详情', icon: 'excel', role: ['admin'], noCache: false},hidden:true},
-
     ]
   },
   // 管理员使用

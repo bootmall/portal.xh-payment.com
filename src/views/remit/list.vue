@@ -9,7 +9,7 @@
                 placeholder="商户编号"></el-input>
       <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantAccount"
                 placeholder="商户账号"></el-input>
-      <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号">
+      <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号" multiple >
         <el-option
             v-for="(item,key) in channelAccountOptions"
             :key="key"
@@ -19,7 +19,7 @@
       </el-select>
       <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
                 placeholder="卡号" v-model="listQuery.bankNo"></el-input>
-      <el-select class="filter-item" v-model="listQuery.status" size="small" placeholder="状态">
+      <el-select class="filter-item" v-model="listQuery.status" size="small" placeholder="状态" multiple >
         <el-option
             v-for="(item,key) in statusOptions"
             :key="key"

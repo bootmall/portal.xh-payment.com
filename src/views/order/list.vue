@@ -28,7 +28,7 @@
             -
             <el-input style="width: 100px;" class="filter-item" size="small" clearable placeholder="最大金额" @change.native="checkNumber()" v-model="listQuery.maxMoney"></el-input>
             <el-input style="width: 120px;" class="filter-item" size="small" placeholder="代理账号" v-model="listQuery.agentAccount"></el-input>
-            <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态">
+            <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态" multiple >
                 <el-option
                         v-for="(item,key) in statusOptions"
                         :key="item.id"
@@ -44,7 +44,7 @@
                         :value="item.id">
                 </el-option>
             </el-select>
-            <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号">
+            <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号" multiple >
                 <el-option
                         v-for="(item,key) in channelAccountOptions"
                         :key="item.id"
@@ -52,7 +52,7 @@
                         :value="item.id">
                 </el-option>
             </el-select>
-            <el-select class="filter-item" size="small" v-model="listQuery.method" placeholder="支付类型">
+            <el-select class="filter-item" size="small" v-model="listQuery.method" placeholder="支付类型" multiple >
                 <el-option
                         v-for="(item,key) in methodOptions"
                         :key="item.id"
