@@ -1,10 +1,15 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" @focus="showParsteTxt('orderNo')" size="small" style="width: 200px" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
+            <!--<i icon="el-icon-tickets" class="filter-item" @click="showParsteTxt('orderNo')" style="width: 20px;display: inline-block;color: orange" >贴</i>-->
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
             <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName"></el-input>
+            <el-input @keyup.enter.native="handleFilter" @focus="showParsteTxt('client_ip')" size="small" style="width: 200px;" class="filter-item" placeholder="IP" v-model="listQuery.client_ip"></el-input>
+            <!--<i icon="el-icon-tickets" @click="showParsteTxt('client_ip')" style="width: 20px;display: inline-block;color: orange" >贴</i>-->
+            <el-input @keyup.enter.native="handleFilter" size="small" @focus="showParsteTxt('client_id')" style="width: 200px;" class="filter-item" placeholder="设备号" v-model="listQuery.client_id"></el-input>
+            <!--<i icon="el-icon-tickets" @click="showParsteTxt('client_id')" style="width: 20px;display: inline-block;color: orange" >贴</i>-->
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
@@ -24,54 +29,12 @@
                             :picker-options="pickerOptions">
             </el-date-picker>
 
-            <el-input style="width: 100px;" class="filter-item" size="small" clearable placeholder="最小金额" @change.native="checkNumber()" v-model="listQuery.minMoney"></el-input>
-            -
-            <el-input style="width: 100px;" class="filter-item" size="small" clearable placeholder="最大金额" @change.native="checkNumber()" v-model="listQuery.maxMoney"></el-input>
-            <el-input style="width: 120px;" class="filter-item" size="small" placeholder="代理账号" v-model="listQuery.agentAccount"></el-input>
-            <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态">
-                <el-option
-                        v-for="(item,key) in statusOptions"
-                        :key="item.id"
-                        :label="item.val"
-                        :value="item.id">
-                </el-option>
-            </el-select>
-            <el-select class="filter-item" size="small" v-model="listQuery.notifyStatus" placeholder="通知状态">
-                <el-option
-                        v-for="(item,key) in notifyStatusOptions"
-                        :key="item.id"
-                        :label="item.val"
-                        :value="item.id">
-                </el-option>
-            </el-select>
-            <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号">
-                <el-option
-                        v-for="(item,key) in channelAccountOptions"
-                        :key="item.id"
-                        :label="item.val"
-                        :value="item.id">
-                </el-option>
-            </el-select>
-            <el-select class="filter-item" size="small" v-model="listQuery.method" placeholder="支付类型">
-                <el-option
-                        v-for="(item,key) in methodOptions"
-                        :key="item.id"
-                        :label="item.val"
-                        :value="item.id">
-                </el-option>
-            </el-select>
-
-            <!--<el-input  style="width: 120px;" class="filter-item" placeholder="代理号" v-model="listQuery.merchantOrderNo"></el-input>-->
-
-            <!--<el-select @change='handleFilter' style="width: 120px" class="filter-item" v-model="listQuery.sort" placeholder="排序">-->
-            <!--<el-option v-for="item in sortOptions" :key="item.label" :label="item.label" :value="item.key">-->
-            <!--</el-option>-->
-            <!--</el-select>-->
-
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-            <el-button class="filter-item"  size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
-            <!--<el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>-->
-            <el-button class="filter-item"  size="small" type="primary" @click="setSettlement('')" >结算筛选订单</el-button>
+            <el-button class="filter-item"  size="small" type="info" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
+            <el-button class="filter-item"  size="small" type="danger" @click="setFrozen()">批量冻结</el-button>
+
+            <!--<el-button class="filter-item"  size="small" type="primary" icon="el-icon-tickets" @click="showParsteTxt('client_ip')">贴IP</el-button>-->
+            <!--<el-button class="filter-item"  size="small" type="primary" icon="el-icon-tickets" @click="showParsteTxt('client_id')">贴设备</el-button>-->
         </div>
 
         <el-table stripe :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%" :summary-method="getSummaries" show-summary @selection-change="handleSelectionChange">
@@ -140,19 +103,14 @@
                     <span  v-if="scope.row.bak==''">{{scope.row.status_str}}</span>
                 </template>
             </el-table-column>
-
-            <el-table-column align="center" label="通知状态">
+            <el-table-column align="center" width="180" label="IP">
                 <template slot-scope="scope">
-                    <el-popover
-                        placement="top"
-                        width="400"
-                        trigger="click">
-                        <p><span>通知地址：</span><span v-text="notify_url"></span></p>
-                        <p><span>通知次数：</span><span v-text="notify_times"></span></p>
-                        <p><span>通知时间：</span><span v-if="scope.row.notify_at>0">{{scope.row.notify_at|parseTime}}</span><span v-else>-</span></p>
-                        <p><span>商户响应：</span><span v-text="notify_ret"></span></p>
-                        <span class="link-type" slot="reference" @click="showDetail(scope.row)">{{scope.row.notify_status_str}}</span>
-                    </el-popover>
+                    <span>{{scope.row.client_ip}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" width="180" label="设备号">
+                <template slot-scope="scope">
+                    <span>{{scope.row.client_id}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" width="180" label="创建时间">
@@ -162,34 +120,17 @@
             </el-table-column>
             <el-table-column fixed="right" width="180" align="center" label="操作" class-name="op-column">
                 <template slot-scope="scope">
-                    <el-button class="filter-item" size="mini" type="success" v-if="scope.row.status == 10" v-waves @click="setSuccess(scope.row)">成功</el-button>
-                    <el-button class="filter-item" size="mini" @click="syncStatus(scope.row)" v-waves>同步
-                    </el-button>
-                    <el-popover
-                            placement="top"
-                            width="400"
-                            trigger="click">
-                        <p><span>通知地址：</span><span v-text="notify_url"></span></p>
-                        <p><span>通知次数：</span><span v-text="notify_times"></span></p>
-                        <p><span>通知时间：</span><span v-if="scope.row.notify_at>0">{{scope.row.notify_at|parseTime}}</span><span v-else>-</span></p>
-                        <p><span>商户响应：</span><span v-text="notify_ret"></span></p>
-                        <!--<el-button class="filter-item" slot="reference" size="mini" type="primary" @click="showDetail(scope.row)"  v-waves>详情</el-button>-->
-                    </el-popover>
-
-                    <!--<el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" @click="handleTrack(scope.row)" v-waves>录入</el-button>-->
-
-                    <el-button class="filter-item" size="mini" type="info" v-if="[20,60].indexOf(scope.row.status) !== -1" @click="sendNotify(scope.row)" circle>通知</el-button>
-                    <!--<el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="setFrozen(scope.row)">冻结</el-button>-->
-                    <!--<el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 30" v-waves @click="setUnFrozen(scope.row)">解冻</el-button>-->
-                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="setRefund(scope.row)">退款</el-button>
-                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves @click="setSettlement(scope.row)">结算</el-button>
+                    <el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" @click="handleTrack(scope.row)" v-waves>录入</el-button>
+                    <el-button class="filter-item" size="mini" type="info" v-if="scope.row.inBlackList == 0" @click="addToBlackList(scope.row)" circle>拉黑</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="setFrozen(scope.row)">冻结</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 30" v-waves @click="setUnFrozen(scope.row)">解冻</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <el-row class="summary-list">
             <el-tag type="warning" v-for="(v,k) in summery.all_status_list" :key="v.status"><span>{{v.status_str}}:{{v.amount}}</span></el-tag>
         </el-row>
-        <el-dialog title="调单录入" :visible.sync="trackVisible" width="30%">
+        <el-dialog title="调单录入" :visible.sync="trackVisible" width="50%">
             <el-form :model="trackForm">
                 <el-form-item label="调单类型：">
                     <el-radio v-model="trackForm.type" label="1">投诉</el-radio>
@@ -205,18 +146,26 @@
                             :limit="3"
                             ref="track_upload"
                             :on-success="handleUpload">
-                        <img v-if="trackForm.upload_url.length > 0" v-for="item in trackForm.upload_url" :src="item" class="avatar">
+                        <img v-if="trackForm.upload_url.length > 0" v-for="item in trackForm.upload_url" :src="item" class="avatar" width="200px;">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="备注：">
-                    <el-input type="textarea" :rows="3" style="width: 280px" v-model="trackForm.note">
+                    <el-input type="textarea" :rows="3" style="width: 80%" v-model="trackForm.note">
                     </el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="trackVisible = false">取 消</el-button>
                 <el-button type="primary" @click="createTrack">提交</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog :title="parsteTxtTitle" :visible.sync="parsteTxtVisible" width="40%">
+                <el-input placeholder="请粘贴要搜索的内容,多个以英文逗号或换行分割都可以" type="textarea" :rows="3" style="width: 100%" v-model="parsteTxtVal"></el-input>
+                <div slot="footer" class="dialog-footer">
+                <el-button @click="parsteTxtVisible = false">取 消</el-button>
+                <el-button type="primary" @click="parsteTxt">提交</el-button>
             </div>
         </el-dialog>
 
@@ -253,7 +202,7 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
+          dateStart: new Date().setTime((new Date()).getTime() - 3600 * 1000 * 24 * 25),
           dateEnd: null,
           orderNo: null,
           merchantNo: null,
@@ -263,7 +212,10 @@
           sort: '',
           export: 0,
           exportType: '',
+          client_ip: '',
+          client_id: '',
           idList: [],
+          checkInBlackList: 1,
         },
         trackVisible: false,
         trackForm: {
@@ -287,6 +239,10 @@
         methodOptions: [],
         channelAccountOptions: [],
         multipleSelection:[],
+        parsteTxtVisible:false,
+        parsteTxtVal:'',
+        parsteTxtField:'',
+        parsteTxtTitle:'请先选择粘贴内容',
         // {0:'全部'},
         pickerOptions: {
           disabledDate(time) {
@@ -340,6 +296,33 @@
         })
 
       },
+      showParsteTxt(filed){
+        let title = ''
+        switch (filed){
+          case 'orderNo':
+            title = '请粘贴订单号';
+            break;
+          case 'client_id':
+            title = '请粘贴设备号';
+            break;
+          case 'client_ip':
+            title = '请粘贴IP';
+            break;
+          default:
+            break;
+        }
+
+        this.parsteTxtTitle = title
+        this.parsteTxtField = filed
+        this.parsteTxtVisible = true
+      },
+      parsteTxt(){
+        let val = this.parsteTxtVal.replace(/\n/g,',').replace(/\r/g,'')
+        this.listQuery[this.parsteTxtField]=val
+        this.parsteTxtVal = ''
+        this.parsteTxtField = ''
+        this.parsteTxtVisible = false
+      },
       getList() {
         var self = this
 
@@ -385,6 +368,44 @@
           },
         )
       },
+      addToBlackList(row) {
+        let self = this
+        self.$confirm('此此订单的IP及设备号都加入黑名单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let idList = []
+          if(row){
+            idList = [row.id]
+          }else{
+            idList = self.listQuery.idList
+          }
+          self.listLoading = true
+          axios.post('/admin/order/add-blacklist', {idList: idList}).then(
+            res => {
+              self.listLoading = false
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                row.status = 30
+                self.getList()
+              }
+            },
+            res => {
+              self.listLoading = false
+              self.$message.error({message: res.message})
+            }
+          )
+
+        }).catch(() => {
+          self.$message({
+            type: 'warning',
+            message: '已取消操作'
+          });
+        });
+      },
       exportResult(type) {
         self = this
         self.listQuery.export = 1
@@ -396,47 +417,6 @@
         self.$message.success({message: '文件已导出'})
         self.listQuery.export = 0
         self.listQuery.exportType = ''
-      },
-      sendNotify(row) {
-        self = this
-
-        axios.post('/order/send-notify', {id: row.id}).then(
-          res => {
-            if (res.code != 0) {
-              self.$message.error({message: res.message})
-            } else {
-              self.$message.success({message: res.message})
-            }
-          },
-          res => {
-            self.$message.error({message: res.message})
-          }
-        )
-      },
-      syncStatus(row) {
-        self = this
-        self.listLoading = true
-        axios.post('/order/sync-status', {id: row.id}).then(
-          res => {
-            self.listLoading = false
-            if (res.code != 0) {
-              self.$message.error({message: res.message})
-            } else {
-              // self.$message.success({message: res.message})
-              self.$alert(res.message, '提示', {
-                dangerouslyUseHTMLString: true,
-                customClass: 'sync-box',
-              }).then(() => {
-                // self.getList()
-              })
-            }
-
-          },
-          res => {
-            self.$message.error({message: res.message})
-            self.listLoading = false
-          }
-        )
       },
       setFrozen(row) {
         let self = this
@@ -459,7 +439,7 @@
                 self.$message.error({message: res.message})
               } else {
                 self.$message.success({message: res.message})
-                row.status = 30
+                // row.status = 30
                 self.getList()
               }
             },
@@ -485,9 +465,10 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-
+          self.listLoading = true
           axios.post('/admin/order/un-frozen', {id: row.id}).then(
             res => {
+              self.listLoading = false
               if (res.code != 0) {
                 self.$message.error({message: res.message})
               } else {
@@ -497,6 +478,7 @@
               }
             },
             res => {
+              self.listLoading = false
               self.$message.error({message: res.message})
             }
           )
@@ -508,114 +490,7 @@
           });
         });
       },
-      setRefund(row) {
-        let self = this
-        this.$prompt('请输入退款原因', '提示', {
-                     confirmButtonText: '确定',
-                     cancelButtonText: '取消',
-                     // inputPattern: /\W+/,
-                     // inputErrorMessage: '格式不正确'
-      }).then(({ value }) => {
-          axios.post('/admin/order/refund', {id: row.id,bak:value}).then(
-            res => {
-              if (res.code != 0) {
-                self.$message.error({message: res.message})
-              } else {
-                self.$message.success({message: res.message})
-                row.status = 20
-                self.getList()
-              }
-            },
-            res => {
-              self.$message.error({message: res.message})
-            }
-          )
 
-        }).catch(() => {
-          self.$message({
-            type: 'warning',
-            message: '已取消操作'
-          });
-        });
-      },
-      setSuccess(row) {
-        let self = this
-        self.$confirm('此操作将订单设置为成功, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-
-          axios.post('/admin/order/set-success', {id: row.id}).then(
-            res => {
-              if (res.code != 0) {
-                self.$message.error({message: res.message})
-              } else {
-                self.$message.success({message: res.message})
-                row.status = 20
-                self.getList()
-              }
-            },
-            res => {
-              self.$message.error({message: res.message})
-            }
-          )
-
-        }).catch(() => {
-          self.$message({
-            type: 'warning',
-            message: '已取消操作'
-          });
-        });
-      },
-      setSettlement(row) {
-        let self = this
-        self.$confirm('此操作将订单设置为已结算并增加用户余额, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let data = self.listQuery
-          if (row) {
-            data.idList = [row.id]
-          }else{
-            // if(data.idList.length==0){
-            //   self.$message.success({message: '请选择订单！'})
-            //   return;
-            // }
-          }
-
-          axios.post('/admin/order/set-settlement', data).then(
-            res => {
-              if (res.code != 0) {
-                self.$message.error({message: res.message})
-              } else {
-                self.$message.success({message: res.message})
-                row.status = 20
-                self.getList()
-              }
-            },
-            res => {
-              self.$message.error({message: res.message})
-            }
-          )
-
-        }).catch(() => {
-          self.$message({
-            type: 'warning',
-            message: '已取消操作'
-          });
-        });
-      },
-      showNotifyRet(row) {
-        // self.$message.error({message: res.message})
-        this.$alert(row.notify_ret, '商户服务器响应内容', {
-          confirmButtonText: '确定',
-          callback: action => {
-
-          }
-        });
-      },
       getSummaries(param) {
         const {columns, data} = param;
         const sums = [];

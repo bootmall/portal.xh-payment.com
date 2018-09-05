@@ -184,13 +184,6 @@
 </template>
 
 <script>
-  //import PanelGroup from './components/PanelGroup'
-  // import OrderCensus from './components/OrderCensus'
-  // import LineChart from './components/LineChart'
-  // import RaddarChart from './components/RaddarChart'
-  // import PieChart from './components/PieChart'
-  // import BarChart from './components/BarChart'
-  // import BoxCard from './components/BoxCard'
   import addRecharge from '@/views/components/addRecharge'
   import { mapGetters } from 'vuex'
   import axios from '@/utils/http'
@@ -215,13 +208,6 @@
   export default {
     name: 'dashboardIndex',
     components: {
-      //PanelGroup,
-      //   OrderCensus,
-      // LineChart,
-      // RaddarChart,
-      // PieChart,
-      // BarChart,
-      // BoxCard
         addRecharge
     },
     computed: {

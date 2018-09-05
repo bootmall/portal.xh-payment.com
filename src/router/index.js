@@ -191,6 +191,8 @@ export const asyncRouterMap = [
       {path: 'track', component: _import("admin/track/list"),view: "admin/track/list", name: 'vue_track_add', meta: {title: '调单记录', icon: 'excel', role: ['admin'], noCache: true}},
       //操作记录
       {path: 'operation', component: _import("admin/log/userLog"),view: "admin/log/userLog", name: 'vue_operation', meta: {title: '操作记录', icon: 'excel', role: ['admin'], noCache: true}},
+      //订单协查
+      {path: 'recharge_survey', component: _import("order/survey"),view: "order/survey", name: 'vue_recharge_survey', meta: {title: '充值协查', icon: 'excel', role: ['admin'], noCache: true}},
     ]
   },
   // 代理使用
