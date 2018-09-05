@@ -15,7 +15,7 @@
             <el-col :span="4"><div class="grid-content grid-content-value bg-purple">{{channel_total_balance}}</div></el-col>
         </el-row>
         <el-row :gutter="20">
-            <el-col :span="4" :offset="16"><div class="grid-content grid-content-label bg-purple">商户总余额:</div></el-col>
+            <el-col :span="4" :offset="16"><div class="grid-content grid-content-label bg-purple">商户真实总余额:</div></el-col>
             <el-col :span="4"><div class="grid-content grid-content-value bg-purple">{{merchant_total_balance}}</div></el-col>
         </el-row>
         <el-row :gutter="20">
@@ -23,7 +23,7 @@
             <el-col :span="4"><div class="grid-content grid-content-value bg-purple">{{merchant_total_frozen_balance}}</div></el-col>
         </el-row>
         <el-row :gutter="20">
-            <el-col :span="4" :offset="16"><div class="grid-content grid-content-label bg-purple">商户负数余额:</div></el-col>
+            <el-col :span="4" :offset="16"><div class="grid-content grid-content-label bg-purple">商户负余额:</div></el-col>
             <el-col :span="4"><div class="grid-content grid-content-value bg-purple">{{merchant_total_negative_balance}}</div></el-col>
         </el-row>
         <el-row :gutter="20">
