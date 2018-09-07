@@ -155,6 +155,11 @@
             this.loading = true
             this.$store.dispatch('LoginByUsername', this.loginForm).then(
               response => {
+
+                if(typeof response.data['__token__'] != "undefined" && response.data['__token__'].length>1){
+                  common.setToken(response.data['__token__'])
+                }
+
                 if (typeof response.data.key_2fa != 'undefined' && response.data.key_2fa.length > 0) {
                   this.keyVisible = true;
                 } else {
@@ -171,10 +176,10 @@
               }
             ).catch((error) => {
               this.loading = false
-              this.$message.error({message: '信息填写错误，请检查'})
+              this.$message.error({message: '信息填写错误，请检查:'+error.toString()})
             })
           } else {
-            this.$message.error({message: '信息填写错误，请检查'})
+            this.$message.error({message: '信息填写错误，请检查:'+error.toString()})
             return false
           }
         })

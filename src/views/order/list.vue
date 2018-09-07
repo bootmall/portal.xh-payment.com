@@ -100,8 +100,11 @@
                     <span>{{scope.row.merchant_order_no}}</span>
                 </template>
             </el-table-column>
-
-
+            <el-table-column label="渠道订单号" width="180">
+                <template slot-scope="scope">
+                    <span>{{scope.row.channel_order_no}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="金额">
                 <template slot-scope="scope">
                     <span>￥{{scope.row.amount}}</span>

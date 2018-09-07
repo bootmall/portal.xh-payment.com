@@ -69,7 +69,9 @@
           </el-button>
           <el-button class="filter-item" size="mini" icon="el-icon-edit" v-waves @click="showDialog(scope.row)">状态
           </el-button>
-
+          <el-button type="danger" class="filter-item" size="mini" icon="el-icon-delete" v-waves
+                     @click="deleteAccount(scope.row)">删除
+          </el-button>
         </template>
       </el-table-column>
 
@@ -419,7 +421,44 @@
         this.app_secrets_template = {}
 
         this.editVisible = true;
-      }
+      },
+      deleteAccount(row) {
+        var self = this;
+        let data = {
+          id: row.id
+        }
+
+        self.$confirm('确定删除渠道号?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          self.listLoading = true
+          axios.post('/admin/channel/account-delete', data).then(
+            res => {
+              self.listLoading = false
+
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                self.getList();
+              }
+            },
+            res => {
+              self.listLoading = false
+              self.$message.error({message: res.message})
+            }
+          )
+
+        }).catch(() => {
+          self.$message({
+            type: 'warning',
+            message: '已取消操作'
+          });
+        });
+
+      },
     }
   }
 </script>
