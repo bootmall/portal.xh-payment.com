@@ -137,7 +137,7 @@
                            type="success" icon="el-icon-check"
                            @click="setSuccess(scope.row)" v-waves>成功
                 </el-button>
-                <el-button type="warning" class="filter-item" size="mini" v-if="[60].indexOf(scope.row.status) !== -1"
+                <el-button type="warning" class="filter-item" size="mini" v-if="[10,20,60].indexOf(scope.row.status) !== -1"
                            icon="el-icon-refresh
 " @click="reSubmit(scope.row.id)" v-waves>重提
                 </el-button>

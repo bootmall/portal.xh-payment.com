@@ -260,6 +260,7 @@
           dateEnd: null,
           orderNo: null,
           merchantNo: null,
+          channelOrderNo: null,
           merchantOrderNo: null,
           status: null,
           notifyStatus: null,
