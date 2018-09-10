@@ -106,11 +106,11 @@
                     <span>{{scope.row.channel_order_no}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="最终订单号" width="180">
-                <template slot-scope="scope">
-                    <span>{{scope.row.final_channel_order_no}}</span>
-                </template>
-            </el-table-column>
+            <!--<el-table-column label="最终订单号" width="180">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<span>{{scope.row.final_channel_order_no}}</span>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
             <el-table-column label="金额">
                 <template slot-scope="scope">
                     <span>￥{{scope.row.amount}}</span>

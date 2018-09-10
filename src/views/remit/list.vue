@@ -134,9 +134,9 @@
                 更多操作<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown" size="mini">
-                <el-dropdown-item @click.native="setSuccess(scope.row)" >成功</el-dropdown-item>
-                <el-dropdown-item @click.native="reSubmit(scope.row.id)" >重提</el-dropdown-item>
-                <el-dropdown-item @click.native="handleTrack(scope.row)" >录入</el-dropdown-item>
+                <el-dropdown-item type="success" @click.native="setSuccess(scope.row)" >成功</el-dropdown-item>
+                <el-dropdown-item type="danger"  @click.native="reSubmit(scope.row.id)" >重提</el-dropdown-item>
+                <el-dropdown-item type="warning" @click.native="handleTrack(scope.row)" >录入</el-dropdown-item>
                 <el-dropdown-item @click.native="syncStatusRealtime(scope.row.id)" >同步</el-dropdown-item>
                 <el-dropdown-item @click.native="addToBlackList(scope.row)" >拉黑</el-dropdown-item>
                 <el-dropdown-item @click.native="syncStatus(scope.row.id)" >强制同步</el-dropdown-item>
