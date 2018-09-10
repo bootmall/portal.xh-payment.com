@@ -174,7 +174,7 @@
                     style="width: 200px"></el-input>
         </el-form-item>
         <el-form-item label="安全令牌：" label-width="120px">
-          <el-input size="small" type="password" v-model="sessionSecurityCheckForm.key2fa"
+          <el-input size="small" v-model="sessionSecurityCheckForm.key2fa"
                     style="width: 200px"></el-input>
         </el-form-item>
       </el-form>
