@@ -144,12 +144,15 @@
                 <el-button class="filter-item" size="mini" icon="el-icon-edit" type="danger" v-if="scope.row.track == 0"
                            @click="handleTrack(scope.row)" v-waves>录入
                 </el-button>
-                <el-button class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatus(scope.row.id)"
+                <el-button class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatusRealtime(scope.row.id)"
                            v-waves>同步
                 </el-button>
                 <el-button class="filter-item" size="mini" type="info" v-if="scope.row.inBlackList == 0"
                            @click="addToBlackList(scope.row)" circle>拉黑
                 </el-button>
+                <!--<el-button type="danger" class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatus(scope.row.id)"-->
+                           <!--v-waves>强制同步-->
+                <!--</el-button>-->
                 <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
                 <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
               </el-dropdown-menu>
@@ -608,6 +611,7 @@
 
       },
       syncStatus(id) {
+        return
         self = this
 
         axios.post('/admin/remit/sync-status', {id: id}).then(
@@ -617,7 +621,30 @@
             } else {
               // self.$message.success({message: res.message})
               self.$alert(res.message, '提示', {
-                dangerouslyUseHTMLString: true
+                dangerouslyUseHTMLString: true,
+                'customClass':'sync-alert'
+              }).then(() => {
+                self.getList()
+              })
+            }
+          },
+          res => {
+            self.$message.error({message: res.message})
+          }
+        )
+      },
+      syncStatusRealtime(id) {
+        self = this
+
+        axios.post('/admin/remit/sync-status-realtime', {id: id}).then(
+          res => {
+            if (res.code != 0) {
+              self.$message.error({message: res.message})
+            } else {
+              // self.$message.success({message: res.message})
+              self.$alert(res.message, '提示', {
+                dangerouslyUseHTMLString: true,
+                'customClass':'sync-alert'
               }).then(() => {
                 self.getList()
               })
@@ -734,5 +761,9 @@
     .el-tag + .el-tag {
       margin-left: 10px;
     }
+  }
+  .sync-alert{
+    width: 80%;
+    word-break: break-all;
   }
 </style>
