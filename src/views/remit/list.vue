@@ -150,9 +150,9 @@
                 <el-button class="filter-item" size="mini" type="info" v-if="scope.row.inBlackList == 0"
                            @click="addToBlackList(scope.row)" circle>拉黑
                 </el-button>
-                <!--<el-button type="danger" class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatus(scope.row.id)"-->
-                           <!--v-waves>强制同步-->
-                <!--</el-button>-->
+                <el-button type="danger" class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatus(scope.row.id)"
+                           v-waves>强制同步
+                </el-button>
                 <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
                 <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
               </el-dropdown-menu>
@@ -611,27 +611,34 @@
 
       },
       syncStatus(id) {
-        return
         self = this
 
-        axios.post('/admin/remit/sync-status', {id: id}).then(
-          res => {
-            if (res.code != 0) {
+        self.$confirm('此操作将到上游实时同步状态并根据状态处理订单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          axios.post('/admin/remit/sync-status', {id: id}).then(
+            res => {
+              if (res.code != 0) {
+                self.$message.error({message: res.message})
+              } else {
+                self.$message.success({message: res.message})
+                // self.$alert(res.message, '提示', {
+                //   dangerouslyUseHTMLString: true,
+                //   'customClass':'sync-alert'
+                // }).then(() => {
+                //   self.getList()
+                // })
+              }
+            },
+            res => {
               self.$message.error({message: res.message})
-            } else {
-              // self.$message.success({message: res.message})
-              self.$alert(res.message, '提示', {
-                dangerouslyUseHTMLString: true,
-                'customClass':'sync-alert'
-              }).then(() => {
-                self.getList()
-              })
             }
-          },
-          res => {
-            self.$message.error({message: res.message})
-          }
-        )
+          )
+        })
+
       },
       syncStatusRealtime(id) {
         self = this
@@ -644,7 +651,7 @@
               // self.$message.success({message: res.message})
               self.$alert(res.message, '提示', {
                 dangerouslyUseHTMLString: true,
-                'customClass':'sync-alert'
+                customClass:'remit-sync-alert'
               }).then(() => {
                 self.getList()
               })
@@ -733,7 +740,12 @@
 
   }
 </script>
-
+<style>
+  .remit-sync-alert{
+    width: 50%;
+    word-break: break-all;
+  }
+</style>
 <style rel="stylesheet/scss" lang="scss" scoped>
   .action-btns a {
     margin-left: 5px;
@@ -761,9 +773,5 @@
     .el-tag + .el-tag {
       margin-left: 10px;
     }
-  }
-  .sync-alert{
-    width: 80%;
-    word-break: break-all;
   }
 </style>
