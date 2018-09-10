@@ -762,4 +762,9 @@
       margin-left: 10px;
     }
   }
+
+  .el-dropdown-menu--mini .el-dropdown-menu__item {
+    line-height: 36px !important;
+    font-size: 14px !important;
+  }
 </style>
