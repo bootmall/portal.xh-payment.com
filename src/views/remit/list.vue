@@ -5,6 +5,7 @@
                 placeholder="结算订单号" v-model="listQuery.orderNo"></el-input>
       <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
                 placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
+      <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="凭证" v-model="listQuery.channelOrderNo"></el-input>
       <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo"
                 placeholder="商户编号"></el-input>
       <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantAccount"
@@ -240,6 +241,7 @@
           dateEnd: null,
           orderNo: null,
           merchantOrderNo: null,
+          channelOrderNo: null,
           status: null,
           bankAccount: null,
           bankNo: null,
