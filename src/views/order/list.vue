@@ -3,6 +3,7 @@
         <div class="filter-container">
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="渠道订单号" v-model="listQuery.channelOrderNo"></el-input>
             <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName"></el-input>
             <el-date-picker class="filter-item"
@@ -103,6 +104,11 @@
             <el-table-column label="渠道订单号" width="180">
                 <template slot-scope="scope">
                     <span>{{scope.row.channel_order_no}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="最终订单号" width="180">
+                <template slot-scope="scope">
+                    <span>{{scope.row.final_channel_order_no}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="金额">

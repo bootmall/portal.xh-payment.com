@@ -126,33 +126,19 @@
             <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1"
                        icon="el-icon-warning" type="warning" @click="setFail(scope.row)" v-waves>退款
             </el-button>
+            <el-button class="filter-item" size="mini" v-if="[0,20].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
+" @click="setChecked(scope.row.id)" type="success" v-waves>审核</el-button>
             <el-dropdown size="mini">
               <el-button type="primary" size="mini">
                 更多操作<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown" size="mini">
-                <el-button class="filter-item" size="mini" v-if="[0,20].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
-" @click="setChecked(scope.row.id)" v-waves>审核</el-button>
-                <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1"
-                           type="success" icon="el-icon-check"
-                           @click="setSuccess(scope.row)" v-waves>成功
-                </el-button>
-                <el-button type="warning" class="filter-item" size="mini" v-if="[10,20,60].indexOf(scope.row.status) !== -1"
-                           icon="el-icon-refresh
-" @click="reSubmit(scope.row.id)" v-waves>重提
-                </el-button>
-                <el-button class="filter-item" size="mini" icon="el-icon-edit" type="danger" v-if="scope.row.track == 0"
-                           @click="handleTrack(scope.row)" v-waves>录入
-                </el-button>
-                <el-button class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatusRealtime(scope.row.id)"
-                           v-waves>同步
-                </el-button>
-                <el-button class="filter-item" size="mini" type="info" v-if="scope.row.inBlackList == 0"
-                           @click="addToBlackList(scope.row)" circle>拉黑
-                </el-button>
-                <el-button type="danger" class="filter-item" icon="el-icon-refresh" size="mini" @click="syncStatus(scope.row.id)"
-                           v-waves>强制同步
-                </el-button>
+                <el-dropdown-item @click.native="setSuccess(scope.row)" >成功</el-dropdown-item>
+                <el-dropdown-item @click.native="reSubmit(scope.row.id)" >重提</el-dropdown-item>
+                <el-dropdown-item @click.native="handleTrack(scope.row)" >录入</el-dropdown-item>
+                <el-dropdown-item @click.native="syncStatusRealtime(scope.row.id)" >同步</el-dropdown-item>
+                <el-dropdown-item @click.native="addToBlackList(scope.row)" >拉黑</el-dropdown-item>
+                <el-dropdown-item @click.native="syncStatus(scope.row.id)" >强制同步</el-dropdown-item>
                 <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
                 <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
               </el-dropdown-menu>
