@@ -136,7 +136,7 @@
                 更多操作<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown" size="mini">
-                <el-dropdown-item type="success" @click.native="setSuccess(scope.row)" ><el-button type="success">成功</el-button></el-dropdown-item>
+                <el-dropdown-item type="success" @click.native="setSuccess(scope.row)" ><el-button type="success" icon="el-icon-success">成功</el-button></el-dropdown-item>
                 <el-dropdown-item type="danger"  @click.native="reSubmit(scope.row.id)" >重提</el-dropdown-item>
                 <el-dropdown-item type="warning" @click.native="handleTrack(scope.row)" >录入</el-dropdown-item>
                 <el-dropdown-item @click.native="syncStatusRealtime(scope.row.id)" >同步</el-dropdown-item>
