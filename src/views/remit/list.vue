@@ -33,6 +33,7 @@
                       align="right"
                       type="datetime"
                       placeholder="开始日期"
+                      format="yyyy-MM-dd 00:00:00"
                       :picker-options="pickerOptions">
       </el-date-picker>
       <el-date-picker class="filter-item" size="small" style="width: 200px;"
@@ -40,6 +41,7 @@
                       align="right"
                       type="datetime"
                       placeholder="结束日期"
+                      format="yyyy-MM-dd 23:59:59"
                       :picker-options="pickerOptions">
       </el-date-picker>
       <el-input class="filter-item" size="small" style="width: 200px;" @change.native="checkNumber()"
@@ -238,7 +240,7 @@
           limit: 10,
           importance: undefined,
           dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
-          dateEnd: null,
+          dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
           orderNo: null,
           merchantOrderNo: null,
           channelOrderNo: null,
@@ -274,7 +276,7 @@
         currentRemit: {},
         dialogSwitchRemitVisible: false,
         remitIdSwitchTo: '',
-        bankCardTodayStatisticList: '',
+        bankCardTodayStatisticList: [],
         bankCardTodayStatisticLoading: false,
         canCheckRemitStatus: 0,
         pickerOptions: {
@@ -334,6 +336,7 @@
             if (res.code != 0) {
               self.$message.error({message: res.message})
             } else {
+                // console.log(res.data.data)
               self.list = res.data.data
               self.summery = res.data.summery
               self.total = res.data.pagination.total
