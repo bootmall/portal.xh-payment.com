@@ -1,24 +1,9 @@
 <template>
     <div>
-
-
-        <!--:show-close="false"-->
-        <el-dialog
-            title="请支付开户费用"
-            :visible.sync="needPayAccountOpenFeeVisible"
-            :close-on-click-modal="false"
-            :close-on-press-escape="false"
-            width="40%">
-            <el-alert
-                title="您需要先支付开户费用进行开户"
-                type="warning"
-                center
-                show-icon>
-            </el-alert>
+        <el-dialog title="请支付开户费用" :visible.sync="needPayAccountOpenFeeVisible" :close-on-click-modal="false" :close-on-press-escape="false" width="40%">
+            <el-alert title="您需要先支付开户费用进行开户" type="warning" center show-icon></el-alert>
             <add-recharge :type="3" :amount="needPayAccountOpenAmount" :amount-disabled="1"></add-recharge>
         </el-dialog>
-
-        <!--<div style="width: 90%;margin-left: 50px"><order-census></order-census></div>-->
         <div style="width: 90%;margin-left: 50px"  v-show="isMainAccount">
             <el-row class="panel-group" :gutter="40">
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
@@ -27,23 +12,10 @@
                         <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
                     </div>
                     <div class="card-panel-description">
-                        <div class="card-panel-text" >
-                            <span style="float: left" >今日充值</span>
-                            <span style="float: left;margin-left: 50px">{{user.order_today_amount}}</span>
-                        </div>
+                        <div class="card-panel-text" ><span style="float: left" >今日充值</span><span style="float: left;margin-left: 50px">{{user.order_today_amount}}</span></div>
                         <div class="card-panel-num">
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px">
-                                <p>成功笔数</p>
-                                <p>{{user.order_today_total}}</p>
-                            </span>
-                            <!--<span style="float: left;margin-top: 15px; text-align: center">-->
-                            <!--<p>手续费</p>-->
-                            <!--<p>{{user.order_today_fee_amount}}</p>-->
-                            <!--</span>-->
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px">
-                                <p>待结算金额</p>
-                                <p>{{user.order_today_paid_total}}</p>
-                            </span>
+                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{user.order_today_total}}</p></span>
+                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>待结算金额</p><p>{{user.order_today_paid_total}}</p></span>
                         </div>
                     </div>
                 </div>
@@ -54,23 +26,11 @@
                         <svg-icon icon-class="money" class-name="card-panel-icon" />
                     </div>
                     <div class="card-panel-description">
-                        <div class="card-panel-text" >
-                            <span style="float: left" >今日代付</span>
-                            <span style="float: left;margin-left: 50px">{{user.remit_today_amount}}</span>
-                        </div>
+                        <div class="card-panel-text" ><span style="float: left" >今日代付</span><span style="float: left;margin-left: 50px">{{user.remit_today_amount}}</span></div>
                         <div class="card-panel-num">
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px">
-                                <p>成功笔数</p>
-                                <p>{{user.remit_today_total_success}}</p>
-                            </span>
-                            <span style="float: left;margin-top: 15px; text-align: center;margin-right: 50px">
-                                <p>失败笔数</p>
-                                <p>{{user.remit_today_total_fail}}</p>
-                            </span>
-                            <span style="float: left;margin-top: 15px; text-align: center">
-                                <p>失败金额</p>
-                                <p>{{user.remit_today_amount_fail}}</p>
-                            </span>
+                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{user.remit_today_total_success}}</p></span>
+                            <span style="float: left;margin-top: 15px; text-align: center;margin-right: 50px"><p>失败笔数</p><p>{{user.remit_today_total_fail}}</p></span>
+                            <span style="float: left;margin-top: 15px; text-align: center"><p>失败金额</p><p>{{user.remit_today_amount_fail}}</p></span>
                         </div>
                     </div>
                 </div>
@@ -83,23 +43,10 @@
                             <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
                         </div>
                         <div class="card-panel-description">
-                            <div class="card-panel-text" >
-                                <span style="float: left" >昨日充值</span>
-                                <span style="float: left;margin-left: 50px">{{user.order_yesterday_amount}}</span>
-                            </div>
+                            <div class="card-panel-text" ><span style="float: left" >昨日充值</span><span style="float: left;margin-left: 50px">{{user.order_yesterday_amount}}</span></div>
                             <div class="card-panel-num">
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px">
-                                <p>成功笔数</p>
-                                <p>{{user.order_yesterday_total}}</p>
-                            </span>
-                                <!--<span style="float: left;margin-top: 15px; text-align: center">-->
-                                <!--<p>手续费</p>-->
-                                <!--<p>{{user.order_yesterday_fee_amount}}</p>-->
-                                <!--</span>-->
-                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px">
-                                <p>待结算金额</p>
-                                <p>{{user.order_yesterday_paid_total}}</p>
-                            </span>
+                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{user.order_yesterday_total}}</p></span>
+                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>待结算金额</p><p>{{user.order_yesterday_paid_total}}</p></span>
                             </div>
                         </div>
                     </div>
@@ -115,18 +62,9 @@
                                 <span style="float: left;margin-left: 50px">{{user.remit_yesterday_amount}}</span>
                             </div>
                             <div class="card-panel-num">
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px">
-                                <p>成功笔数</p>
-                                <p>{{user.remit_yesterday_total_success}}</p>
-                            </span>
-                                <span style="float: left;margin-top: 15px; text-align: center;margin-right: 50px">
-                                <p>失败笔数</p>
-                                <p>{{user.remit_yesterday_total_fail}}</p>
-                            </span>
-                                <span style="float: left;margin-top: 15px; text-align: center">
-                                <p>失败金额</p>
-                                <p>{{user.remit_yesterday_amount_fail}}</p>
-                            </span>
+                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{user.remit_yesterday_total_success}}</p></span>
+                                <span style="float: left;margin-top: 15px; text-align: center;margin-right: 50px"><p>失败笔数</p><p>{{user.remit_yesterday_total_fail}}</p></span>
+                                <span style="float: left;margin-top: 15px; text-align: center"><p>失败金额</p><p>{{user.remit_yesterday_amount_fail}}</p></span>
                             </div>
                         </div>
                     </div>
@@ -134,23 +72,11 @@
             </el-row>
         </div>
         <div style="width: 90%;margin-left: 50px;margin-bottom: 20px;" v-if="user.group_id != 10 " class="rate-list"  v-show="isMainAccount">
-              <h4
-                  title="费率列表"
-                  class="el-alert el-alert--success"
-                  style="margin-bottom: 10px;line-height: 25px"
-              >费率列表</h4>
-            <!--<el-row :gutter="10">-->
-                <!--<el-col :span="2" align="right">-->
-                    <!--<span>出款费率</span>-->
-                <!--</el-col>-->
-                <!--<el-col :span="2" v-for="(item,key) in rate" :key="key" v-text="item.name" align="center">-->
-                <!--</el-col>-->
-                <!--<el-col :span="2"></el-col>-->
-            <!--</el-row>-->
+            <h4 title="费率列表" class="el-alert el-alert--success" style="margin-bottom: 10px;line-height: 25px">费率列表</h4>
             <el-row :gutter="10" style="text-align: left">
                 <el-col :span="24" align="center">
                     <el-button type="success"><span class="rate-list-name">出款费率</span>:{{remit_fee}}</el-button>
-                    <el-button v-for="(item,key) in rate" :key="key" type="info"><span class="rate-list-name">{{item.name}}</span>:{{item.rate}}</el-button>
+                    <el-button v-for="(item,key) in rate" :key="key" v-if="item.rate > 0"  :type="item.status == 1 ? 'success' : 'warning'"><span class="rate-list-name">{{item.name}}</span>:{{item.rate}}</el-button>
                 </el-col>
             </el-row>
         </div>
@@ -158,19 +84,13 @@
           <h4
               title="最新公告"
               class="el-alert el-alert--success"
-              style="margin-bottom: 10px;line-height: 25px"
-          >最新公告</h4>
-          <!--<el-container v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%;font-size: 12px">-->
-            <!--<el-aside width="200px">-->
-              <!--<p  style="border-bottom:1px solid #ececec;cursor:pointer;" v-for="(item,key) in notice" v-text="item.title" @click="content = item.content"></p>-->
-            <!--</el-aside>-->
-            <!--<el-main border v-html="content" style="border:1px solid #ececec;margin-left: 5px"></el-main>-->
-          <!--</el-container>-->
+              style="margin-bottom: 10px;line-height: 25px">
+              最新公告
+          </h4>
           <el-tabs
                   tab-position="left"
                   style="height: 300px;"
                   class="notice-list">
-            <!--<el-tab-pane :label="item.title" v-for="(item,key) in notice" :key="key" v-text="item.title" @click="content = item.content">{{item.content}}</el-tab-pane>-->
             <el-tab-pane style="height: 300px;overflow:auto;line-height: 18px;" :label="item.title" v-for="(item,key) in notice" :key="key" v-html="item.content" @click="content = item.content"></el-tab-pane>
           </el-tabs>
         </el-row>

@@ -8,16 +8,16 @@
                         <el-form-item label="金额" prop="amount" class="el-form-item-input">
                             <el-input v-model="commonForm.amount" :disabled="commonForm.amountDisabled"></el-input>
                         </el-form-item>
-                        <el-form-item label="请选择支付类型" prop="method" class="el-form-item-input">
-                            <el-select class="filter-item" v-model="commonForm.method" label="支付类型" placeholder="支付类型">
-                                <el-option
-                                        v-for="(item,key) in methodOptions"
-                                        :key="item.method_id"
-                                        :label="item.method_name"
-                                        :value="item.method_id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                        <!--<el-form-item label="请选择支付类型" prop="method" class="el-form-item-input">-->
+                            <!--<el-select class="filter-item" v-model="commonForm.method" label="支付类型" placeholder="支付类型">-->
+                                <!--<el-option-->
+                                        <!--v-for="(item,key) in methodOptions"-->
+                                        <!--:key="item.method_id"-->
+                                        <!--:label="item.method_name"-->
+                                        <!--:value="item.method_id">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
                         <el-alert v-if="showNotice"
                             title="请点击继续支付按钮,并在在弹出窗口进行支付.如果浏览器没有弹窗,请检查浏览器设置."
                             type="error"
@@ -71,7 +71,7 @@
         commonForm:{
           type:this.type,
           amount:this.amount,
-          method:'',
+          method:'WYNC',
           amountDisabled: this.amountDisabled=='1',
         },
         dialogAvatarVisible: false,
