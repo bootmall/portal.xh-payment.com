@@ -9,6 +9,7 @@
                             align="right"
                             type="datetime"
                             placeholder="开始日期"
+                            format="yyyy-MM-dd 00:00:00"
                             style="width: 200px;"
                             :picker-options="pickerOptions">
             </el-date-picker>
@@ -18,6 +19,7 @@
                             align="right"
                             type="datetime"
                             placeholder="结束日期"
+                            format="yyyy-MM-dd 23:59:59"
                             style="width: 200px;"
                             :picker-options="pickerOptions">
             </el-date-picker>
@@ -92,7 +94,7 @@
           merchant_name: '',
           sort: '',
           dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
-          dateEnd: null,
+          dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
         },
         summery: {
           'all_status_list': [],

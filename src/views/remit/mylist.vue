@@ -10,6 +10,7 @@
                       align="right"
                       type="date"
                       placeholder="开始日期"
+                      format="yyyy-MM-dd 00:00:00"
                       size="small"
                       :picker-options="pickerOptions">
       </el-date-picker>
@@ -18,6 +19,7 @@
                       align="right"
                       type="date"
                       placeholder="结束日期"
+                      format="yyyy-MM-dd 23:59:59"
                       size="small"
                       :picker-options="pickerOptions">
       </el-date-picker>
@@ -90,7 +92,7 @@
           limit: 20,
           importance: undefined,
           dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
-          dateEnd: null,
+          dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
           orderNo: null,
           merchantOrderNo: null,
           status: null,

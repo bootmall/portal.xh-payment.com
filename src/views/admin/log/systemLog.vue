@@ -9,6 +9,7 @@
                             align="right"
                             type="datetime"
                             placeholder="开始日期"
+                            style="width: 200px"
                             :picker-options="pickerOptions">
             </el-date-picker>
             结束时间
@@ -17,6 +18,7 @@
                             align="right"
                             type="datetime"
                             placeholder="结束日期"
+                            style="width: 200px"
                             :picker-options="pickerOptions">
             </el-date-picker>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>

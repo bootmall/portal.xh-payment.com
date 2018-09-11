@@ -7,6 +7,7 @@
                              align="right"
                              type="datetime"
                              placeholder="开始日期"
+                             format="yyyy-MM-dd 00:00:00"
                              :picker-options="pickerOptions">
             </el-date-picker>
             <el-date-picker  class="filter-item" style="width: 200px;" size="small"
@@ -14,6 +15,7 @@
                              align="right"
                              type="datetime"
                              placeholder="结束日期"
+                             format="yyyy-MM-dd 23:59:59"
                              :picker-options="pickerOptions">
             </el-date-picker>
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;" size="small" class="filter-item" placeholder="订单号" v-model="listQuery.orderNo"></el-input>
@@ -177,7 +179,7 @@
                     limit: 20,
                     importance: undefined,
                     dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
-                    dateEnd: null,
+                    dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
                     orderNo: null,
                     merchantOrderNo: null,
                     statusOrder: null,

@@ -124,7 +124,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="通道" width="180">
+            <el-table-column label="通道">
                 <template slot-scope="scope">
                     <span>{{scope.row.channel_account_name}}</span>
                 </template>

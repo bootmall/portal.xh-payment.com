@@ -11,6 +11,9 @@
                             align="right"
                             type="datetime"
                             placeholder="开始日期"
+                            format="yyyy-MM-dd 00:00:00"
+                            style="width: 200px"
+                            size="small"
                             :picker-options="pickerOptions">
             </el-date-picker>
             结束时间
@@ -19,6 +22,9 @@
                             align="right"
                             type="datetime"
                             placeholder="结束日期"
+                            format="yyyy-MM-dd 23:59:59"
+                            style="width: 200px"
+                            size="small"
                             :picker-options="pickerOptions">
             </el-date-picker>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
@@ -140,7 +146,7 @@
           title: null,
           sort: '',
           dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
-          dateEnd: null,
+          dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
         },
         pickerOptions: {
           disabledDate(time) {

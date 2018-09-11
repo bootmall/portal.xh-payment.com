@@ -136,12 +136,12 @@
                 更多操作<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown" size="mini">
-                <el-dropdown-item type="success" @click.native="setSuccess(scope.row)" >成功</el-dropdown-item>
-                <el-dropdown-item type="danger"  @click.native="reSubmit(scope.row.id)" >重提</el-dropdown-item>
-                <el-dropdown-item type="warning" @click.native="handleTrack(scope.row)" >录入</el-dropdown-item>
-                <el-dropdown-item @click.native="syncStatusRealtime(scope.row.id)" >同步</el-dropdown-item>
-                <el-dropdown-item @click.native="addToBlackList(scope.row)" >拉黑</el-dropdown-item>
-                <el-dropdown-item @click.native="syncStatus(scope.row.id)" >强制同步</el-dropdown-item>
+                <el-dropdown-item ><el-button @click.native="setSuccess(scope.row)" style="width: 100%" type="success" size="mini">成功</el-button></el-dropdown-item>
+                <el-dropdown-item ><el-button @click.native="reSubmit(scope.row.id)" style="width: 100%" type="danger" size="mini">重提</el-button></el-dropdown-item>
+                <el-dropdown-item ><el-button @click.native="handleTrack(scope.row)" style="width: 100%" type="warning" size="mini">录入</el-button></el-dropdown-item>
+                <el-dropdown-item ><el-button @click.native="syncStatusRealtime(scope.row.id)" style="width: 100%" type="primary" size="mini">同步</el-button></el-dropdown-item>
+                <el-dropdown-item ><el-button @click.native="addToBlackList(scope.row)" style="width: 100%" type="info" size="mini">拉黑</el-button></el-dropdown-item>
+                <el-dropdown-item ><el-button @click.native="syncStatus(scope.row.id)" style="width: 100%" type="danger" size="mini">强制同步</el-button></el-dropdown-item>
                 <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
                 <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
               </el-dropdown-menu>
