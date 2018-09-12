@@ -10,14 +10,7 @@
                         <!--</el-form-item>-->
                         <el-form-item label="账户类型" prop="group_id">
                             <el-radio-group v-model="commonForm.group_id" size="small" @change="onUserGroupChange">
-                                <el-radio
-                                        v-for="(item,key) in typeOptions"
-                                        :key="key"
-                                        :label="key"
-                                        :value="key"
-                                        border
-                                >{{item}}
-                                </el-radio>
+                                <el-radio-button v-for="(item,key) in typeOptions" :key="key" :label="key" :value="key" border>{{item}}</el-radio-button>
                             </el-radio-group>
                             <div class="el_item_tips">账户类型为商户时必须指定上级代理</div>
                         </el-form-item>
@@ -187,7 +180,7 @@
           email: '',
           // password: '',
           status: '10',
-          group_id: '20',
+          group_id: '',
           recharge_rate: {},
           remit_fee: '',
           parentMerchantAccount: '',
@@ -208,7 +201,7 @@
           username: [{required: true, trigger: 'blur', validator: isvalidUsername}],
           // password: [{ required: true, trigger: 'blur', message: '请输入密码'}],
           status: [{required: true, trigger: 'blur', message: '请选择账户状态'}],
-          // group_id: [{ required: true, trigger: 'blur', message: '请选择账户类型'}],
+          group_id: [{ required: true, trigger: 'blur', message: '请选择账户类型'}],
           // channel: [{ required: true, trigger: 'blur', message: '请选择收款通道'}],
           // remit_channel: [{ required: true, trigger: 'blur', message: '请选择结算通道'}],
           remit_fee: [{required: true, trigger: 'blur', message: '请输入结算手续费'}],
