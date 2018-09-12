@@ -13,14 +13,7 @@
                         </el-form-item>
                         <el-form-item label="账户类型" prop="group_id">
                             <el-radio-group v-model="commonForm.group_id" size="small">
-                                <el-radio
-                                        v-for="(item,key) in typeOptions"
-                                        :key="key"
-                                        :label="key"
-                                        :value="key"
-                                        border
-                                >{{item}}
-                                </el-radio>
+                                <el-radio-button v-for="(item,key) in typeOptions" :key="key" :label="key" :value="key" border>{{item}}</el-radio-button>
                             </el-radio-group>
                         </el-form-item>
 
@@ -87,7 +80,7 @@
           username: '',
           email: '',
           password: '',
-          group_id: '20',
+          group_id: '',
           recharge_rate: {},
           remit_fee: '',
           parentMerchantAccount: '',
