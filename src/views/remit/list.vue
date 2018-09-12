@@ -126,9 +126,8 @@
       <el-table-column align="center" label="操作" class="action-btns" fixed="right" width="220px" class-name="op-column">
         <template slot-scope="scope">
           <div v-if="scope.row.merchant_check_status_str!='未审核'">
-            <el-button class="filter-item" size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1"
-                       icon="el-icon-warning" type="warning" @click="setFail(scope.row)" v-waves>退款
-            </el-button>
+            <el-button @click.native="syncStatusRealtime(scope.row.id)"  type="primary" size="mini">同步</el-button>
+
             <el-button class="filter-item" size="mini" v-if="[0,20].indexOf(scope.row.status) !== -1" icon="el-icon-zoom-in
 " @click="setChecked(scope.row.id)" type="success" v-waves>审核</el-button>
             <el-dropdown size="mini">
@@ -138,8 +137,17 @@
               <el-dropdown-menu slot="dropdown" size="mini">
                 <el-dropdown-item ><el-button @click.native="setSuccess(scope.row)" style="width: 100%" type="success" size="mini">成功</el-button></el-dropdown-item>
                 <el-dropdown-item ><el-button @click.native="reSubmit(scope.row.id)" style="width: 100%" type="danger" size="mini">重提</el-button></el-dropdown-item>
-                <el-dropdown-item ><el-button @click.native="handleTrack(scope.row)" style="width: 100%" type="warning" size="mini">录入</el-button></el-dropdown-item>
-                <el-dropdown-item ><el-button @click.native="syncStatusRealtime(scope.row.id)" style="width: 100%" type="primary" size="mini">同步</el-button></el-dropdown-item>
+                <el-dropdown-item ><el-button @click.native="handleTrack(scope.row)" style="width: 100%" type="primary" size="mini">录入</el-button></el-dropdown-item>
+                <el-dropdown-item >
+                  <el-button
+                          class="filter-item"
+                          size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1"
+                          type="warning"
+                          style="width: 100%"
+                          @click="setFail(scope.row)"
+                          v-waves>退款
+                  </el-button>
+                </el-dropdown-item>
                 <el-dropdown-item ><el-button @click.native="addToBlackList(scope.row)" style="width: 100%" type="info" size="mini">拉黑</el-button></el-dropdown-item>
                 <el-dropdown-item ><el-button @click.native="syncStatus(scope.row.id)" style="width: 100%" type="danger" size="mini">强制同步</el-button></el-dropdown-item>
                 <!--<el-button class="filter-item" icon="el-icon-refresh" size="mini" v-if="[0,20,60].indexOf(scope.row.status) !== -1" @click="currentRemit=scope.row;dialogSwitchRemitVisible=true" v-waves>切通道</el-button>-->
