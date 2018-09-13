@@ -42,23 +42,23 @@
                 }
             }
         },
-        mounted() {
-            this.initChart()
-            if (this.autoResize) {
-                this.__resizeHandler = debounce(() => {
-                    if (this.chart) {
-                        this.chart.resize()
-                    }
-                }, 100)
-            }
-        },
-        beforeDestroy() {
-            if (!this.chart) {
-                return
-            }
-            this.chart.dispose()
-            this.chart = null
-        },
+        // mounted() {
+        //     this.initChart()
+        //     if (this.autoResize) {
+        //         this.__resizeHandler = debounce(() => {
+        //             if (this.chart) {
+        //                 this.chart.resize()
+        //             }
+        //         }, 100)
+        //     }
+        // },
+        // beforeDestroy() {
+        //     if (!this.chart) {
+        //         return
+        //     }
+        //     this.chart.dispose()
+        //     this.chart = null
+        // },
         methods: {
             setOptions(value) {
                 this.chart.setOption({
