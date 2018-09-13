@@ -188,7 +188,8 @@ export const asyncRouterMap = [
       {path: 'profit', component: _import("admin/report/channel_daily_profit"),view: "admin/report/channel_daily_profit", name: 'vue_channel_account_trade_profit', meta: {title: '渠道号利润(每天)', icon: 'excel', role: ['admin'], noCache: true}},
       //渠道号对账 每日凌晨进行生成前日报表数据
       {path: 'reconciliations', component: _import("admin/report/channel_daily_reconciliations"),view: "admin/report/channel_daily_reconciliations", name: 'vue_channel_daily_reconciliations', meta: {title: '渠道号对账(每天)', icon: 'excel', role: ['admin'], noCache: true}},
-
+        //每个时段的充值金额统计分析
+        {path: 'charge_charts', component: _import("admin/report/charge_charts"),view: "admin/report/charge_charts", name: 'vue_charge_charts', meta: {title: '充值金额统计分析', icon: 'excel', role: ['admin'], noCache: true}},
       // 统计充值数据汇总 todo 需求搞不清楚
       // {path: 'index', component: _import("layout/empty"),view: "layout/empty", name: 'vue_merchant_recharge_index', meta: {title: '充值汇总', icon: 'excel', role: ['merchant','agent'], noCache: true}},
 

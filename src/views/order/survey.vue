@@ -556,9 +556,15 @@
         this.trackForm.id = row.id;
       },
       createTrack() {
-
-        self = this;
-        axios.post('/admin/track/add', {parentId: self.trackForm.id, parentType: 'order', type: self.trackForm.type, upload: self.trackForm.upload, note: self.trackForm.note}).then(
+        var self = this;
+        var data = {
+            parentId: self.trackForm.id,
+            parentType: 'order',
+            type: self.trackForm.type,
+            upload: self.trackForm.upload,
+            note: self.trackForm.note
+        }
+        axios.post('/admin/track/add',data).then(
           res => {
             if (res.code != 0) {
               self.$message.error({message: res.message})
@@ -572,6 +578,7 @@
                 upload_url: [],
               }
               self.$refs.track_upload.clearFiles();
+                self.$message.success({message:'录入成功'})
             }
           }
         )
