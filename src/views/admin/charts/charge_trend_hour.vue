@@ -42,8 +42,8 @@
             return {
                 lineChartData:{},
                 listQuery: {
-                    dateStart: null,
-                    dateEnd: null,
+                    dateStart: new Date(new Date().setDate(new Date().getDate()-3)),
+                    dateEnd: new Date(),
                 },
                 pickerOptions: {
                     disabledDate(time) {
