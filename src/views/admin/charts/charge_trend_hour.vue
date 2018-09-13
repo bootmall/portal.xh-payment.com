@@ -22,7 +22,7 @@
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
         <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-            <line-chart :chart-data="lineChartData"/>
+            <charge-trend-hour-chart :chart-data="lineChartData"/>
         </el-row>
     </div>
 </template>
@@ -32,11 +32,11 @@
     import common from '@/utils/common'
     import axios from '@/utils/http'
     import VueQr from 'vue-qr'
-    import LineChart from './components/LineChart'
+    import ChargeTrendHourChart from './components/ChargeTrendHourChart'
     export default {
-        name: "vue_charge_charts",
+        name: "vue_charge_trend_hour",
         components: {
-            LineChart,
+            ChargeTrendHourChart,
         },
         data() {
             return {
@@ -48,7 +48,7 @@
                 pickerOptions: {
                     disabledDate(time) {
                         return time.getTime() > Date.now();
-                    },
+                    }
                 },
             }
         },
@@ -59,10 +59,10 @@
             getList() {
                 var self = this
                 self.listLoading = true
-                axios.post('/admin/order/echarts', self.listQuery).then(
+                axios.post('/admin/echarts/charge-trend-hour', self.listQuery).then(
                     res => {
                         self.lineChartData = res.data
-                    },
+                    }
                 )
             },
             handleFilter() {
