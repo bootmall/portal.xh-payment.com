@@ -42,24 +42,38 @@
                 }
             }
         },
-        // mounted() {
-        //     this.initChart()
-        //     if (this.autoResize) {
-        //         this.__resizeHandler = debounce(() => {
-        //             if (this.chart) {
-        //                 this.chart.resize()
-        //             }
-        //         }, 100)
-        //     }
-        // },
-        // beforeDestroy() {
-        //     if (!this.chart) {
-        //         return
-        //     }
-        //     this.chart.dispose()
-        //     this.chart = null
-        // },
+        mounted() {
+            this.initChart()
+            if (this.autoResize) {
+                this.__resizeHandler = debounce(() => {
+                    if (this.chart) {
+                        this.chart.resize()
+                    }
+                }, 100)
+                window.addEventListener('resize', this.__resizeHandler)
+            }
+            // 监听侧边栏的变化
+            const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+            sidebarElm.addEventListener('transitionend', this.sidebarResizeHandler)
+        },
+        beforeDestroy() {
+            if (!this.chart) {
+                return
+            }
+            if (this.autoResize) {
+                window.removeEventListener('resize', this.__resizeHandler)
+            }
+            const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+            sidebarElm.removeEventListener('transitionend', this.sidebarResizeHandler)
+            this.chart.dispose()
+            this.chart = null
+        },
         methods: {
+            sidebarResizeHandler(e) {
+                if (e.propertyName === 'width') {
+                    this.__resizeHandler()
+                }
+            },
             setOptions(value) {
                 this.chart.setOption({
                     xAxis: {
