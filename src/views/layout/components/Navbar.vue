@@ -74,7 +74,7 @@
             <span @click="editPassDialog" style="display:block;">修改密码</span>
           </el-dropdown-item>
           <el-dropdown-item divided v-if="group_id != 10">
-            <span @click="showHandleAuthKeyDialog" v-if="user.user.main_merchant_id == user.user.id" style="display:block;">修改商户KEY</span>
+            <span @click="showHandleAuthKeyDialog" v-if="user.user.main_merchant_id == user.user.id" style="display:block;">查看/修改商户KEY</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="getGoogleCode" style="display:block;">安全令牌</span>
