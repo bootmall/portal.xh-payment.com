@@ -7,7 +7,8 @@
                             type="date"
                             placeholder="开始日期"
                             size="small"
-                            style="width: 200px;">
+                            style="width: 200px;"
+                            :picker-options="pickerOptions">
             </el-date-picker>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateEnd"
@@ -15,7 +16,8 @@
                             type="date"
                             size="small"
                             style="width: 200px;"
-                            placeholder="结束日期">
+                            placeholder="结束日期"
+                            :picker-options="pickerOptions">
             </el-date-picker>
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
@@ -43,6 +45,11 @@
                     dateStart: null,
                     dateEnd: null,
                 },
+                pickerOptions: {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now();
+                    },
+                },
             }
         },
         created() {
@@ -54,7 +61,7 @@
                 self.listLoading = true
                 axios.post('/admin/order/echarts', self.listQuery).then(
                     res => {
-                        self.totalData = res.data
+                        self.lineChartData = res.data
                     },
                 )
             },
