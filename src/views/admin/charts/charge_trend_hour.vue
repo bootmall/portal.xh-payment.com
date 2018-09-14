@@ -42,7 +42,7 @@
             return {
                 lineChartData:{name:[],data:[]},
                 listQuery: {
-                    dateStart: new Date(new Date().setDate(new Date().getDate()-3)),
+                    dateStart: new Date(new Date().setDate(new Date().getDate()-14)),
                     dateEnd: new Date(),
                 },
                 pickerOptions: {
