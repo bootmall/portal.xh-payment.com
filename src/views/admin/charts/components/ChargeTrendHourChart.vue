@@ -38,27 +38,15 @@
             chartData: {
                 deep: true,
                 handler(val) {
-                    this.$nextTick(() => {
-                        if (val) {
-                            this.setOptions(val)
-                        }
-                    })
+                    this.setOptions(val)
                 }
             }
         },
         mounted() {
             this.initChart()
         },
-        // beforeDestroy() {
-        //     if (!this.chart) {
-        //         return
-        //     }
-        //     this.chart.dispose()
-        //     this.chart = null
-        // },
         methods: {
             setOptions(value) {
-                console.log('charts',value)
                 this.chart.setOption({
                     xAxis: [
                         {

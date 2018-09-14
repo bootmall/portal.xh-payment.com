@@ -26,12 +26,8 @@
         </el-row>
     </div>
 </template>
-
 <script>
-    import {mapGetters} from 'vuex'
-    import common from '@/utils/common'
     import axios from '@/utils/http'
-    import VueQr from 'vue-qr'
     import ChargeTrendHourChart from './components/ChargeTrendHourChart'
     export default {
         name: "vue_charge_trend_hour",
@@ -77,7 +73,6 @@
                             tmps.name.push(i)
                             tmps.data.push(tmp)
                         }
-                        console.log('charge_trend_hour',tmps.data)
                         self.$set(self.lineChartData,'name',tmps.name);
                         self.$set(self.lineChartData,'chartsData',tmps.data);
                     }
