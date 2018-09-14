@@ -11,7 +11,6 @@
                             align="right"
                             type="datetime"
                             placeholder="开始日期"
-                            format="yyyy-MM-dd 00:00:00"
                             size="small"
                             style="width: 200px;"
                             :picker-options="pickerOptions">
@@ -20,7 +19,6 @@
                             v-model="listQuery.dateEnd"
                             align="right"
                             type="datetime"
-                            format="yyyy-MM-dd 23:59:59"
                             size="small"
                             style="width: 200px;"
                             placeholder="结束日期"
