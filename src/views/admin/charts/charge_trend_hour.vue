@@ -77,6 +77,7 @@
                             tmps.name.push(i)
                             tmps.data.push(tmp)
                         }
+                        console.log('charge_trend_hour',tmps.data)
                         self.$set(self.lineChartData,'name',tmps.name);
                         self.$set(self.lineChartData,'chartsData',tmps.data);
                     }
