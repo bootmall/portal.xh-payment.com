@@ -14,7 +14,7 @@
             },
             width: {
                 type: String,
-                default: '90%'
+                default: '95%'
             },
             height: {
                 type: String,
@@ -38,7 +38,8 @@
             chartData: {
                 deep: true,
                 handler(val) {
-                    this.setOptions(val)
+                    // this.setOptions(val)
+                    this.initChart()
                 }
             }
         },
@@ -72,6 +73,7 @@
                         left: '3%',
                         right: '4%',
                         bottom: '3%',
+                        top: '3%',
                         containLabel: true
                     },
                     tooltip : {
@@ -81,7 +83,8 @@
                             label: {
                                 backgroundColor: '#6a7985'
                             }
-                        }
+                        },
+                        padding: [5, 10]
                     },
                     toolbox: {
                         feature: {

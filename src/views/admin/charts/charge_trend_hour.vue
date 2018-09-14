@@ -22,7 +22,7 @@
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
         <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-            <charge-trend-hour-chart :chart-data="lineChartData"/>
+            <charge-trend-hour-chart :chart-data="lineChartData"></charge-trend-hour-chart>
         </el-row>
     </div>
 </template>
