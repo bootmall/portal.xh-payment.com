@@ -40,7 +40,7 @@
         },
         data() {
             return {
-                lineChartData:{name:[],data:[]},
+                lineChartData:{name:[],chartsData:[]},
                 listQuery: {
                     dateStart: new Date(new Date().setDate(new Date().getDate()-14)),
                     dateEnd: new Date(),
@@ -61,11 +61,11 @@
                 self.listLoading = true
                 axios.post('/admin/echarts/charge-trend-hour', self.listQuery).then(
                     res => {
-                        if(res.data.length == 0){
+                        if(res.data.length == 0 || res.data == null){
                             self.$message.success({message: "未查询到充值数据，请检查查询条件"})
                             return false
                         }
-                        self.lineChartData = {name:[],data:[]}
+                        self.lineChartData = {name:[],chartsData:[]}
                         let tmps = {name:[],data:[]};
                         for(let i in res.data){
                             let tmp = {
@@ -77,7 +77,8 @@
                             tmps.name.push(i)
                             tmps.data.push(tmp)
                         }
-                        self.$set(self,'lineChartData',tmps);
+                        self.$set(self.lineChartData,'name',tmps.name);
+                        self.$set(self.lineChartData,'chartsData',tmps.data);
                     }
                 )
             },

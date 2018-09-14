@@ -36,10 +36,10 @@
         },
         watch: {
             chartData: {
-                deep: true,
+                // deep: true,
                 handler(val) {
+                    this.chart.setOption(val)
                     // this.setOptions(val)
-                    this.initChart()
                 }
             }
         },
@@ -55,6 +55,7 @@
         },
         methods: {
             setOptions(value) {
+                console.log(value)
                 this.chart.setOption({
                     xAxis: [
                         {
@@ -73,7 +74,7 @@
                         left: '3%',
                         right: '4%',
                         bottom: '3%',
-                        top: '3%',
+                        top: '20%',
                         containLabel: true
                     },
                     tooltip : {
@@ -84,7 +85,7 @@
                                 backgroundColor: '#6a7985'
                             }
                         },
-                        padding: [5, 10]
+                        padding: [20, 10]
                     },
                     toolbox: {
                         feature: {
@@ -105,7 +106,7 @@
                     legend: {
                         data:value.name
                     },
-                    series: value.data
+                    series: value.chartsData
                 })
             },
             initChart() {
