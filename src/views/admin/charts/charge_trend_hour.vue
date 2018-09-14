@@ -1,5 +1,5 @@
 <template>
-    <div class="dashboard-editor-container">
+    <div class="app-container calendar-list-container">
         <div class="filter-container">
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
@@ -61,15 +61,12 @@
                 self.listLoading = true
                 axios.post('/admin/echarts/charge-trend-hour', self.listQuery).then(
                     res => {
-                        // self.lineChartData = res.data
                         for(let i in res.data){
                             let tmp = {
                                 name:i,
-                                // smooth: true,
                                 type: 'line',
                                 data:res.data[i],
-                                // animationDuration: 2800,
-                                // animationEasing: 'cubicInOut'
+                                areaStyle: {normal: {}},
                             }
                             self.lineChartData.name.push(i)
                             self.lineChartData.data.push(tmp)
