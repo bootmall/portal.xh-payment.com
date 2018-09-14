@@ -84,18 +84,19 @@
                         }
                     },
                     grid: {
-                        left: 10,
-                        right: 10,
-                        bottom: 20,
-                        top: 30,
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
                         containLabel: true
                     },
-                    tooltip: {
+                    tooltip : {
                         trigger: 'axis',
                         axisPointer: {
-                            type: 'cross'
-                        },
-                        padding: [5, 10]
+                            type: 'cross',
+                            label: {
+                                backgroundColor: '#6a7985'
+                            }
+                        }
                     },
                     yAxis: {
                         axisTick: {
@@ -103,86 +104,88 @@
                         }
                     },
                     legend: {
-                        data:Object.keys(value)
+                        data:value.name
                     },
-                    series: [
-                        {
-                            name: Object.keys(value)[0], itemStyle: {
-                                normal: {
-                                    color: '#FF005A',
-                                    lineStyle: {
-                                        color: '#FF005A',
-                                        width: 2
-                                    }
-                                }
-                            },
-                            smooth: true,
-                            type: 'line',
-                            data: value[Object.keys(value)[0]],
-                            animationDuration: 2800,
-                            animationEasing: 'cubicInOut'
-                        },
-                        {
-                            name: Object.keys(value)[1],
-                            smooth: true,
-                            type: 'line',
-                            itemStyle: {
-                                normal: {
-                                    color: '#3888fa',
-                                    lineStyle: {
-                                        color: '#3888fa',
-                                        width: 2
-                                    },
-                                    areaStyle: {
-                                        color: '#f3f8ff'
-                                    }
-                                }
-                            },
-                            data: value[Object.keys(value)[1]],
-                            animationDuration: 2800,
-                            animationEasing: 'quadraticOut'
-                        },
-                        {
-                            name: Object.keys(value)[2],
-                            smooth: true,
-                            type: 'line',
-                            itemStyle: {
-                                normal: {
-                                    color: '#67c23a',
-                                    lineStyle: {
-                                        color: '#67c23a',
-                                        width: 2
-                                    },
-                                    areaStyle: {
-                                        color: '#f3f8ff'
-                                    }
-                                }
-                            },
-                            data: value[Object.keys(value)[2]],
-                            animationDuration: 2800,
-                            animationEasing: 'quadraticOut'
-                        },
-                        {
-                            name: Object.keys(value)[3],
-                            smooth: true,
-                            type: 'line',
-                            itemStyle: {
-                                normal: {
-                                    color: '#eb9e05',
-                                    lineStyle: {
-                                        color: '#eb9e05',
-                                        width: 2
-                                    },
-                                    areaStyle: {
-                                        color: '#f3f8ff'
-                                    }
-                                }
-                            },
-                            data: value[Object.keys(value)[3]],
-                            animationDuration: 2800,
-                            animationEasing: 'quadraticOut'
-                        }
-                    ]
+                    series: value.data
+                    //     [
+                    //     {
+                    //         name: Object.keys(value)[0],
+                    //         // itemStyle: {
+                    //         //     normal: {
+                    //         //         color: '#FF005A',
+                    //         //         lineStyle: {
+                    //         //             color: '#FF005A',
+                    //         //             width: 2
+                    //         //         }
+                    //         //     }
+                    //         // },
+                    //         smooth: true,
+                    //         type: 'line',
+                    //         data: value[Object.keys(value)[0]],
+                    //         animationDuration: 2800,
+                    //         animationEasing: 'cubicInOut'
+                    //     },
+                    //     {
+                    //         name: Object.keys(value)[1],
+                    //         smooth: true,
+                    //         type: 'line',
+                    //         // itemStyle: {
+                    //         //     normal: {
+                    //         //         color: '#3888fa',
+                    //         //         lineStyle: {
+                    //         //             color: '#3888fa',
+                    //         //             width: 2
+                    //         //         },
+                    //         //         areaStyle: {
+                    //         //             color: '#f3f8ff'
+                    //         //         }
+                    //         //     }
+                    //         // },
+                    //         data: value[Object.keys(value)[1]],
+                    //         animationDuration: 2800,
+                    //         animationEasing: 'quadraticOut'
+                    //     },
+                    //     {
+                    //         name: Object.keys(value)[2],
+                    //         smooth: true,
+                    //         type: 'line',
+                    //         // itemStyle: {
+                    //         //     normal: {
+                    //         //         color: '#67c23a',
+                    //         //         lineStyle: {
+                    //         //             color: '#67c23a',
+                    //         //             width: 2
+                    //         //         },
+                    //         //         areaStyle: {
+                    //         //             color: '#f3f8ff'
+                    //         //         }
+                    //         //     }
+                    //         // },
+                    //         data: value[Object.keys(value)[2]],
+                    //         animationDuration: 2800,
+                    //         animationEasing: 'quadraticOut'
+                    //     },
+                    //     {
+                    //         name: Object.keys(value)[3],
+                    //         smooth: true,
+                    //         type: 'line',
+                    //         // itemStyle: {
+                    //         //     normal: {
+                    //         //         color: '#eb9e05',
+                    //         //         lineStyle: {
+                    //         //             color: '#eb9e05',
+                    //         //             width: 2
+                    //         //         },
+                    //         //         areaStyle: {
+                    //         //             color: '#f3f8ff'
+                    //         //         }
+                    //         //     }
+                    //         // },
+                    //         data: value[Object.keys(value)[3]],
+                    //         animationDuration: 2800,
+                    //         animationEasing: 'quadraticOut'
+                    //     }
+                    // ]
                 })
             },
             initChart() {

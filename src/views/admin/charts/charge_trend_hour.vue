@@ -40,7 +40,7 @@
         },
         data() {
             return {
-                lineChartData:{},
+                lineChartData:{name:[],data:[]},
                 listQuery: {
                     dateStart: new Date(new Date().setDate(new Date().getDate()-3)),
                     dateEnd: new Date(),
@@ -61,7 +61,19 @@
                 self.listLoading = true
                 axios.post('/admin/echarts/charge-trend-hour', self.listQuery).then(
                     res => {
-                        self.lineChartData = res.data
+                        // self.lineChartData = res.data
+                        for(let i in res.data){
+                            let tmp = {
+                                name:i,
+                                // smooth: true,
+                                type: 'line',
+                                data:res.data[i],
+                                // animationDuration: 2800,
+                                // animationEasing: 'cubicInOut'
+                            }
+                            self.lineChartData.name.push(i)
+                            self.lineChartData.data.push(tmp)
+                        }
                     }
                 )
             },
