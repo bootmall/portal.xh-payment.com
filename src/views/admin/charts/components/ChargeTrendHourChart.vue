@@ -26,7 +26,6 @@
             },
             chartData: {
                 type: Object,
-                // default
                 // required: true
             }
         },
@@ -46,7 +45,9 @@
                         series: val.chartsData
                     }
                     console.log('newData',newData)
-                    this.chart.setOptions(newData)
+                    if (this.chart != null){
+                        this.chart.setOptions(newData)
+                    }
                 }
             }
         },
