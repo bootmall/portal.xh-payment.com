@@ -45,9 +45,7 @@
                         series: val.chartsData
                     }
                     console.log('newData',newData)
-                    if (this.chart != null){
-                        this.chart.setOptions(newData)
-                    }
+                    this.resetOptions(newData)
                 }
             }
         },
@@ -55,6 +53,12 @@
             this.initChart()
         },
         methods: {
+            resetOptions(newData){
+                console.log('chart---',this.chart)
+                if (this.chart != null){
+                    this.chart.setOption(newData)
+                }
+            },
             setOptions(value) {
                 this.chart.setOption({
                     xAxis: [
