@@ -26,7 +26,8 @@
             },
             chartData: {
                 type: Object,
-                required: true
+                // default
+                // required: true
             }
         },
         data() {
@@ -38,7 +39,14 @@
             chartData: {
                 deep: true,
                 handler(val) {
-                    this.setOptions(val)
+                    let newData = {
+                        legend: {
+                            data:val.name
+                        },
+                        series: val.chartsData
+                    }
+                    console.log('newData',newData)
+                    this.chart.setOptions(newData)
                 }
             }
         },
