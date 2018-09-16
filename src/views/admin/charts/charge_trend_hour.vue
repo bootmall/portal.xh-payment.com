@@ -58,7 +58,7 @@
                 axios.post('/admin/echarts/charge-trend-hour', self.listQuery).then(
                     res => {
                         if(res.data.length == 0 || res.data == null){
-                            self.$message.success({message: res.message})
+                            self.$message.error({message: res.message})
                             return false
                         }
                         self.lineChartData = {name:[],data:[]}
