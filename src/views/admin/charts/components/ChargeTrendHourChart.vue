@@ -6,6 +6,59 @@
     import echarts from 'echarts'
     require('echarts/theme/macarons') // echarts 主题
     import { debounce } from '@/utils'
+    const defaultEchartOption = {
+      xAxis: [
+        {
+          data: ['00时','01时','02时','03时','04时','05时','06时','07时','08时','09时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时'],
+          boundaryGap: false,
+          axisTick: {
+            show: false
+          }
+        },
+        {
+          name: '',
+          type: 'value',
+        },
+      ],
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        top: '20%',
+        containLabel: true
+      },
+      tooltip : {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985'
+          }
+        },
+        padding: [20, 10]
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      yAxis: [
+        {
+          axisTick: {
+            show: false
+          }
+        },
+        {
+          name: '充值金额(元)',
+          type: 'value',
+        },
+      ],
+      legend: {
+        data: []
+      },
+      series: []
+    }
+
     export default {
         props: {
             className: {
@@ -38,17 +91,12 @@
             chartData: {
                 deep: true,
                 handler(val) {
-                    let newData = {
-                        legend: {
-                            data:val.name
-                        },
-                        series: val.data
-                    }
-                    // console.log('type',typeof (val.chartsData));
-                    // for  (let i in val.chartsData){
-                    //     console.log('line',i,val.chartsData[i]);
-                    // }
-                    this.resetOptions(newData)
+                  let option = defaultEchartOption;
+                  option.legend.data = val.name
+                  option.series = val.data
+
+                  this.chart.clear();// 重绘之前清理画布
+                  this.chart.setOption(option)
                 }
             }
         },
@@ -56,65 +104,11 @@
             this.initChart()
         },
         methods: {
-            resetOptions(newData){
-                console.log('chart---',this.chart,newData)
-                if (this.chart != null){
-                    this.chart.setOption(newData)
-                }
-            },
             setOptions(value) {
-                this.chart.setOption({
-                    xAxis: [
-                        {
-                            data: ['00时','01时','02时','03时','04时','05时','06时','07时','08时','09时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时'],
-                            boundaryGap: false,
-                            axisTick: {
-                                show: false
-                            }
-                        },
-                        {
-                            name: '',
-                            type: 'value',
-                        },
-                    ],
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        top: '20%',
-                        containLabel: true
-                    },
-                    tooltip : {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'cross',
-                            label: {
-                                backgroundColor: '#6a7985'
-                            }
-                        },
-                        padding: [20, 10]
-                    },
-                    toolbox: {
-                        feature: {
-                            saveAsImage: {}
-                        }
-                    },
-                    yAxis: [
-                        {
-                            axisTick: {
-                                show: false
-                            }
-                        },
-                        {
-                            name: '充值金额(元)',
-                            type: 'value',
-                        },
-                    ],
-                    legend: {
-                        data:value.name
-                    },
-                    series: value.data
-                })
+              let option = defaultEchartOption;
+              option.legend.data = value.name
+              option.series = value.data
+                this.chart.setOption(option)
             },
             initChart() {
                 this.chart = echarts.init(this.$el, 'macarons')
