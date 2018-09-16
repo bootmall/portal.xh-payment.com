@@ -61,7 +61,7 @@
                             self.$message.success({message: "未查询到充值数据，请检查查询条件"})
                             return false
                         }
-                        self.lineChartData = {name:[],chartsData:[]}
+                        self.lineChartData = {name:[],data:[]}
                         let tmps = {name:[],data:[]};
                         for(let i in res.data){
                             let tmp = {
@@ -73,8 +73,7 @@
                             tmps.name.push(i)
                             tmps.data.push(tmp)
                         }
-                        self.$set(self.lineChartData,'name',tmps.name);
-                        self.$set(self.lineChartData,'chartsData',tmps.data);
+                        self.$set(self,'lineChartData',tmps);
                     }
                 )
             },

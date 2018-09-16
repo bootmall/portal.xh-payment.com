@@ -42,9 +42,12 @@
                         legend: {
                             data:val.name
                         },
-                        series: val.chartsData
+                        series: val.data
                     }
-                    console.log('newData',newData)
+                    // console.log('type',typeof (val.chartsData));
+                    // for  (let i in val.chartsData){
+                    //     console.log('line',i,val.chartsData[i]);
+                    // }
                     this.resetOptions(newData)
                 }
             }
@@ -54,7 +57,7 @@
         },
         methods: {
             resetOptions(newData){
-                console.log('chart---',this.chart)
+                console.log('chart---',this.chart,newData)
                 if (this.chart != null){
                     this.chart.setOption(newData)
                 }
@@ -110,7 +113,7 @@
                     legend: {
                         data:value.name
                     },
-                    series: value.chartsData
+                    series: value.data
                 })
             },
             initChart() {
