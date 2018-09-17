@@ -7,58 +7,57 @@
     require('echarts/theme/macarons') // echarts 主题
     import { debounce } from '@/utils'
     const defaultEchartOption = {
-      xAxis: [
-        {
-          data: ['00时','01时','02时','03时','04时','05时','06时','07时','08时','09时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时'],
-          boundaryGap: false,
-          axisTick: {
-            show: false
-          }
+        xAxis: [
+            {
+                data: ['00时','01时','02时','03时','04时','05时','06时','07时','08时','09时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时'],
+                boundaryGap: false,
+                axisTick: {
+                    show: false
+                }
+            },
+            {
+                name: '',
+                type: 'value'
+            },
+        ],
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '20%',
+            containLabel: true
         },
-        {
-          name: '',
-          type: 'value',
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            },
+            padding: [20, 10]
         },
-      ],
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        top: '20%',
-        containLabel: true
-      },
-      tooltip : {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985'
-          }
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
         },
-        padding: [20, 10]
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
-        }
-      },
-      yAxis: [
-        {
-          axisTick: {
-            show: false
-          }
+        yAxis: [
+            {
+                axisTick: {
+                    show: false
+                }
+            },
+            {
+                name: '金额(元)',
+                type: 'value'
+            },
+        ],
+        legend: {
+            data: []
         },
-        {
-          name: '充值金额(元)',
-          type: 'value',
-        },
-      ],
-      legend: {
-        data: []
-      },
-      series: []
+        series: []
     }
-
     export default {
         props: {
             className: {

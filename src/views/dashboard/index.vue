@@ -94,6 +94,10 @@
             <el-tab-pane style="height: 300px;overflow:auto;line-height: 18px;" :label="item.title" v-for="(item,key) in notice" :key="key" v-html="item.content" @click="content = item.content"></el-tab-pane>
           </el-tabs>
         </el-row>
+        <el-row style="background:#fff;margin-bottom:32px;width: 90%;margin-left: 50px;line-height: 60px;">
+            <h4 class="el-alert el-alert--success">充值/代付走势图</h4>
+            <charge-trend-hour-chart :chart-data="lineChartData"></charge-trend-hour-chart>
+        </el-row>
         <el-row :gutter="20" style="margin-left: 50px;line-height: 60px;width: 90%;background-color: #eee;color: #333;">
             <el-col :span="6" align="center">最后登陆时间</el-col>
             <el-col :span="6">{{user.last_login_time}}</el-col>
@@ -105,6 +109,7 @@
 
 <script>
   import addRecharge from '@/views/components/addRecharge'
+  import ChargeTrendHourChart from '@/views/admin/charts/components/ChargeTrendHourChart'
   import { mapGetters } from 'vuex'
   import axios from '@/utils/http'
   import common from '@/utils/common'
@@ -128,7 +133,8 @@
   export default {
     name: 'dashboardIndex',
     components: {
-        addRecharge
+        addRecharge,
+        ChargeTrendHourChart
     },
     computed: {
     },
@@ -148,16 +154,20 @@
         needPayAccountOpenFeeVisible: false,
         needPayAccountOpenFee: false,
         needPayAccountOpenAmount: 0,
-        isMainAccount:false
+        isMainAccount:false,
+        lineChartData:{
+            name:[],
+            chartsData:[]
+        },
+        lineChartType:{
+            'charge':'充值',
+            'remit':'代付'
+        }
       }
     },
     methods: {
       go(path) {
         this.$router.push({path: path});
-      },
-      handleSetLineChartData(type) {
-        //return
-        this.lineChartData = lineChartData[type]
       },
       getInitData() {
         let self = this
@@ -192,6 +202,16 @@
                 self.noticeVisible = false
                 self.needPayAccountOpenFeeVisible = true
                 self.needPayAccountOpenAmount = parseInt(res.data.needPayAccountOpenAmount)
+              }
+              for(let i in res.data.charts){
+                  let tmp = {
+                      name:i,
+                      type: 'line',
+                      data:res.data[i],
+                      areaStyle: {normal: {}},
+                  }
+                  self.lineChartData.name.push(self.lineChartType[i])
+                  self.lineChartData.data.push(tmp)
               }
             }
           },
