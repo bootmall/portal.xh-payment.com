@@ -90,6 +90,7 @@
             chartData: {
                 deep: true,
                 handler(val) {
+                    // console.log(val)
                   let option = defaultEchartOption;
                   option.legend.data = val.name
                   option.series = val.data

@@ -114,11 +114,6 @@
   import axios from '@/utils/http'
   import common from '@/utils/common'
 
-  const lineChartData = {
-    orderCountData: [],
-    orderMoneyData: [],
-    xAxis: []
-  }
   const lineChartOrderCountData = {
     line: [],
     xAxis:[],
@@ -203,16 +198,20 @@
                 self.needPayAccountOpenFeeVisible = true
                 self.needPayAccountOpenAmount = parseInt(res.data.needPayAccountOpenAmount)
               }
+                self.lineChartData = {name:[],data:[]}
+                let tmps = {name:[],data:[]};
               for(let i in res.data.charts){
                   let tmp = {
-                      name:i,
+                      name:self.lineChartType[i],
                       type: 'line',
-                      data:res.data[i],
+                      data:res.data.charts[i],
                       areaStyle: {normal: {}},
                   }
-                  self.lineChartData.name.push(self.lineChartType[i])
-                  self.lineChartData.data.push(tmp)
+                  tmps.name.push(self.lineChartType[i])
+                  tmps.data.push(tmp)
               }
+              // console.log(tmps)
+              self.$set(self,'lineChartData',tmps);
             }
           },
           res => {
