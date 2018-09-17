@@ -139,7 +139,7 @@
                 <el-dropdown-item >
                   <el-button
                           class="filter-item"
-                          size="mini" v-if="[-10,-20,10,20,30,60].indexOf(scope.row.status) !== -1"
+                          size="mini" v-if="[-10,-20,10,20,30,40,60].indexOf(scope.row.status) !== -1"
                           type="warning"
                           style="width: 100%"
                           @click="setFail(scope.row)"
