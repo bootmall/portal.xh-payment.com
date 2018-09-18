@@ -7,6 +7,11 @@
     require('echarts/theme/macarons') // echarts 主题
     import { debounce } from '@/utils'
     const defaultEchartOption = {
+        title: {
+            text: '',
+            // subtext: '',
+            x: 'center'
+        },
         xAxis: [
             {
                 data: [],
@@ -95,6 +100,7 @@
                   option.legend.data = val.name
                   option.series = val.data
                     option.xAxis[0].data = val.x_data
+                    option.title.text = val.title
                   this.chart.clear();// 重绘之前清理画布
                   this.chart.setOption(option)
                 }

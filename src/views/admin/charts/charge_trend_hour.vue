@@ -36,7 +36,12 @@
         },
         data() {
             return {
-                lineChartData:{name:[],data:[],x_data:[]},
+                lineChartData:{
+                    name:[],
+                    data:[],
+                    x_data:[],
+                    title:'充值、代付近15天时时统计'
+                },
                 listQuery: {
                     dateStart: new Date(new Date().setDate(new Date().getDate()-14)),
                     dateEnd: new Date(),

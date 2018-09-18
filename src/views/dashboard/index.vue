@@ -95,7 +95,7 @@
           </el-tabs>
         </el-row>
         <div style="width: 90%;margin-left: 50px;margin-bottom: 20px;" v-if="user.group_id == 30 " v-show="isMainAccount">
-            <h4 title="费率列表" class="el-alert el-alert--success" style="margin-bottom: 10px;line-height: 25px">充值/代付走势图</h4>
+            <h4 title="费率列表" class="el-alert el-alert--success" style="margin-bottom: 10px;line-height: 25px">充值/代付统计图</h4>
             <el-row :gutter="10" style="text-align: left;background:#fff;margin-bottom:32px;">
                 <el-col :span="12" align="center">
                     <charge-trend-hour-chart :chart-data="lineChartData"></charge-trend-hour-chart>
@@ -161,6 +161,7 @@
             name:[],
             chartsData:[],
             days:[],
+            title:'充值、代付当日统计'
         },
         lineChartType:{
             'charge':'充值',
@@ -169,7 +170,8 @@
           chargeRemitData:{
               name:[],
               chartsData:[],
-              days:[]
+              days:[],
+              title:'充值、代付近7日统计'
           }
       }
     },
