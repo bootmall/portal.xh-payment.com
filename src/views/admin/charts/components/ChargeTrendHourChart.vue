@@ -8,9 +8,7 @@
     import { debounce } from '@/utils'
     const defaultEchartOption = {
         title: {
-            text: '',
-            // subtext: '',
-            x: 'center'
+            text: ''
         },
         xAxis: [
             {
