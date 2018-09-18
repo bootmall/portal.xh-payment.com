@@ -42,12 +42,11 @@
       </el-menu>
     </div>
     <div class="right-menu">
-            <span style="font-size: 14px;margin-left: 20px;">
-                商户号：<span style="color:#F56C6C">{{user.user.main_merchant_id}}</span>
-            </span>
       <el-dropdown trigger="click" v-if="group_id != 10">
             <span class="el-dropdown-link" @click="getInitData">
-                账户余额：<span style="color:#F56C6C">{{asset}}</span>
+              <el-tag type="warning">
+                <span style="color: #fff">账户余额：</span><span style="color: #F56C6C">¥ {{asset}}</span>
+              </el-tag>
             </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item divided>
@@ -61,7 +60,9 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
+      <span style="font-size: 14px;margin-left: 20px;">
+          商户号：<span style="color:#F56C6C">{{user.user.main_merchant_id}}</span>
+      </span>
       <el-dropdown class="avatar-container right-menu-item">
         <div class="avatar-wrapper">
           欢迎您:
