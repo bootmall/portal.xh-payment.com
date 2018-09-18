@@ -94,10 +94,17 @@
             <el-tab-pane style="height: 300px;overflow:auto;line-height: 18px;" :label="item.title" v-for="(item,key) in notice" :key="key" v-html="item.content" @click="content = item.content"></el-tab-pane>
           </el-tabs>
         </el-row>
-        <el-row style="background:#fff;margin-bottom:32px;width: 90%;margin-left: 50px;line-height: 60px;" v-if="user.group_id == 30 " v-show="isMainAccount">
-            <h4 class="el-alert el-alert--success">充值/代付走势图</h4>
-            <charge-trend-hour-chart :chart-data="lineChartData"></charge-trend-hour-chart>
-        </el-row>
+        <div style="width: 90%;margin-left: 50px;margin-bottom: 20px;" v-if="user.group_id == 30 " v-show="isMainAccount">
+            <h4 title="费率列表" class="el-alert el-alert--success" style="margin-bottom: 10px;line-height: 25px">充值/代付走势图</h4>
+            <el-row :gutter="10" style="text-align: left;background:#fff;margin-bottom:32px;">
+                <el-col :span="12" align="center">
+                    <charge-trend-hour-chart :chart-data="lineChartData"></charge-trend-hour-chart>
+                </el-col>
+                <el-col :span="12" align="center">
+                    <charge-trend-hour-chart :chart-data="chargeRemitData"></charge-trend-hour-chart>
+                </el-col>
+            </el-row>
+        </div>
         <el-row :gutter="20" style="margin-left: 50px;line-height: 60px;width: 90%;background-color: #eee;color: #333;">
             <el-col :span="6" align="center">最后登陆时间</el-col>
             <el-col :span="6">{{user.last_login_time}}</el-col>
@@ -152,12 +159,18 @@
         isMainAccount:false,
         lineChartData:{
             name:[],
-            chartsData:[]
+            chartsData:[],
+            days:[],
         },
         lineChartType:{
             'charge':'充值',
             'remit':'代付'
-        }
+        },
+          chargeRemitData:{
+              name:[],
+              chartsData:[],
+              days:[]
+          }
       }
     },
     methods: {
@@ -198,20 +211,7 @@
                 self.needPayAccountOpenFeeVisible = true
                 self.needPayAccountOpenAmount = parseInt(res.data.needPayAccountOpenAmount)
               }
-                self.lineChartData = {name:[],data:[]}
-                let tmps = {name:[],data:[]};
-              for(let i in res.data.charts){
-                  let tmp = {
-                      name:self.lineChartType[i],
-                      type: 'line',
-                      data:res.data.charts[i],
-                      areaStyle: {normal: {}},
-                  }
-                  tmps.name.push(self.lineChartType[i])
-                  tmps.data.push(tmp)
-              }
-              // console.log(tmps)
-              self.$set(self,'lineChartData',tmps);
+
             }
           },
           res => {
@@ -219,9 +219,54 @@
           }
         )
       },
+        getChartData(){
+          var self = this
+            axios.post('/admin/echarts/charge-remit-trend-merchant').then(
+                res => {
+                    self.lineChartData = {name:[],data:[],x_data:[]}
+                    let tmps = {name:[],data:[],x_data:[]}
+                    for(let i in res.data.charts){
+                        let tmp = {
+                            name:self.lineChartType[i],
+                            type: 'line',
+                            data:[],
+                            areaStyle: {normal: {}},
+                        }
+                        for(let j in res.data.hour){
+                            tmp.data.push(res.data.charts[i][res.data.hour[j]])
+                        }
+                        tmps.name.push(self.lineChartType[i])
+                        tmps.data.push(tmp)
+                    }
+                    for (let i in res.data.hour){
+                        tmps.x_data.push(res.data.hour[i]+'时')
+                    }
+                    self.$set(self,'lineChartData',tmps);
+                    self.chargeRemitData = {name:[],data:[],x_data:[]}
+                    let tmpChargeRemit = {name:[],data:[],x_data:[]}
+                    for (let i in res.data.merchant) {
+                        let tmp = {
+                            name:self.lineChartType[i],
+                            type: 'line',
+                            data:[],
+                            areaStyle: {normal: {}},
+                        }
+                        tmpChargeRemit.x_data = Object.keys(res.data.merchant[i])
+                        for (let j in res.data.merchant[i]){
+                            tmp.data.push(res.data.merchant[i][j])
+
+                        }
+                        tmpChargeRemit.name.push(self.lineChartType[i])
+                        tmpChargeRemit.data.push(tmp)
+                    }
+                    self.$set(self,'chargeRemitData',tmpChargeRemit);
+                }
+            )
+        }
     },
     created(){
       this.getInitData()
+      this.getChartData()
     }
   }
 </script>

@@ -9,7 +9,7 @@
     const defaultEchartOption = {
         xAxis: [
             {
-                data: ['00时','01时','02时','03时','04时','05时','06时','07时','08时','09时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时'],
+                data: [],
                 boundaryGap: false,
                 axisTick: {
                     show: false
@@ -79,26 +79,26 @@
             chartData: {
                 type: Object,
                 // required: true
-            }
+            },
         },
         data() {
             return {
-                chart: null
+                chart: null,
             }
         },
         watch: {
             chartData: {
                 deep: true,
                 handler(val) {
-                    // console.log(val)
+                    console.log(val)
                   let option = defaultEchartOption;
                   option.legend.data = val.name
                   option.series = val.data
-
+                    option.xAxis[0].data = val.x_data
                   this.chart.clear();// 重绘之前清理画布
                   this.chart.setOption(option)
                 }
-            }
+            },
         },
         mounted() {
             this.initChart()
@@ -108,6 +108,7 @@
               let option = defaultEchartOption;
               option.legend.data = value.name
               option.series = value.data
+                option.xAxis[0].data = value.x_data
                 this.chart.setOption(option)
             },
             initChart() {
