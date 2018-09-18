@@ -40,7 +40,7 @@
                     name:[],
                     data:[],
                     x_data:[],
-                    title:'充值、代付近15天时时统计'
+                    title:''
                 },
                 listQuery: {
                     dateStart: new Date(new Date().setDate(new Date().getDate()-14)),
@@ -66,8 +66,8 @@
                             self.$message.error({message: res.message})
                             return false
                         }
-                        self.lineChartData = {name:[],data:[],x_data:[]}
-                        let tmps = {name:[],data:[],x_data:[]};
+                        self.lineChartData = {name:[],data:[],x_data:[],title:''}
+                        let tmps = {name:[],data:[],x_data:[],title:''};
                         for(let i in res.data.chart){
                             let tmp = {
                                 name:i,
@@ -78,6 +78,7 @@
                             tmps.name.push(i)
                             tmps.data.push(tmp)
                         }
+                        tmps.title = "充值、代付近" + Object.keys(res.data.chart).length  + "天时时统计"
                         for (let i in res.data.hour){
                             tmps.x_data.push(res.data.hour[i]+'时')
                         }

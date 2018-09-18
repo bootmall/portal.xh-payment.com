@@ -93,7 +93,7 @@
             chartData: {
                 deep: true,
                 handler(val) {
-                    console.log(val)
+                    // console.log(val)
                   let option = defaultEchartOption;
                   option.legend.data = val.name
                   option.series = val.data
@@ -113,10 +113,12 @@
               option.legend.data = value.name
               option.series = value.data
                 option.xAxis[0].data = value.x_data
+                option.title.text = value.title
                 this.chart.setOption(option)
             },
             initChart() {
                 this.chart = echarts.init(this.$el, 'macarons')
+                // console.log(this.chartData)
                 this.setOptions(this.chartData)
             }
         }
