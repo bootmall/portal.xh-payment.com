@@ -78,7 +78,7 @@
                             tmps.name.push(i)
                             tmps.data.push(tmp)
                         }
-                        tmps.title = "充值、代付近" + Object.keys(res.data.chart).length  + "天时时统计"
+                        tmps.title = "充值、代付近" + Object.keys(res.data.chart).length  + "天时时统计\\n"
                         for (let i in res.data.hour){
                             tmps.x_data.push(res.data.hour[i]+'时')
                         }
