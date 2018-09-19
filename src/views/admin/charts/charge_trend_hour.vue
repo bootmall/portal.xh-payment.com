@@ -68,6 +68,8 @@
                         }
                         self.lineChartData = {name:[],data:[],x_data:[],title:''}
                         let tmps = {name:[],data:[],x_data:[],title:''};
+                        let tmpLength = Object.keys(res.data.chart).length
+                        let number = 0;
                         for(let i in res.data.chart){
                             let tmp = {
                                 name:i,
@@ -76,9 +78,14 @@
                                 areaStyle: {normal: {}},
                             }
                             tmps.name.push(i)
+                            if(tmpLength > 10 && number == Math.round(tmpLength/2)){
+                                tmps.name.push('')
+                            }
                             tmps.data.push(tmp)
+                            number++;
                         }
-                        tmps.title = "充值、代付近" + Object.keys(res.data.chart).length  + "天时时统计\\n"
+                        tmps.title = "充值近" + Object.keys(res.data.chart).length  + "天时时统计"
+
                         for (let i in res.data.hour){
                             tmps.x_data.push(res.data.hour[i]+'时')
                         }
