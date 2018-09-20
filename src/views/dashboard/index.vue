@@ -226,7 +226,7 @@
             axios.post('/admin/echarts/charge-remit-trend-merchant').then(
                 res => {
                     self.lineChartData = {name:[],data:[],x_data:[],title:''}
-                    let tmps = {name:[],data:[],x_data:[],title:'充值、代付当日统计'}
+                    let tmps = {name:[],data:[],x_data:[],title:'当天充值、代付统计'}
                     for(let i in res.data.charts){
                         let tmp = {
                             name:self.lineChartType[i],
@@ -245,7 +245,7 @@
                     }
                     self.$set(self,'lineChartData',tmps);
                     self.chargeRemitData = {name:[],data:[],x_data:[],title:''}
-                    let tmpChargeRemit = {name:[],data:[],x_data:[],title:'充值、代付近7日统计'}
+                    let tmpChargeRemit = {name:[],data:[],x_data:[],title:'近7天充值、代付统计'}
                     for (let i in res.data.merchant) {
                         let tmp = {
                             name:self.lineChartType[i],
