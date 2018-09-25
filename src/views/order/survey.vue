@@ -2,13 +2,11 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
             <el-input @keyup.enter.native="handleFilter" @focus="showParsteTxt('orderNo')" size="small" style="width: 200px" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
-            <!--<i icon="el-icon-tickets" class="filter-item" @click="showParsteTxt('orderNo')" style="width: 20px;display: inline-block;color: orange" >贴</i>-->
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
             <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="渠道订单号" v-model="listQuery.channelOrderNo"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName"></el-input>
             <el-input @keyup.enter.native="handleFilter" @focus="showParsteTxt('client_ip')" size="small" style="width: 200px;" class="filter-item" placeholder="IP" v-model="listQuery.client_ip"></el-input>
-            <!--<i icon="el-icon-tickets" @click="showParsteTxt('client_ip')" style="width: 20px;display: inline-block;color: orange" >贴</i>-->
             <el-input @keyup.enter.native="handleFilter" size="small" @focus="showParsteTxt('client_id')" style="width: 200px;" class="filter-item" placeholder="设备号" v-model="listQuery.client_id"></el-input>
             <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号" multiple >
                 <el-option
@@ -18,7 +16,16 @@
                     :value="item.id">
                 </el-option>
             </el-select>
-            <!--<i icon="el-icon-tickets" @click="showParsteTxt('client_id')" style="width: 20px;display: inline-block;color: orange" >贴</i>-->
+
+            <el-table-column align="center" label="订单状态">
+                <template slot-scope="scope">
+                    <el-tooltip v-if="scope.row.bak!=''" class="item" effect="light" placement="top">
+                        <span class="link-type">{{scope.row.status_str}}</span>
+                        <span slot="content" v-html="scope.row.bak"></span>
+                    </el-tooltip>
+                    <span  v-if="scope.row.bak==''">{{scope.row.status_str}}</span>
+                </template>
+            </el-table-column>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
