@@ -7,58 +7,60 @@
     require('echarts/theme/macarons') // echarts 主题
     import { debounce } from '@/utils'
     const defaultEchartOption = {
-      xAxis: [
-        {
-          data: ['00时','01时','02时','03时','04时','05时','06时','07时','08时','09时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时'],
-          boundaryGap: false,
-          axisTick: {
-            show: false
-          }
+        title: {
+            text: ''
         },
-        {
-          name: '',
-          type: 'value',
+        xAxis: [
+            {
+                data: [],
+                boundaryGap: false,
+                axisTick: {
+                    show: false
+                }
+            },
+            {
+                name: '',
+                type: 'value'
+            },
+        ],
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '20%',
+            containLabel: true
         },
-      ],
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        top: '20%',
-        containLabel: true
-      },
-      tooltip : {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985'
-          }
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            },
+            padding: [20, 10]
         },
-        padding: [20, 10]
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
-        }
-      },
-      yAxis: [
-        {
-          axisTick: {
-            show: false
-          }
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
         },
-        {
-          name: '充值金额(元)',
-          type: 'value',
+        yAxis: [
+            {
+                axisTick: {
+                    show: false
+                }
+            },
+            {
+                name: '金额(元)',
+                type: 'value'
+            },
+        ],
+        legend: {
+            data: []
         },
-      ],
-      legend: {
-        data: []
-      },
-      series: []
+        series: []
     }
-
     export default {
         props: {
             className: {
@@ -80,25 +82,27 @@
             chartData: {
                 type: Object,
                 // required: true
-            }
+            },
         },
         data() {
             return {
-                chart: null
+                chart: null,
             }
         },
         watch: {
             chartData: {
                 deep: true,
                 handler(val) {
+                    // console.log(val)
                   let option = defaultEchartOption;
                   option.legend.data = val.name
                   option.series = val.data
-
+                    option.xAxis[0].data = val.x_data
+                    option.title.text = val.title
                   this.chart.clear();// 重绘之前清理画布
                   this.chart.setOption(option)
                 }
-            }
+            },
         },
         mounted() {
             this.initChart()
@@ -108,10 +112,13 @@
               let option = defaultEchartOption;
               option.legend.data = value.name
               option.series = value.data
+                option.xAxis[0].data = value.x_data
+                option.title.text = value.title
                 this.chart.setOption(option)
             },
             initChart() {
                 this.chart = echarts.init(this.$el, 'macarons')
+                // console.log(this.chartData)
                 this.setOptions(this.chartData)
             }
         }

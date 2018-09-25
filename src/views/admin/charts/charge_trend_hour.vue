@@ -36,7 +36,12 @@
         },
         data() {
             return {
-                lineChartData:{name:[],chartsData:[]},
+                lineChartData:{
+                    name:[],
+                    data:[],
+                    x_data:[],
+                    title:''
+                },
                 listQuery: {
                     dateStart: new Date(new Date().setDate(new Date().getDate()-14)),
                     dateEnd: new Date(),
@@ -61,17 +66,28 @@
                             self.$message.error({message: res.message})
                             return false
                         }
-                        self.lineChartData = {name:[],data:[]}
-                        let tmps = {name:[],data:[]};
-                        for(let i in res.data){
+                        self.lineChartData = {name:[],data:[],x_data:[],title:''}
+                        let tmps = {name:[],data:[],x_data:[],title:''};
+                        let tmpLength = Object.keys(res.data.chart).length
+                        let number = 0;
+                        for(let i in res.data.chart){
                             let tmp = {
                                 name:i,
                                 type: 'line',
-                                data:res.data[i],
+                                data:res.data.chart[i],
                                 areaStyle: {normal: {}},
                             }
                             tmps.name.push(i)
+                            if(tmpLength > 10 && number == Math.floor(tmpLength/2)){
+                                tmps.name.push('')
+                            }
                             tmps.data.push(tmp)
+                            number++;
+                        }
+                        tmps.title = "近" + Object.keys(res.data.chart).length  + "天时时充值统计"
+
+                        for (let i in res.data.hour){
+                            tmps.x_data.push(res.data.hour[i]+'时')
                         }
                         self.$set(self,'lineChartData',tmps);
                     }

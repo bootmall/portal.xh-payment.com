@@ -54,11 +54,11 @@
                     <span >{{scope.row.event_type_str}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="状态" width="160">
-                <template slot-scope="scope">
-                    <span>{{scope.row.status_str}}</span>
-                </template>
-            </el-table-column>
+            <!--<el-table-column align="center" label="状态" width="160">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<span>{{scope.row.status_str}}</span>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
             <el-table-column align="center" label="变动前余额" width="160">
                 <template slot-scope="scope">
                     <span>{{scope.row.balance_before}}</span>
