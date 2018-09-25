@@ -16,20 +16,22 @@
                     :value="item.id">
                 </el-option>
             </el-select>
-            <el-table-column label="类型">
-                <template slot-scope="scope">
-                    <span>{{scope.row.pay_method_code_str}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" label="订单状态">
-                <template slot-scope="scope">
-                    <el-tooltip v-if="scope.row.bak!=''" class="item" effect="light" placement="top">
-                        <span class="link-type">{{scope.row.status_str}}</span>
-                        <span slot="content" v-html="scope.row.bak"></span>
-                    </el-tooltip>
-                    <span  v-if="scope.row.bak==''">{{scope.row.status_str}}</span>
-                </template>
-            </el-table-column>
+            <el-select class="filter-item" size="small" v-model="listQuery.method" placeholder="支付类型" multiple >
+                <el-option
+                    v-for="(item,key) in methodOptions"
+                    :key="item.id"
+                    :label="item.val"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+            <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态" multiple >
+                <el-option
+                    v-for="(item,key) in statusOptions"
+                    :key="item.id"
+                    :label="item.val"
+                    :value="item.id">
+                </el-option>
+            </el-select>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
