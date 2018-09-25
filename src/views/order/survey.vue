@@ -101,7 +101,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="通道" width="180">
+            <el-table-column label="通道" width="120">
                 <template slot-scope="scope">
                     <span>{{scope.row.channel_account_name}}</span>
                 </template>
@@ -227,8 +227,8 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: dateNow.setTime(dateNow.getTime() - 3600 * 1000 * 24 * 7),
-          dateEnd: null,
+            dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
+            dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
           orderNo: null,
           merchantNo: null,
           merchantOrderNo: null,
