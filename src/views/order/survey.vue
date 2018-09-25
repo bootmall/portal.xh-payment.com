@@ -16,7 +16,11 @@
                     :value="item.id">
                 </el-option>
             </el-select>
-
+            <el-table-column label="类型">
+                <template slot-scope="scope">
+                    <span>{{scope.row.pay_method_code_str}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="订单状态">
                 <template slot-scope="scope">
                     <el-tooltip v-if="scope.row.bak!=''" class="item" effect="light" placement="top">
