@@ -208,7 +208,7 @@
   import common from '@/utils/common'
   import axios from '@/utils/http'
   import {mapGetters} from 'vuex'
-
+  const dateNow = new Date();
   export default {
     name: 'vue_admin_order_list',
     directives: {
@@ -227,7 +227,7 @@
           page: 1,
           limit: 10,
           importance: undefined,
-          dateStart: new Date().setTime((new Date()).getTime() - 3600 * 1000 * 24 * 7),
+          dateStart: dateNow.setTime(dateNow.getTime() - 3600 * 1000 * 24 * 7),
           dateEnd: null,
           orderNo: null,
           merchantNo: null,
