@@ -1,7 +1,8 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-button class="filter-item" @click="addhandle()" type="primary" plain>添加渠道号</el-button>
+      <el-button class="filter-item" size="small" @click="addhandle()" type="primary" plain>添加渠道号</el-button>
+      <el-button class="filter-item" size="small" @click="getList()" type="primary" plain>刷新列表</el-button>
     </div>
 
     <el-table stripe :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit

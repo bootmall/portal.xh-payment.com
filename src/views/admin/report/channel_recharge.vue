@@ -2,23 +2,19 @@
     <div class="components-container">
         <div class="filter-container">
             开始时间：
-            <el-date-picker class="filter-item"
+            <el-date-picker class="filter-item" style="width: 240px;"
                             v-model="listQuery.dateStart"
                             align="right"
-                            type="date"
+                            type="datetime"
                             placeholder="开始日期"
-                            value-format="yyyy-MM-dd"
-                            style="width: 200px"
                             :picker-options="pickerOptions">
             </el-date-picker>
             结束时间
-            <el-date-picker class="filter-item"
+            <el-date-picker class="filter-item" style="width: 240px;"
                             v-model="listQuery.dateEnd"
                             align="right"
-                            type="date"
+                            type="datetime"
                             placeholder="结束日期"
-                            value-format="yyyy-MM-dd"
-                            style="width: 200px"
                             :picker-options="pickerOptions">
             </el-date-picker>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>

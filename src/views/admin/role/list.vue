@@ -3,8 +3,8 @@
         <div class="filter-container">
             <el-row>
                 <el-col :span="24">
-                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="名称" v-model="listQuery.name"></el-input>
-                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="描述" v-model="listQuery.description"></el-input>
+                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="名称" v-model="listQuery.name" style="width: 250px;"></el-input>
+                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="描述" v-model="listQuery.description" style="width: 250px;"></el-input>
                     <el-select class="filter-item" v-model="listQuery.type" placeholder="类型">
                         <el-option
                                 v-for="(item,key) in typeOptions"
@@ -48,8 +48,10 @@
         </el-table>
 
         <div v-show="!listLoading" class="pagination-container">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
-                           :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page.sync="listQuery.page"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
 
