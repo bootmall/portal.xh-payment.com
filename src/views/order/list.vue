@@ -189,32 +189,33 @@
           <el-button class="filter-item" size="mini" type="success" v-if="[0,10,11,12].indexOf(scope.row.status) !== -1"
                      v-waves
                      @click="showSetSuccess(scope.row)">成功
-            <el-button class="filter-item" size="mini" @click="syncStatus(scope.row)" v-waves>同步</el-button>
-            <el-popover
-                placement="top"
-                width="400"
-                trigger="click">
-              <p><span>通知地址：</span><span v-text="notify_url"></span></p>
-              <p><span>通知次数：</span><span v-text="notify_times"></span></p>
-              <p><span>通知时间：</span><span v-if="scope.row.notify_at>0">{{scope.row.notify_at|parseTime}}</span><span
-                  v-else>-</span></p>
-              <p><span>商户响应：</span><span v-text="notify_ret"></span></p>
-              <!--<el-button class="filter-item" slot="reference" size="mini" type="primary" @click="showDetail(scope.row)"  v-waves>详情</el-button>-->
-            </el-popover>
+          </el-button>
+          <el-button class="filter-item" size="mini" @click="syncStatus(scope.row)" v-waves>同步</el-button>
+          <el-popover
+              placement="top"
+              width="400"
+              trigger="click">
+            <p><span>通知地址：</span><span v-text="notify_url"></span></p>
+            <p><span>通知次数：</span><span v-text="notify_times"></span></p>
+            <p><span>通知时间：</span><span v-if="scope.row.notify_at>0">{{scope.row.notify_at|parseTime}}</span><span
+                v-else>-</span></p>
+            <p><span>商户响应：</span><span v-text="notify_ret"></span></p>
+            <!--<el-button class="filter-item" slot="reference" size="mini" type="primary" @click="showDetail(scope.row)"  v-waves>详情</el-button>-->
+          </el-popover>
 
-            <!--<el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" @click="handleTrack(scope.row)" v-waves>录入</el-button>-->
+          <!--<el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" @click="handleTrack(scope.row)" v-waves>录入</el-button>-->
 
-            <el-button class="filter-item" size="mini" type="info" v-if="[20,60].indexOf(scope.row.status) !== -1"
-                       @click="sendNotify(scope.row)" circle>通知
-            </el-button>
-            <!--<el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="setFrozen(scope.row)">冻结</el-button>-->
-            <!--<el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 30" v-waves @click="setUnFrozen(scope.row)">解冻</el-button>-->
-            <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves
-                       @click="setRefund(scope.row)">退款
-            </el-button>
-            <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves
-                       @click="setSettlement(scope.row)">结算
-            </el-button>
+          <el-button class="filter-item" size="mini" type="info" v-if="[20,60].indexOf(scope.row.status) !== -1"
+                     @click="sendNotify(scope.row)" circle>通知
+          </el-button>
+          <!--<el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="setFrozen(scope.row)">冻结</el-button>-->
+          <!--<el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 30" v-waves @click="setUnFrozen(scope.row)">解冻</el-button>-->
+          <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves
+                     @click="setRefund(scope.row)">退款
+          </el-button>
+          <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 20" v-waves
+                     @click="setSettlement(scope.row)">结算
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -603,7 +604,6 @@
             },
             showSetSuccess(row) {
                 this.setSuccessForm = setSuccessFormFields
-                console.log(JSON.stringify(row))
                 this.setSuccessForm.order_no = row.order_no
                 this.setSuccessForm.channel_order_no = row.channel_order_no
                 this.setSuccessForm.final_channel_order_no = row.final_channel_order_no
