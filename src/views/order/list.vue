@@ -171,7 +171,8 @@
             </el-table-column>
             <el-table-column fixed="right" width="180" align="center" label="操作" class-name="op-column">
                 <template slot-scope="scope">
-                    <el-button class="filter-item" size="mini" type="success" v-if="scope.row.status == 10" v-waves @click="setSuccess(scope.row)">成功</el-button>
+                    <el-button class="filter-item" size="mini" type="success" v-if="[0,10,11,12].indexOf(scope.row.status) !== -1" v-waves
+                               @click="showSetSuccess(scope.row)">成功
                     <el-button class="filter-item" size="mini" @click="syncStatus(scope.row)" v-waves>同步</el-button>
                     <el-popover
                             placement="top"
