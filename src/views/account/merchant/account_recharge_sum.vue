@@ -154,7 +154,7 @@
           }
           sums[index] = 'N/A';
         });
-        sums[2] = this.summery.all_status_list[0].amount
+        sums[2] = this.summery.all_status_list.length>0 ? this.summery.all_status_list[0].amount : 0
         return sums;
       },
       showDetailDialog(row) {
