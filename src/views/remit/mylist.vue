@@ -21,6 +21,11 @@
                       size="small"
                       :picker-options="pickerOptions">
       </el-date-picker>
+      <el-input class="filter-item" size="small" style="width: 200px;" @change.native="checkNumber()"
+                v-model="listQuery.minMoney" placeholder="金额"></el-input>
+      -
+      <el-input class="filter-item" size="small" style="width: 200px;" @change.native="checkNumber()"
+                v-model="listQuery.maxMoney"></el-input>
       <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
                 placeholder="卡号" v-model="listQuery.bankNo"></el-input>
       <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="状态">
@@ -29,6 +34,14 @@
             :key="key"
             :label="item"
             :value="key">
+        </el-option>
+      </el-select>
+      <el-select class="filter-item" size="small" v-model="listQuery.remit_type" placeholder="出款类型">
+        <el-option
+                v-for="(item,key) in remitTypeOptions"
+                :key="key"
+                :label="item"
+                :value="key">
         </el-option>
       </el-select>
       <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索
@@ -100,6 +113,7 @@
           maxMoney: null,
           merchantNo: null,
           merchantAccount: null,
+          remit_type: null,
           sort: ''
         },
         summery: {
@@ -111,6 +125,9 @@
         constTrue: true,
         channelAccountOptions: [],
         statusOptions: [],
+          remitTypeOptions:[
+              '全部','API','后台'
+          ],
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
