@@ -2,7 +2,7 @@
     <div class="components-container">
         <div class="filter-container">
             搜索配置：
-            <el-input style="width: 100px;" class="filter-item" v-model="listQuery.desc"></el-input>
+            <el-input style="width: 240px;" class="filter-item" v-model="listQuery.desc"></el-input>
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
             <el-button class="filter-item" type="primary" @click="clearCache">刷新缓存</el-button>
         </div>

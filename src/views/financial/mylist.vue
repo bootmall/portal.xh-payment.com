@@ -32,24 +32,24 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%" :summary-method="getSummaries">
 
-            <el-table-column label="订单号" width="180">
+            <el-table-column label="订单号"">
                 <template slot-scope="scope">
                     <span>{{scope.row.event_id}}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column label="商户号" width="100">
+            <el-table-column label="商户号">
                 <template slot-scope="scope">
                     <span>{{scope.row.uid}}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column label="商户账号" width="180" >
+            <el-table-column label="商户账号" >
                 <template slot-scope="scope">
                     <span >{{scope.row.username}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="项目类型" width="180">
+            <el-table-column label="项目类型">
                 <template slot-scope="scope">
                     <span >{{scope.row.event_type_str}}</span>
                 </template>
@@ -59,32 +59,32 @@
                     <!--<span>{{scope.row.status_str}}</span>-->
                 <!--</template>-->
             <!--</el-table-column>-->
-            <el-table-column align="center" label="变动前余额" width="160">
+            <el-table-column align="center" label="变动前余额">
                 <template slot-scope="scope">
                     <span>{{scope.row.balance_before}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="金额" width="100">
+            <el-table-column label="金额">
                 <template slot-scope="scope">
                     <span >{{scope.row.amount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="当前余额" width="160">
+            <el-table-column align="center" label="当前余额">
                 <template slot-scope="scope">
                     <span>{{scope.row.balance}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="对方账户" width="160">
+            <el-table-column align="center" label="对方账户">
                 <template slot-scope="scope">
                     <span>{{scope.row.to_username}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="备注" width="160">
+            <el-table-column align="center" label="备注">
                 <template slot-scope="scope">
                     <span>{{scope.row.bak}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="时间" width="180">
+            <el-table-column align="center" label="时间">
                 <template slot-scope="scope">
                     <span >{{scope.row.created_at}}</span>
                 </template>

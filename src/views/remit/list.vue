@@ -60,8 +60,8 @@
       </el-button>
       <!--<el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>-->
       <el-button class="filter-item" size="small" type="primary" v-waves @click="setChecked()">批量审核</el-button>
-      <el-button class="filter-item" size="small" type="primary" v-waves @click="dialogSwitchRemitVisible=true">批量切通道
-      </el-button>
+      <el-button class="filter-item" size="small" type="primary" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
+      <el-button class="filter-item" size="small" type="primary" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit
@@ -211,6 +211,27 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="切换自动提交到上游" :visible.sync="autoCommitStatusVisible" width="500px">
+      <el-form label-width="120px">
+        <el-form-item label="提交到上游" width="200">
+          <el-switch
+              v-model="autoCommitStatus.content"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="开启提交"
+              inactive-text="关闭提交"
+              active-value="1"
+              inactive-value="0">
+          >
+          </el-switch>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="autoCommitStatusVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setAutoCommitStatus()">确 定</el-button>
+      </div>
+    </el-dialog>
+
     <div v-show="!listLoading" class="pagination-container">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                      :current-page.sync="listQuery.page"
@@ -285,6 +306,12 @@
         bankCardTodayStatisticList: [],
         bankCardTodayStatisticLoading: false,
         canCheckRemitStatus: 0,
+        autoCommitStatus: {
+            id: null,
+            title: null,
+            content: null,
+        },
+          autoCommitStatusVisible: false,
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -345,6 +372,7 @@
                 // console.log(res.data.data)
               self.list = res.data.data
               self.summery = res.data.summery
+              self.autoCommitStatus = res.data.remitAutoCommitStatus
               self.total = res.data.pagination.total
               self.statusOptions = res.data.condition.statusOptions
               self.channelAccountOptions = res.data.condition.channelAccountOptions
@@ -529,6 +557,30 @@
             }
           )
         })
+
+      },
+      setAutoCommitStatus() {
+        self = this
+
+        if (self.autoCommitStatus.title == null) {
+            self.$message.error({message: '配置项名称不能为空'});
+            return;
+        }
+        if (self.autoCommitStatus.content == null) {
+            self.$message.error({message: '配置内容不能为空'});
+            return;
+        }
+        axios.post('/admin/site-config/add', self.autoCommitStatus).then(
+            res => {
+                if (res.code == 0) {
+                    self.$message.success({message: '操作成功'})
+                    self.getList()
+                    self.autoCommitStatusVisible = false;
+                } else {
+                    self.$message.error({message: res.message})
+                }
+            }
+        );
 
       },
       setFail(row) {
