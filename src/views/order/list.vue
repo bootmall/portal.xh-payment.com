@@ -220,7 +220,7 @@
       </el-table-column>
     </el-table>
     <el-row class="summary-list">
-      <el-tag type="warning" v-for="(v,k) in summery.all_status_list" :key="v.status"><span>{{v.status_str}}:{{v.nums}} <span style="color: #666;"> | </span> {{v.amount}}</span>
+      <el-tag type="warning" v-for="(v,k) in summery.all_status_list" :key="v.status"><span>{{v.status_str}}:{{v.nums}} <span style="color: #666;">|</span> {{v.amount}}</span>
       </el-tag>
     </el-row>
     <el-dialog title="调单录入" :visible.sync="trackVisible" width="30%">
