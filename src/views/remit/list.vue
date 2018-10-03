@@ -61,7 +61,7 @@
       <!--<el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>-->
       <el-button class="filter-item" size="small" type="primary" v-waves @click="setChecked()">批量审核</el-button>
       <el-button class="filter-item" size="small" type="primary" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
-      <el-button class="filter-item" size="small" type="primary" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
+      <el-button class="filter-item" size="small" type="danger" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit
