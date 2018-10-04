@@ -69,6 +69,7 @@
       <!--<el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>-->
       <el-button class="filter-item" size="small" type="primary" v-waves @click="setChecked()">批量审核</el-button>
       <el-button class="filter-item" size="small" type="primary" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
+      <el-button class="filter-item" size="small" type="warning" v-waves @click="reSubmit()">批量重提</el-button>
       <el-button class="filter-item" size="small" type="danger" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
     </div>
 
@@ -644,19 +645,21 @@
       },
       reSubmit(id) {
         self = this
-
-        self.$confirm('此操作将重新提交订单到上游, 是否继续?', '提示', {
+        let msg = '此操作将重新提交订单到上游, 是否继续?';
+          if (!id) {
+              msg = '此操作将把搜索出的所有订单批量重新提交到上游, 是否继续?';
+          }
+        self.$confirm(msg, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-
-          let idList = self.listQuery.idList
+          let data = JSON.parse(JSON.stringify(self.listQuery))
           if (id) {
-            idList = [id]
+              data.idList = [id]
           }
           self.listLoading = true
-          axios.post('/admin/remit/re-submit-to-bank', {idList: idList}).then(
+          axios.post('/admin/remit/re-submit-to-bank', data).then(
             res => {
               self.listLoading = false
               if (res.code != 0) {
