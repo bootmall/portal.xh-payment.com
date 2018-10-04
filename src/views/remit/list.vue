@@ -67,8 +67,8 @@
         导出CSV
       </el-button>
       <!--<el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>-->
-      <el-button class="filter-item" size="small" type="primary" v-waves @click="setChecked()">批量审核</el-button>
-      <el-button class="filter-item" size="small" type="primary" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
+      <el-button class="filter-item" size="small" type="success" v-waves @click="setChecked()">批量审核</el-button>
+      <el-button class="filter-item" size="small" type="info" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
       <el-button class="filter-item" size="small" type="warning" v-waves @click="reSubmit()">批量重提</el-button>
       <el-button class="filter-item" size="small" type="danger" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
     </div>
