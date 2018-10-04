@@ -65,6 +65,7 @@
       <el-table-column prop="bank_name" label="银行" width="50"></el-table-column>
       <el-table-column prop="status_str" label="订单状态"></el-table-column>
       <el-table-column v-if="canCheckRemitStatus == 1" prop="check_status_str" label="审核信息"></el-table-column>
+      <el-table-column prop="type_str" label="类型" width="100"></el-table-column>
       <el-table-column prop="created_at" label="建立时间"></el-table-column>
 
     </el-table>

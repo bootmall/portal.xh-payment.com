@@ -28,6 +28,14 @@
             :value="key">
         </el-option>
       </el-select>
+      <el-select class="filter-item" v-model="listQuery.type" size="small" placeholder="类型" >
+        <el-option
+            v-for="(item,key) in orderTypes"
+            :key="key"
+            :label="item"
+            :value="key">
+        </el-option>
+      </el-select>
       <el-date-picker class="filter-item" size="small" style="width: 200px;"
                       v-model="listQuery.dateStart"
                       align="right"
@@ -118,6 +126,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
+      <el-table-column prop="type_str" label="类型" width="100"></el-table-column>
       <el-table-column prop="merchant_check_status_str" label="商户审核" width="100"></el-table-column>
       <el-table-column prop="created_at" label="建立时间" width="160"></el-table-column>
 
@@ -257,60 +266,66 @@
     components: {},
     data() {
       return {
-        rules: {},
-        list: null,
-        total: null,
-        listLoading: true,
-        uploadUrl: common.pageMap.baseDomain + '/upload/upload',
-        listQuery: {
-          page: 1,
-          limit: 10,
-          importance: undefined,
-          dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
-          dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
-          orderNo: null,
-          merchantOrderNo: null,
-          channelOrderNo: null,
-          status: null,
-          bankAccount: null,
-          bankNo: null,
-          minMoney: null,
-          maxMoney: null,
-          merchantNo: null,
-          merchantAccount: null,
-          channelAccount: null,
-          idList: [],
-          sort: '',
-          export: 0,
-          exportType: '',
-        },
-        summery: {
-          'amount': 0,
-        },
-        trackVisible: false,
-        trackForm: {
-          id: undefined,
-          type: '2',
-          upload: [],
-          note: '',
-          upload_url: [],
-        },
-        tableKey: 0,
-        constFalse: false,
-        constTrue: true,
-        channelAccountOptions: [],
-        statusOptions: [],
-        currentRemit: {},
-        dialogSwitchRemitVisible: false,
-        remitIdSwitchTo: '',
-        bankCardTodayStatisticList: [],
-        bankCardTodayStatisticLoading: false,
-        canCheckRemitStatus: 0,
-        autoCommitStatus: {
-            id: null,
-            title: null,
-            content: null,
-        },
+          rules: {},
+          list: null,
+          total: null,
+          listLoading: true,
+          uploadUrl: common.pageMap.baseDomain + '/upload/upload',
+          listQuery: {
+              page: 1,
+              limit: 10,
+              importance: undefined,
+              dateStart: new Date(new Date().setHours(0, 0, 0, 0)),//.getDateStr(-3),
+              dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
+              orderNo: null,
+              merchantOrderNo: null,
+              channelOrderNo: null,
+              status: null,
+              bankAccount: null,
+              bankNo: null,
+              minMoney: null,
+              maxMoney: null,
+              merchantNo: null,
+              merchantAccount: null,
+              channelAccount: null,
+              idList: [],
+              sort: '',
+              type: '',
+              export: 0,
+              exportType: '',
+          },
+          summery: {
+              'amount': 0,
+          },
+          trackVisible: false,
+          trackForm: {
+              id: undefined,
+              type: '2',
+              upload: [],
+              note: '',
+              upload_url: [],
+          },
+          tableKey: 0,
+          constFalse: false,
+          constTrue: true,
+          channelAccountOptions: [],
+          statusOptions: [],
+          currentRemit: {},
+          dialogSwitchRemitVisible: false,
+          remitIdSwitchTo: '',
+          bankCardTodayStatisticList: [],
+          bankCardTodayStatisticLoading: false,
+          canCheckRemitStatus: 0,
+          autoCommitStatus: {
+              id: null,
+              title: null,
+              content: null,
+          },
+          orderTypes: {
+          '0': '全部',
+          '1': 'API',
+          '2': '后台',
+          },
           autoCommitStatusVisible: false,
         pickerOptions: {
           disabledDate(time) {

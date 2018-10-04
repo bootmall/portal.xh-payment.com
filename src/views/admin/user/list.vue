@@ -1115,7 +1115,7 @@
           return
         }
         if(self.userInfo.lower_remit_fee > 0 && self.rateForm.remit_fee > self.userInfo.lower_remit_fee){
-          this.$message.error({message:'出款费率'+self.rateForm.remit_fee +'不能大于下级'+self.userInfo.parent_remit_fee});
+          this.$message.error({message:'出款费率'+self.rateForm.remit_fee +'不能大于下级'+self.userInfo.lower_remit_fee});
           return
         }
         if (parseFloat(self.rateForm.remit_fee) > parseFloat(self.remitMaxFee)) {
