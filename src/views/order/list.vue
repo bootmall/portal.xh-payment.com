@@ -83,7 +83,8 @@
         导出CSV
       </el-button>
       <!--<el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>-->
-      <el-button class="filter-item" size="small" type="primary" @click="setSettlement('')">结算筛选订单</el-button>
+      <el-button class="filter-item" size="small" type="danger" v-waves @click="syncStatus()">批量同步</el-button>
+      <el-button class="filter-item" size="small" type="success" @click="setSettlement('')">结算筛选订单</el-button>
     </div>
 
     <el-table stripe :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit
@@ -190,7 +191,7 @@
                      v-waves
                      @click="showSetSuccess(scope.row)">成功
           </el-button>
-          <el-button class="filter-item" size="mini" @click="syncStatus(scope.row)" v-waves>同步</el-button>
+          <el-button class="filter-item" size="mini" @click="syncStatusRealtime(scope.row)" v-waves>同步</el-button>
           <el-popover
               placement="top"
               width="400"
@@ -477,7 +478,42 @@
                     }
                 )
             },
-            syncStatus(row) {
+            syncStatus(id) {
+                self = this
+                self.$confirm('此操作将到上游同步所有筛选订单状态并处理业务, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    self.listLoading = true
+                    let data = JSON.parse(JSON.stringify(self.listQuery))
+                    if (id) {
+                        data.idList = [id]
+                    }
+                    axios.post('/admin/order/sync-status', data).then(
+                        res => {
+                            self.listLoading = false
+                            if (res.code != 0) {
+                                self.$message.error({message: res.message})
+                            } else {
+                                self.$message.success({message: res.message})
+                            }
+                        },
+                        res => {
+                            self.$message.error({message: res.message})
+                            self.listLoading = false
+                        }
+                    )
+
+                }).catch(() => {
+                    self.$message({
+                        type: 'warning',
+                        message: '已取消操作'
+                    });
+                });
+
+            },
+            syncStatusRealtime(row) {
                 self = this
                 self.listLoading = true
                 axios.post('/order/sync-status', {id: row.id}).then(
