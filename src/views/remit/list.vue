@@ -70,7 +70,8 @@
       <el-button class="filter-item" size="small" type="success" v-waves @click="setChecked()">批量审核</el-button>
       <el-button class="filter-item" size="small" type="info" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
       <el-button class="filter-item" size="small" type="warning" v-waves @click="reSubmit()">批量重提</el-button>
-      <el-button class="filter-item" size="small" type="danger" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
+      <el-button class="filter-item" size="small" type="danger" v-waves @click="syncStatus()">批量同步</el-button>
+      <el-button class="filter-item" size="small" type="warning" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit
@@ -685,8 +686,11 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-
-          axios.post('/admin/remit/sync-status', {id: id}).then(
+            let data = JSON.parse(JSON.stringify(self.listQuery))
+            if (id) {
+                data.idList = [id]
+            }
+          axios.post('/admin/remit/sync-status', data).then(
             res => {
               if (res.code != 0) {
                 self.$message.error({message: res.message})
