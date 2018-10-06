@@ -25,18 +25,28 @@
                                 <el-button v-if="scope.row.key_2fa" size="mini" type="primary" @click="handleclear(scope.row,1)" v-waves>
                                     清空安全令牌
                                 </el-button>
+                            </el-dropdown-item>
+                            <el-dropdown-item >
                                 <el-button v-if="scope.row.financial_password_hash" size="mini" type="primary" @click="handleclear(scope.row,2)" v-waves>
                                     清空资金密码
                                 </el-button>
+                            </el-dropdown-item>
+                            <el-dropdown-item >
                                 <el-button size="mini" type="primary" @click="handleclear(scope.row,3)" v-waves>
                                     重置登录密码
                                 </el-button>
+                            </el-dropdown-item>
+                            <el-dropdown-item >
                                 <el-button size="mini" type="primary" @click="handleStatus(scope.row)" v-waves>
                                     状态
                                 </el-button>
+                            </el-dropdown-item>
+                            <el-dropdown-item >
                                 <el-button size="mini" type="primary" @click="handleclear(scope.row,4)" v-waves>
                                     清空登陆IP
                                 </el-button>
+                            </el-dropdown-item>
+                            <el-dropdown-item >
                                 <el-button size="mini" type="primary" @click="handleBindLoginIp(scope.row,4)" v-waves>
                                     编辑登陆IP
                                 </el-button>
