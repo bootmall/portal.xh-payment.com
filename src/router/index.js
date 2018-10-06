@@ -161,7 +161,8 @@ export const asyncRouterMap = [
       {path: 'batch', component: _import("remit/batchremit"),view: "remit/batchremit", name: 'vue_add_remit_batch', meta: {title: '批量提款', icon: 'excel', role: ['merchant', 'agent'], noCache: true}},
       //  商户 代理都可以在线充值
       {path: 'recharge', component: _import("order/add"),view: "order/add", name: 'vue_add_remit_recharge', meta: {title: '在线充值', icon: 'excel', role: ['merchant', 'agent'], noCache: true}},
-      {path: 'transfer', component: _import("order/transfer"),view: "order/transfer", name: 'vue_transfer', meta: {title: '转账', icon: 'excel', role: ['admin','merchant', 'agent'], noCache: true}},
+        //关闭转账
+      // {path: 'transfer', component: _import("order/transfer"),view: "order/transfer", name: 'vue_transfer', meta: {title: '转账', icon: 'excel', role: ['admin','merchant', 'agent'], noCache: true}},
     ]
   },
   {
