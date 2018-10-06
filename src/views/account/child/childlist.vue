@@ -15,14 +15,34 @@
             <el-table-column align="center" prop="last_login_time" label="上次登陆时间"></el-table-column>
             <el-table-column align="center" prop="status_name" label="状态"></el-table-column>
             <el-table-column align="center" prop="created_at" label="创建时间"></el-table-column>
-            <el-table-column align="center" label="操作" class="action-btns" width="180px" fixed="right">
+            <el-table-column align="center" label="操作" class="action-btns" class-name="op-column" width="220px" fixed="right">
                 <template slot-scope="scope">
-                    <el-button class="filter-item" v-if="scope.row.key_2fa" size="mini" type="primary" @click="handleclear(scope.row,1)" v-waves>清空安全令牌</el-button>
-                    <el-button class="filter-item" v-if="scope.row.financial_password_hash" size="mini" type="primary" @click="handleclear(scope.row,2)" v-waves>清空资金密码</el-button>
-                    <el-button class="filter-item" size="mini" type="primary" @click="handleclear(scope.row,3)" v-waves>重置登录密码</el-button>
                     <el-button class="filter-item" size="mini" type="primary" @click="handlePermission(scope.row)" v-waves>授权</el-button>
-                    <el-button class="filter-item" size="mini" type="primary" @click="handleStatus(scope.row)" v-waves>状态</el-button>
-                    <!--<a class="link-type" @click=showDetail(scope.row)>详情</a>-->
+                    <el-dropdown size="mini">
+                        <el-button type="primary" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+                        <el-dropdown-menu slot="dropdown" size="mini">
+                            <el-dropdown-item >
+                                <el-button v-if="scope.row.key_2fa" size="mini" type="primary" @click="handleclear(scope.row,1)" v-waves>
+                                    清空安全令牌
+                                </el-button>
+                                <el-button v-if="scope.row.financial_password_hash" size="mini" type="primary" @click="handleclear(scope.row,2)" v-waves>
+                                    清空资金密码
+                                </el-button>
+                                <el-button size="mini" type="primary" @click="handleclear(scope.row,3)" v-waves>
+                                    重置登录密码
+                                </el-button>
+                                <el-button size="mini" type="primary" @click="handleStatus(scope.row)" v-waves>
+                                    状态
+                                </el-button>
+                                <el-button size="mini" type="primary" @click="handleclear(scope.row,4)" v-waves>
+                                    清空登陆IP
+                                </el-button>
+                                <el-button size="mini" type="primary" @click="handleBindLoginIp(scope.row,4)" v-waves>
+                                    编辑登陆IP
+                                </el-button>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </template>
             </el-table-column>
         </el-table>
@@ -86,6 +106,23 @@
                 <el-button type="primary" @click="updatePermission">确 定</el-button>
             </span>
         </el-dialog>
+        <el-dialog
+                title="绑定登录IP"
+                :visible.sync="loginIpFormVisible"
+                width="40%">
+            <template>
+                <el-form>
+                    <p style="color: red;padding-left: 180px;">提示：IP有多个 以英文符号分号(;) 分隔</p>
+                    <el-form-item label="登录IP地址：" label-width="180px">
+                        <el-input size="small" type="textarea" :rows="3" v-model="bind_login_ip" style="width: 300px"></el-input>
+                    </el-form-item>
+                </el-form>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="loginIpFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleclear(loginRow,loginType)">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -124,6 +161,10 @@
         permissionVisible: false,
         userRole: [],
         allRoles: [],
+          loginIpFormVisible:false,
+          bind_login_ip:null,
+          loginRow:null,
+          loginType:null,
       }
     },
     created() {
@@ -254,11 +295,29 @@
           }
         );
       },
+        handleBindLoginIp(row,type) {
+            this.loginIpFormVisible = true;
+            this.loginRow = row
+            this.loginType = type
+            this.bind_login_ip = row.bind_login_ip == ''?'':JSON.parse(row.bind_login_ip).join(";")
+        },
         handleclear(row,type){
           let self = this
+            let tmpIp = []
+            if (type == 4 && self.bind_login_ip != null && self.bind_login_ip.length > 0) {
+                tmpIp = self.bind_login_ip.split(';');
+                let regIp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+                for (let i = 0; i < tmpIp.length; i++) {
+                    if (!regIp.test(tmpIp[i])) {
+                        self.$message.error({message: tmpIp[i]+' IP地址格式不正确，请检查'});
+                        return false;
+                    }
+                }
+            }
           let data = {
               childId:row.id,
-              type:type
+              type:type,
+              ip: tmpIp.length > 0 ? tmpIp : '',
           }
             axios.post('/user/clear-child-pass-key', data).then(
                 res => {
@@ -270,6 +329,7 @@
                         self.$message.success({message: msg});
                         self.getList();
                         self.statusVisible = false;
+                        self.loginIpFormVisible = false;
                     } else {
                         self.$message.error({message: res.message});
                     }
@@ -295,7 +355,22 @@
     .el-button--mini, .el-button--mini.is-round {
         margin-top: 5px;
     }
+    .action-btns a {
+        margin-left: 5px;
+    }
     .permission-list .el-checkbox{
         margin: 5px;
+    }
+    .op-column .el-button {
+        margin: 5px;
+    }
+
+    .op-column .cell {
+        padding-left: 0;
+        text-align: left;
+    }
+    .el-dropdown-menu--mini .el-dropdown-menu__item {
+        line-height: 36px !important;
+        font-size: 14px !important;
     }
 </style>
