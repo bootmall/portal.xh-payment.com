@@ -160,6 +160,7 @@
             <el-button type="primary" @click="showChangeBalanceDialog(2)">冻结金额</el-button>
             <el-button type="primary" @click="showChangeBalanceDialog(3)">解冻金额</el-button>
             <el-button type="primary" v-if="accountOpenInfo.status != 1" @click="accountOpenFeeVisible=true">设置开户费</el-button>
+            <el-button type="primary" @click="handleChild">子账户</el-button>
         </el-row>
         <el-dialog title="设置费率" :visible.sync="rateVisible" width="53%">
             <el-form :model="rateForm">
@@ -473,12 +474,24 @@
                 </span>
 
         </el-dialog>
+        <el-dialog
+                class="api-response-format"
+                title="子账号列表"
+                :visible.sync="childListVisible"
+                :close="closeChildList"
+                width="70%">
+                <child-list :merchant-id="agentMerchantId"></child-list>
+            <span slot="footer" class="dialog-footer" >
+                <el-button @click="closeChildList">关 闭</el-button>
+            </span>
+        </el-dialog>
     </div>
 
 </template>
 
 <script>
   import axios from '@/utils/http'
+  import childList from '@/views/components/childList'
   const apiResponseRules = {
     'post_json':'{"method":"post","format":"json"}',
     'post_form':'{"method":"post","format":"form"}',
@@ -486,12 +499,16 @@
   }
   export default {
     name: "vue_merchant_detail",
+      components:{
+          childList
+      },
     data() {
       return {
         userInfo: {},
         methods: {},
         listLoading: true,
         merchantId: null,
+        agentMerchantId: null,
         rateVisible: false,
         statusVisible: false,
         quotaVisible: false,
@@ -575,6 +592,7 @@
         },
         merchantRemitCheckFormVisible:false,
         apiResponseFormatFormVisible:false,
+          childListVisible:false,
       }
     },
     created() {
@@ -1275,7 +1293,16 @@
 
 
         return true;
-      }
+      },
+        handleChild(){
+          this.$set(this,'agentMerchantId',this.userInfo.id)
+            // this.agentMerchantId = this.userInfo.id
+            this.childListVisible = true
+        },
+        closeChildList(){
+            this.agentMerchantId = null
+            this.childListVisible = false
+        }
     }
 
   }
