@@ -159,7 +159,7 @@
             <el-button type="primary" @click="showChangeBalanceDialog(1)">调整余额</el-button>
             <el-button type="primary" @click="showChangeBalanceDialog(2)">冻结金额</el-button>
             <el-button type="primary" @click="showChangeBalanceDialog(3)">解冻金额</el-button>
-            <el-button type="primary" @click="accountOpenFeeVisible=true">设置开户费</el-button>
+            <el-button type="primary" v-if="accountOpenInfo.status != 1" @click="accountOpenFeeVisible=true">设置开户费</el-button>
         </el-row>
         <el-dialog title="设置费率" :visible.sync="rateVisible" width="53%">
             <el-form :model="rateForm">
@@ -662,6 +662,7 @@
               self.remitFeeCanBeZero = res.data.remitFeeCanBeZero
               self.accountOpenPaid = res.data.accountOpenPaid
               self.accountOpenAmount = res.data.accountOpenAmount
+              self.accountOpenFeeForm.amount = res.data.accountOpenAmount
               self.accountOpenInfo = res.data.accountOpenInfo
             }
           },
@@ -776,7 +777,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-
+            this.accountOpenFeeVisible = false
           let data = {
             merchantId: self.userInfo.id,
             amount: self.accountOpenFeeForm.amount
@@ -785,10 +786,9 @@
             res => {
               if (res.code == 0) {
                 this.$message.success({message: '开户费已设置'});
-                this.accountOpenFeeVisible = false
+                  this.getInitData()
               } else {
                 this.$message.error({message: res.message});
-                this.getInitData()
               }
             }
           )
