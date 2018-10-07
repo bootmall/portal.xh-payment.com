@@ -480,7 +480,7 @@
                 :visible.sync="childListVisible"
                 :close="closeChildList"
                 width="70%">
-                <child-list :merchant-id="agentMerchantId"></child-list>
+                <child-list :merchant-id="agentMerchantId" @initMerchantIdEvent="initMerchantId"></child-list>
             <span slot="footer" class="dialog-footer" >
                 <el-button @click="closeChildList">关 闭</el-button>
             </span>
@@ -1296,12 +1296,14 @@
       },
         handleChild(){
           this.$set(this,'agentMerchantId',this.userInfo.id)
-            // this.agentMerchantId = this.userInfo.id
             this.childListVisible = true
         },
         closeChildList(){
             this.agentMerchantId = null
             this.childListVisible = false
+        },
+        initMerchantId(){
+            this.$set(this,'agentMerchantId',this.userInfo.id)
         }
     }
 

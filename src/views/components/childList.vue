@@ -116,7 +116,7 @@
         props: {
             merchantId: {
                 type: Number,
-                default: ''
+                default: 1
             }
         },
         watch: {
@@ -211,7 +211,7 @@
             getList() {
                 var self = this
                 self.listLoading = true
-                if(self.merchantId != '') self.listQuery.merchant_id = self.merchantId
+                if(self.merchantId != 1) self.listQuery.merchant_id = self.merchantId
                 axios.post('/user/child-list', self.listQuery).then(
                     res => {
                         self.listLoading = false
@@ -220,6 +220,7 @@
                         } else {
                             self.list = res.data.list;
                             self.statusOptions = res.data.statusOptions;
+                            self.$emit('initMerchantIdEvent')
                         }
                     },
                 )
@@ -276,6 +277,7 @@
                     childId:row.id,
                     type:type,
                     ip: tmpIp.length > 0 ? tmpIp : '',
+                    master_merchant_id:self.merchantId
                 }
                 self.bind_login_ip = null
                 axios.post('/user/clear-child-pass-key', data).then(

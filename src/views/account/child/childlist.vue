@@ -3,7 +3,7 @@
         <div class="filter-container">
             <el-button class="filter-item" size="small" @click="dialogVisible = true" type="primary" plain>添加子账号</el-button>
         </div>
-        <child-list :merchant-id = "merchantId"></child-list>
+        <child-list :merchant-id = "merchantId" @initMerchantIdEvent="initMerchantId"></child-list>
         <!--<el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row-->
                   <!--style="width: 100%;font-size: 12px" stripe>-->
             <!--&lt;!&ndash;<el-table-column align="center" fixed type="selection" width="55" ></el-table-column>&ndash;&gt;-->
@@ -277,8 +277,8 @@
               self.addForm.username = null;
               self.addForm.nickname = null;
               self.addForm.email = null;
-              self.addForm.status = null;
-              self.getList();
+              self.addForm.status = '0';
+                self.$set(self,'merchantId',1)
               self.dialogVisible = false;
             } else {
               self.$message.error({message: res.message});
@@ -286,6 +286,9 @@
           }
         );
       },
+        initMerchantId(){
+            this.$set(this,'merchantId',null)
+        }
       // handleStatus(row) {
       //   this.statusForm.id = row.id;
       //   this.statusForm.status = row.status;
