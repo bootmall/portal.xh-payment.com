@@ -264,7 +264,7 @@
                         } else {
                             self.list = res.data.data
                             // self.summery = res.data.summery
-                            // self.total = res.data.pagination.total
+                            self.total = res.data.pagination.total
                             self.statusOrderOptions = res.data.condition.statusOrderOptions
                             self.statusRemitOptions = res.data.condition.statusRemitOptions
                             self.statusTrackOptions = res.data.condition.statusTrackOptions
