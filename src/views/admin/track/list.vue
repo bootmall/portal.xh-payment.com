@@ -87,6 +87,13 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div v-show="!listLoading" class="pagination-container">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page.sync="listQuery.page"
+                           :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit"
+                           layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+        </div>
         <el-dialog title="调单详情" :visible.sync="trackDetailVisible">
             <el-table :data="trackDetail" >
                 <el-table-column property="type_name" label="调单类型" width="100"></el-table-column>
@@ -275,6 +282,14 @@
                 this.listQuery.page = 1
                 this.getList()
             },
+            handleSizeChange(val) {
+                this.listQuery.limit = val
+                this.getList()
+            },
+            handleCurrentChange(val) {
+                this.listQuery.page = val
+                this.getList()
+            },
             handleDetail(row){
                 // console.log(row);
                 let self = this;
@@ -356,7 +371,7 @@
                         }
                     }
                 );
-            }
+            },
         },
     }
 </script>

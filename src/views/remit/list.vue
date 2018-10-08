@@ -80,7 +80,11 @@
 
       <el-table-column align="center" fixed type="selection" width="55"></el-table-column>
       <el-table-column prop="merchant_id" label="商户编号" width="80"></el-table-column>
-      <el-table-column prop="merchant_account" label="商户账号" width="100"></el-table-column>
+      <el-table-column prop="merchant_account" label="商户账号" width="100">
+          <template slot-scope="scope">
+              <span class="link-type" @click="showMerchantDetail(scope.row)">{{scope.row.merchant_account}}</span>
+          </template>
+      </el-table-column>
       <el-table-column prop="order_no" label="结算订单号" width="165"></el-table-column>
       <el-table-column prop="merchant_order_no" label="商户订单号" width="160"></el-table-column>
       <el-table-column prop="bank_account" label="持卡人" width="80"></el-table-column>
@@ -354,6 +358,7 @@
             }
           }]
         },
+          merchant_id:null,
       }
     },
     filters: {},
@@ -805,7 +810,9 @@
           });
         });
       },
-
+        showMerchantDetail(row){
+            // this.$set(this,'merchant_id',row.merchant_id)
+        },
 
     }
 

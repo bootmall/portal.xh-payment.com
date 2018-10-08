@@ -52,13 +52,13 @@
                         <span>出款费率(元/笔)：</span><span>{{userInfo.remit_fee | numberFormat}}</span>
                     </div>
                 </el-col>
+            </el-row>
+            <el-row :gutter="20">
                 <el-col :span="8">
                     <div class="grid-content">
                         <span>转账手续费(-1使用系统设置,0免费)：</span><span>{{userInfo.account_transfer_fee | numberFormat}}</span>
                     </div>
                 </el-col>
-            </el-row>
-            <el-row :gutter="20">
                 <el-col :span="8">
                     <div class="grid-content">
                         <span>下发总额度：</span><span>{{userInfo.remit_quota_perday | numberFormat}}</span>
