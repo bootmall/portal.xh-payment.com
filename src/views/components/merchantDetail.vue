@@ -74,7 +74,7 @@
                 </el-row>
 
             </div>
-            <div v-if="parentMethods.length > 0">
+            <div>
                 <span><h4>上级支付类型--费率</h4></span>
                 <div class="rate-list">
                     <el-button :type="methods.status_name[key]=='停用'?'warning':'success'" v-for="(item,key) in parentMethods" :key="key" align="center" class="rate-button" >
