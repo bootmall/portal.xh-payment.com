@@ -99,7 +99,7 @@
 
       <el-table-column align="center" label="商户账号">
         <template slot-scope="scope">
-          <span>{{scope.row.merchant_account}}</span>
+          <span class="link-type" @click="showMerchantDetail(scope.row)">{{scope.row.merchant_account}}</span>
         </template>
       </el-table-column>
 
@@ -281,6 +281,7 @@
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+    <merchant-detail :merchant-id="merchant_id" @initMerchantIdEvent="initMerchantId"></merchant-detail>
   </div>
 </template>
 
@@ -290,6 +291,7 @@
     import common from '@/utils/common'
     import axios from '@/utils/http'
     import {mapGetters} from 'vuex'
+    import merchantDetail from '@/views/components/merchantDetail'
 
     const setSuccessFormFields = {
         order_no: '',
@@ -302,7 +304,7 @@
         directives: {
             waves
         },
-        components: {},
+        components: {merchantDetail},
         data() {
             return {
                 rules: {},
@@ -378,6 +380,7 @@
                         }
                     }]
                 },
+                merchant_id:null,
             }
         },
         filters: {},
@@ -818,6 +821,12 @@
             handleUpload(response, file, fileList) {
                 this.trackForm.upload.push(response.data.url.filepath);
                 this.trackForm.upload_url.push(response.data.url.host + response.data.url.filepath);
+            },
+            showMerchantDetail(row){
+                this.$set(this,'merchant_id',row.merchant_id)
+            },
+            initMerchantId(){
+                this.$set(this,'merchant_id',null)
             },
             handleDetail() {
 

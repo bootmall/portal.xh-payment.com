@@ -21,11 +21,11 @@
                                     清空安全令牌
                                 </el-button>
                             </el-dropdown-item>
-                            <el-dropdown-item >
-                                <el-button v-if="scope.row.financial_password_hash" size="mini" type="primary" @click="handleclear(scope.row,2)" v-waves>
-                                    清空资金密码
-                                </el-button>
-                            </el-dropdown-item>
+                            <!--<el-dropdown-item >-->
+                                <!--<el-button v-if="scope.row.financial_password_hash" size="mini" type="primary" @click="handleclear(scope.row,2)" v-waves>-->
+                                    <!--清空资金密码-->
+                                <!--</el-button>-->
+                            <!--</el-dropdown-item>-->
                             <el-dropdown-item >
                                 <el-button size="mini" type="primary" @click="handleclear(scope.row,3)" v-waves>
                                     重置登录密码

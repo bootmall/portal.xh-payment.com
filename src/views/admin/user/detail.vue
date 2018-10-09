@@ -39,12 +39,12 @@
             <el-row :gutter="20">
                 <el-col :span="8">
                     <div class="grid-content">
-                        <span>支持API下发：</span><span>{{userInfo.allow_api_remit}}</span>
+                        <span>支持API下发：</span><span>{{userInfo.allow_api_remit_str}}</span>
                     </div>
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content">
-                        <span>支持后台下发：</span><span>{{userInfo.allow_manual_remit}}</span>
+                        <span>支持后台下发：</span><span>{{userInfo.allow_manual_remit_str}}</span>
                     </div>
                 </el-col>
                 <el-col :span="8">
@@ -895,7 +895,7 @@
               self.$message.error({message: res.message})
             } else {
               self.$message.success({message: '更新成功'});
-              self.rateVisible = false;
+              self.apiVisible = false;
             }
           },
         )

@@ -254,6 +254,7 @@
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+    <merchant-detail :merchant-id="merchant_id" @initMerchantIdEvent="initMerchantId"></merchant-detail>
   </div>
 </template>
 
@@ -263,13 +264,15 @@
   import common from '@/utils/common'
   import axios from '@/utils/http'
   import {mapGetters} from 'vuex'
-
+  import merchantDetail from '@/views/components/merchantDetail'
   export default {
     name: 'vue_admin_remit_list',
     directives: {
       waves
     },
-    components: {},
+    components: {
+        merchantDetail
+    },
     data() {
       return {
           rules: {},
@@ -811,9 +814,11 @@
         });
       },
         showMerchantDetail(row){
-            // this.$set(this,'merchant_id',row.merchant_id)
+            this.$set(this,'merchant_id',row.merchant_id)
         },
-
+        initMerchantId(){
+            this.$set(this,'merchant_id',null)
+        }
     }
 
   }
