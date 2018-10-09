@@ -33,10 +33,10 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="7">
-                        <div class="grid-content"><span>支持API下发：</span><span>{{userInfo.allow_api_remit}}</span></div>
+                        <div class="grid-content"><span>支持API下发：</span><span>{{userInfo.allow_api_remit_str}}</span></div>
                     </el-col>
                     <el-col :span="7">
-                        <div class="grid-content"><span>支持后台下发：</span><span>{{userInfo.allow_manual_remit}}</span></div>
+                        <div class="grid-content"><span>支持后台下发：</span><span>{{userInfo.allow_manual_remit_str}}</span></div>
                     </el-col>
                     <el-col :span="10">
                         <div class="grid-content"><span>出款费率(元/笔)：</span><span>{{userInfo.remit_fee | numberFormat}}</span></div>
@@ -53,17 +53,6 @@
                         <div class="grid-content"><span>可用余额：</span><span>{{userInfo.balance | numberFormat}}</span></div>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="7">
-                        <div class="grid-content"><span>资金密码设置：</span><span>{{userInfo.is_financial}}</span></div>
-                    </el-col>
-                    <el-col :span="7">
-                        <div class="grid-content"><span>安全令牌绑定：</span><span>{{userInfo.is_key_2fa}}</span></div>
-                    </el-col>
-                    <el-col :span="10">
-                        <div class="grid-content"><span>商户key：</span><span>{{userInfo.merchant_key}}</span></div>
-                    </el-col>
-                </el-row>
                 <el-row :gutter="20" v-if="accountOpenAmount > 0">
                     <el-col :span="7">
                         <div class="grid-content"><span>开户费：</span><span>{{accountOpenAmount}}</span></div>
@@ -75,6 +64,23 @@
                         <div class="grid-content" :class="{ error: accountOpenInfo.status==0 }"><span>开户费状态：</span><span>{{accountOpenInfo.status_str}}</span></div>
                     </el-col>
                 </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="7">
+                        <div class="grid-content"><span>资金密码设置：</span><span>{{userInfo.is_financial}}</span></div>
+                    </el-col>
+                    <el-col :span="7">
+                        <div class="grid-content"><span>安全令牌绑定：</span><span>{{userInfo.is_key_2fa}}</span></div>
+                    </el-col>
+                </el-row>
+
+            </div>
+            <div v-if="parentMethods.length > 0">
+                <span><h4>上级支付类型--费率</h4></span>
+                <div class="rate-list">
+                    <el-button :type="methods.status_name[key]=='停用'?'warning':'success'" v-for="(item,key) in parentMethods" :key="key" align="center" class="rate-button" >
+                        <span class="rate-list-name">{{methods.name[key]}}</span>:{{item | numberFormat}}
+                    </el-button>
+                </div>
             </div>
             <span><h4>支付类型--费率</h4></span>
             <div class="rate-list">
@@ -123,6 +129,7 @@
             return {
                 userInfo: {},
                 methods: {},
+                parentMethods: {},
                 listLoading:false,
                 accountOpenPaid:null,
                 accountOpenAmount:null,
@@ -144,6 +151,7 @@
                             self.merchantDetailVisible = true
                             self.userInfo = res.data.userInfo
                             self.methods = res.data.methods
+                            self.parentMethods = res.data.parentMethods
                             self.accountOpenPaid = res.data.accountOpenPaid
                             self.accountOpenAmount = res.data.accountOpenAmount
                             self.accountOpenInfo = res.data.accountOpenInfo
