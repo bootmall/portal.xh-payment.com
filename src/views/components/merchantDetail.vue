@@ -2,7 +2,8 @@
     <el-dialog title="商户详情" :visible.sync="merchantDetailVisible" width="60%" @close="close">
         <div class="app-container calendar-list-container">
             <div class="filter-container">
-                <el-input class="filter-item" size="small" style="width: 200px;" v-model="merchant_id" placeholder="商户编号"></el-input>
+                <el-input class="filter-item" size="small" style="width: 200px;" v-model="detailQuery.merchantId" placeholder="商户编号"></el-input>
+                <el-input class="filter-item" size="small" style="width: 200px;" v-model="detailQuery.merchant_username" placeholder="商户账户"></el-input>
                 <el-button class="filter-item" size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
             </div>
             <div v-if="userInfo.agent">
@@ -121,7 +122,7 @@
         watch: {
             merchantId: function (val, oldVal) {
                 if(val == null) return
-                this.merchant_id = val
+                this.detailQuery.merchantId = val
                 this.getInitData()
             },
         },
@@ -135,14 +136,17 @@
                 accountOpenAmount:null,
                 accountOpenInfo:null,
                 merchantDetailVisible:false,
-                merchant_id:null
+                detailQuery:{
+                    merchantId:null,
+                    merchant_username:null
+                },
             }
         },
         methods:{
             getInitData() {
                 var self = this
                 self.listLoading = true
-                axios.post('/admin/user/detail', {merchantId: self.merchant_id}).then(
+                axios.post('/admin/user/detail', self.detailQuery).then(
                     res => {
                         self.listLoading = false
                         if (res.code != 0) {
@@ -164,6 +168,10 @@
             },
             close(){
                 this.merchantDetailVisible = false
+                this.detailQuery = {
+                    merchantId:null,
+                    merchant_username:null
+                }
                 this.$emit('initMerchantIdEvent')
             }
 
