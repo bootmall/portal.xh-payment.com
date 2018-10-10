@@ -766,16 +766,16 @@
         }).then(() => {
 
           let data = {
-            merchantId: this.userInfo.id,
+            merchantId: self.userInfo.id,
             type: 2
           };
           axios.post('/admin/user/clear-unbind-update', data).then(
             res => {
               if (res.code == 0) {
-                this.$message.success({message: '安全令牌已解绑'});
+                  self.$message.success({message: '安全令牌已解绑'});
               } else {
-                this.$message.error({message: res.message});
-                this.getInitData()
+                  self.$message.error({message: res.message});
+                  self.getInitData()
               }
             }
           )
