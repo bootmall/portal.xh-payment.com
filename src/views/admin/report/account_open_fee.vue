@@ -107,5 +107,8 @@
 </script>
 
 <style scoped>
-
+    .el-tag {
+        margin-top: 10px;
+        margin-left: 10px;
+    }
 </style>
