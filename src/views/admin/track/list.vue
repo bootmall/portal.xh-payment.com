@@ -18,10 +18,10 @@
                              format="yyyy-MM-dd 23:59:59"
                              :picker-options="pickerOptions">
             </el-date-picker>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" size="small" class="filter-item" placeholder="订单号" v-model="listQuery.orderNo"></el-input>
-            <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
-            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
-            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantAccount" placeholder="商户账号"></el-input>
+            <el-input style="width: 200px;" size="small" class="filter-item" placeholder="订单号" v-model="listQuery.orderNo" clearable></el-input>
+            <el-input size="small" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo" clearable></el-input>
+            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号" clearable></el-input>
+            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantAccount" placeholder="商户账号" clearable></el-input>
             <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号">
                 <el-option
                         v-for="(item,key) in channelAccountOptions"

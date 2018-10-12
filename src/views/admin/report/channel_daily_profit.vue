@@ -9,7 +9,6 @@
                         :value="item.id">
                 </el-option>
             </el-select>
-            开始时间：
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
@@ -19,7 +18,6 @@
                             style="width: 200px"
                             :picker-options="pickerOptions">
             </el-date-picker>
-            结束时间
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateEnd"
                             align="right"

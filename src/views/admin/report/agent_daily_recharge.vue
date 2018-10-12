@@ -1,11 +1,8 @@
 <template>
     <div class="components-container">
         <div class="filter-container">
-            商户ID：
-            <el-input style="width: 100px;" class="filter-item" v-model="listQuery.user_id"></el-input>
-            商户名
-            <el-input style="width: 200px;" class="filter-item" v-model="listQuery.username"></el-input>
-            开始时间：
+            <el-input style="width: 100px;" class="filter-item" v-model="listQuery.user_id" placeholder="商户编号" clearable></el-input>
+            <el-input style="width: 200px;" class="filter-item" v-model="listQuery.username" placeholder="商户账户" clearable></el-input>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
@@ -15,7 +12,6 @@
                             style="width: 200px"
                             :picker-options="pickerOptions">
             </el-date-picker>
-            结束时间
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateEnd"
                             align="right"

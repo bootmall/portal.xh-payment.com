@@ -17,7 +17,7 @@
                              placeholder="结束日期"
                              :picker-options="pickerOptions">
             </el-date-picker>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="订单号" v-model="listQuery.orderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="订单号" v-model="listQuery.orderNo" clearable></el-input>
             <el-select class="filter-item" v-model="listQuery.eventType" placeholder="订单类型">
                 <el-option
                         v-for="item in typeOptions"
@@ -32,7 +32,7 @@
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%" :summary-method="getSummaries">
 
-            <el-table-column label="订单号"">
+            <el-table-column label="订单号">
                 <template slot-scope="scope">
                     <span>{{scope.row.event_id}}</span>
                 </template>

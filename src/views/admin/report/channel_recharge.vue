@@ -1,7 +1,6 @@
 <template>
     <div class="components-container">
         <div class="filter-container">
-            开始时间：
             <el-date-picker class="filter-item" style="width: 240px;"
                             v-model="listQuery.dateStart"
                             align="right"
@@ -9,7 +8,6 @@
                             placeholder="开始日期"
                             :picker-options="pickerOptions">
             </el-date-picker>
-            结束时间
             <el-date-picker class="filter-item" style="width: 240px;"
                             v-model="listQuery.dateEnd"
                             align="right"

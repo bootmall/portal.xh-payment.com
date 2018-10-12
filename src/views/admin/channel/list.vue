@@ -2,7 +2,7 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.name" placeholder="名称"></el-input>
+            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.name" placeholder="名称" clearable></el-input>
             <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
         </div>
 

@@ -17,7 +17,7 @@
                     placeholder="结束日期"
                     :picker-options="pickerOptions">
             </el-date-picker>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="订单号" v-model="listQuery.orderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="订单号" v-model="listQuery.orderNo" clearable></el-input>
             <el-select class="filter-item" v-model="listQuery.eventType" placeholder="订单类型" multiple >
                 <el-option
                         v-for="item in typeOptions"
@@ -26,9 +26,9 @@
                         :value="item.id">
                 </el-option>
             </el-select>
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户号" v-model="listQuery.uid"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户号" v-model="listQuery.uid" clearable></el-input>
 
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.username"></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.username" clearable></el-input>
             <!--<el-select @change='handleFilter' style="width: 120px" class="filter-item" v-model="listQuery.sort" placeholder="排序">-->
             <!--<el-option v-for="item in sortOptions" :key="item.label" :label="item.label" :value="item.key">-->
             <!--</el-option>-->

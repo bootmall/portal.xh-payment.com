@@ -1,81 +1,78 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input size="small" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo" clearable></el-input>
-      <el-input size="small" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo" clearable></el-input>
-      <el-input size="small" class="filter-item" placeholder="渠道订单号" v-model="listQuery.channelOrderNo" clearable></el-input>
-      <el-input class="filter-item" size="small" v-model="listQuery.merchantNo" placeholder="商户编号" clearable></el-input>
-      <el-input size="small" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName" clearable></el-input>
-      <el-date-picker class="filter-item"
-                      v-model="listQuery.dateStart"
-                      align="right"
-                      type="datetime"
-                      placeholder="开始日期"
-                      size="small"
-                      style="width: 13%;"
-                      :picker-options="pickerOptions">
-      </el-date-picker>
-      <el-date-picker class="filter-item"
-                      v-model="listQuery.dateEnd"
-                      align="right"
-                      type="datetime"
-                      size="small"
-                      style="width: 13%;"
-                      placeholder="结束日期"
-                      :picker-options="pickerOptions">
-      </el-date-picker>
+      <el-row>
+        <el-col :span="24">
+          <el-input size="small" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo" clearable></el-input>
+          <el-input size="small" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo" clearable></el-input>
+          <el-input size="small" class="filter-item" placeholder="渠道订单号" v-model="listQuery.channelOrderNo" clearable></el-input>
+          <el-input class="filter-item" size="small" v-model="listQuery.merchantNo" placeholder="商户编号" clearable></el-input>
+          <el-input size="small" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName" clearable></el-input>
+          <el-date-picker class="filter-item"
+                          v-model="listQuery.dateStart"
+                          align="right"
+                          type="datetime"
+                          placeholder="开始日期"
+                          size="small"
+                          style="width: 13%;"
+                          :picker-options="pickerOptions">
+          </el-date-picker>
+          <el-date-picker class="filter-item"
+                          v-model="listQuery.dateEnd"
+                          align="right"
+                          type="datetime"
+                          size="small"
+                          style="width: 13%;"
+                          placeholder="结束日期"
+                          :picker-options="pickerOptions">
+          </el-date-picker>
 
-      <el-input class="filter-item" size="small" clearable placeholder="最小金额" @change.native="checkNumber()" v-model="listQuery.minMoney" clearable></el-input>
-      <el-input class="filter-item" size="small" clearable placeholder="最大金额" @change.native="checkNumber()" v-model="listQuery.maxMoney" clearable></el-input>
-      <el-input class="filter-item" size="small" placeholder="代理账号" v-model="listQuery.agentAccount" clearable></el-input>
-      <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态" style="width: 15%;" multiple>
-        <el-option
-            v-for="(item,key) in statusOptions"
-            :key="item.id"
-            :label="item.val"
-            :value="item.id">
-        </el-option>
-      </el-select>
-      <el-select class="filter-item" size="small" v-model="listQuery.notifyStatus" style="width: 15%;" placeholder="通知状态">
-        <el-option
-            v-for="(item,key) in notifyStatusOptions"
-            :key="item.id"
-            :label="item.val"
-            :value="item.id">
-        </el-option>
-      </el-select>
-      <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" style="width: 15%;" placeholder="通道号" multiple>
-        <el-option
-            v-for="(item,key) in channelAccountOptions"
-            :key="item.id"
-            :label="item.val"
-            :value="item.id">
-        </el-option>
-      </el-select>
-      <el-select class="filter-item" size="small" v-model="listQuery.method" style="width: 15%;" placeholder="支付类型" multiple>
-        <el-option
-            v-for="(item,key) in methodOptions"
-            :key="item.id"
-            :label="item.val"
-            :value="item.id">
-        </el-option>
-      </el-select>
-
-      <!--<el-input  style="width: 120px;" class="filter-item" placeholder="代理号" v-model="listQuery.merchantOrderNo"></el-input>-->
-
-      <!--<el-select @change='handleFilter' style="width: 120px" class="filter-item" v-model="listQuery.sort" placeholder="排序">-->
-      <!--<el-option v-for="item in sortOptions" :key="item.label" :label="item.label" :value="item.key">-->
-      <!--</el-option>-->
-      <!--</el-select>-->
-
-      <el-button class="filter-item" size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索
-      </el-button>
-      <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">
-        导出CSV
-      </el-button>
-      <!--<el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>-->
-      <el-button class="filter-item" size="small" type="danger" v-waves @click="syncStatus()">批量同步</el-button>
-      <el-button class="filter-item" size="small" type="success" @click="setSettlement('')">结算筛选订单</el-button>
+          <el-input class="filter-item" size="small" clearable placeholder="最小金额" @change.native="checkNumber()" v-model="listQuery.minMoney" clearable></el-input>
+          <el-input class="filter-item" size="small" clearable placeholder="最大金额" @change.native="checkNumber()" v-model="listQuery.maxMoney" clearable></el-input>
+          <el-input class="filter-item" size="small" placeholder="代理账号" v-model="listQuery.agentAccount" clearable></el-input>
+          <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态" style="width: 15%;" multiple>
+            <el-option
+                v-for="(item,key) in statusOptions"
+                :key="item.id"
+                :label="item.val"
+                :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select class="filter-item" size="small" v-model="listQuery.notifyStatus" style="width: 15%;" placeholder="通知状态">
+            <el-option
+                v-for="(item,key) in notifyStatusOptions"
+                :key="item.id"
+                :label="item.val"
+                :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" style="width: 15%;" placeholder="通道号" multiple>
+            <el-option
+                v-for="(item,key) in channelAccountOptions"
+                :key="item.id"
+                :label="item.val"
+                :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select class="filter-item" size="small" v-model="listQuery.method" style="width: 15%;" placeholder="支付类型" multiple>
+            <el-option
+                v-for="(item,key) in methodOptions"
+                :key="item.id"
+                :label="item.val"
+                :value="item.id">
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-button class="filter-item" size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+          <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
+          <!--<el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>-->
+          <el-button class="filter-item" size="small" type="danger" v-waves @click="syncStatus()">批量同步</el-button>
+          <el-button class="filter-item" size="small" type="success" @click="setSettlement('')">结算筛选订单</el-button>
+        </el-col>
+      </el-row>
     </div>
 
     <el-table stripe :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit

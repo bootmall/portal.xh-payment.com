@@ -1,7 +1,6 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            开始时间：
             <el-date-picker  class="filter-item" style="width: 200px;" size="small"
                              v-model="listQuery.dateStart"
                              align="right"
@@ -9,7 +8,6 @@
                              placeholder="开始日期"
                              :picker-options="pickerOptions">
             </el-date-picker>
-            结束时间
             <el-date-picker  class="filter-item" style="width: 200px;" size="small"
                              v-model="listQuery.dateEnd"
                              align="right"
@@ -17,16 +15,10 @@
                              placeholder="结束日期"
                              :picker-options="pickerOptions">
             </el-date-picker>
-
-            收款订单号：
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" size="small" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
-            商户订单号：
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" size="small" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
-            商户编号：
-            <el-input @keyup.enter.native="handleFilter" class="filter-item" style="width: 200px;" size="small" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
-            商户账号：
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" size="small" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantAccount"></el-input>
-            订单状态：
+            <el-input style="width: 200px;" size="small" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo" clearable></el-input>
+            <el-input style="width: 200px;" size="small" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo" clearable></el-input>
+            <el-input class="filter-item" style="width: 200px;" size="small" v-model="listQuery.merchantNo" placeholder="商户编号" clearable></el-input>
+            <el-input style="width: 200px;" size="small" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantAccount" clearable></el-input>
             <el-select class="filter-item" v-model="listQuery.status" size="small" placeholder="订单状态" >
                 <el-option
                         v-for="(item,key) in statusOptions"

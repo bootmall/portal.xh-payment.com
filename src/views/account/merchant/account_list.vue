@@ -3,8 +3,8 @@
         <div class="filter-container">
             <el-row>
                 <el-col :span="24">
-                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="商户号"style="width: 150px;" v-model="listQuery.userId"></el-input>
-                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="商户帐号"style="width: 200px;" v-model="listQuery.username"></el-input>
+                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="商户号"style="width: 150px;" v-model="listQuery.userId" clearable></el-input>
+                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="商户帐号"style="width: 200px;" v-model="listQuery.username" clearable></el-input>
                     <el-select class="filter-item" v-model="listQuery.status" placeholder="状态" style="width: 100px;">
                         <el-option
                                 v-for="(item,key) in statusOptions"
