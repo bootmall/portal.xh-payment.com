@@ -3,10 +3,10 @@
         <div class="filter-container">
             <el-row>
                 <el-col :span="24">
-                    <el-input class="filter-item" placeholder="商户号" v-model="listQuery.userId" clearable></el-input>
-                    <el-input class="filter-item" placeholder="商户帐号" v-model="listQuery.username" clearable></el-input>
-                    <el-input class="filter-item" placeholder="父帐号" v-model="listQuery.parentUsername" clearable></el-input>
-                    <el-select class="filter-item" v-model="listQuery.status" placeholder="状态" style="width: 100px;" filterable>
+                    <el-input class="filter-item select-class" placeholder="商户号" v-model="listQuery.userId" clearable></el-input>
+                    <el-input class="filter-item select-class" placeholder="商户帐号" v-model="listQuery.username" clearable></el-input>
+                    <el-input class="filter-item select-class" placeholder="父帐号" v-model="listQuery.parentUsername" clearable></el-input>
+                    <el-select class="filter-item select-class" v-model="listQuery.status" placeholder="状态" filterable>
                         <el-option
                                 v-for="(item,key) in statusOptions"
                                 :key="key"
@@ -14,7 +14,7 @@
                                 :value="key">
                         </el-option>
                     </el-select>
-                    <el-select class="filter-item" v-model="listQuery.type" placeholder="类型" style="width: 100px;" filterable>
+                    <el-select class="filter-item select-class" v-model="listQuery.type" placeholder="类型" filterable>
                         <el-option
                                 v-for="(item,key) in typeOptions"
                                 :key="key"
@@ -23,7 +23,7 @@
                         </el-option>
                     </el-select>
 
-                    <el-select class="filter-item" v-model="listQuery.remit" placeholder="出款通道" filterable>
+                    <el-select class="filter-item select-class" v-model="listQuery.remit" placeholder="出款通道" filterable>
                         <el-option
                                 v-for="(item,key) in remitOptions"
                                 :key="item.id"
@@ -31,7 +31,7 @@
                                 :value="item.id">
                         </el-option>
                     </el-select>
-                    <el-select class="filter-item" v-model="listQuery.payChannel" placeholder="充值通道">
+                    <el-select class="filter-item select-class" v-model="listQuery.payChannel" placeholder="充值通道" >
                         <el-option
                                 v-for="(item,key) in payChannelOptions"
                                 :key="item.id"
@@ -40,7 +40,7 @@
                         </el-option>
                     </el-select>
 
-                    <el-select class="filter-item" v-model="listQuery.tagId" placeholder="分组标签" filterable >
+                    <el-select class="filter-item select-class" v-model="listQuery.tagId" placeholder="分组标签" filterable >
                         <el-option
                                 v-for="(item,key) in tagList"
                                 :key="item.id"
@@ -49,7 +49,7 @@
                         >
                         </el-option>
                     </el-select>
-                    <el-select class="filter-item" v-model="listQuery.accountOpenFeeStatus" placeholder="开户费缴纳状态" filterable >
+                    <el-select class="filter-item select-class" v-model="listQuery.accountOpenFeeStatus" placeholder="开户费缴纳状态"  filterable >
                         <el-option
                                 v-for="(item,key) in accountOpenFeeStatusOptions"
                                 :key="key"
@@ -1324,10 +1324,7 @@
         line-height: 36px !important;
         font-size: 14px !important;
     }
-    .el-input {
-        width: 13% !important;
-    }
-    .el-select{
+    .select-class {
         width: 13% !important;
     }
 </style>

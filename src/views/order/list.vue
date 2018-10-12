@@ -62,15 +62,17 @@
                 :value="item.id">
             </el-option>
           </el-select>
+          <el-button class="filter-item" size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-button class="filter-item" size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-          <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
-          <!--<el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>-->
-          <el-button class="filter-item" size="small" type="danger" v-waves @click="syncStatus()">批量同步</el-button>
-          <el-button class="filter-item" size="small" type="success" @click="setSettlement('')">结算筛选订单</el-button>
+          <div class="button-class">
+            <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
+            <!--<el-button class="filter-item"  size="small" type="primary" >批量同步</el-button>-->
+            <el-button class="filter-item" size="small" type="danger" v-waves @click="syncStatus()">批量同步</el-button>
+            <el-button class="filter-item" size="small" type="success" @click="setSettlement('')">结算筛选订单</el-button>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -851,9 +853,12 @@
     }
   }
   .el-input {
-      width: 13% !important;
+      width: 12% !important;
   }
   .el-select{
-      width: 13% !important;
+      width: 12% !important;
+  }
+  .button-class{
+    float: right;
   }
 </style>

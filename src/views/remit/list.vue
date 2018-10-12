@@ -51,18 +51,20 @@
           </el-date-picker>
           <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="最小金额" clearable></el-input>
           <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.maxMoney" placeholder="最大金额" clearable></el-input>
+          <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-          <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
-          <!--<el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>-->
-          <el-button class="filter-item" size="small" type="success" v-waves @click="setChecked()">批量审核</el-button>
-          <el-button class="filter-item" size="small" type="info" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
-          <el-button class="filter-item" size="small" type="warning" v-waves @click="reSubmit()">批量重提</el-button>
-          <el-button class="filter-item" size="small" type="danger" v-waves @click="syncStatus()">批量同步</el-button>
-          <el-button class="filter-item" size="small" type="warning" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
+          <div class="button-class">
+            <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
+            <!--<el-button class="filter-item" size="small" type="primary" v-waves @click="syncStatus()">批量同步状态</el-button>-->
+            <el-button class="filter-item" size="small" type="success" v-waves @click="setChecked()">批量审核</el-button>
+            <el-button class="filter-item" size="small" type="info" v-waves @click="dialogSwitchRemitVisible=true">批量切通道</el-button>
+            <el-button class="filter-item" size="small" type="warning" v-waves @click="reSubmit()">批量重提</el-button>
+            <el-button class="filter-item" size="small" type="danger" v-waves @click="syncStatus()">批量同步</el-button>
+            <el-button class="filter-item" size="small" type="warning" v-waves @click="autoCommitStatusVisible=true">自动提交开关</el-button>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -852,13 +854,16 @@
   }
 
   .el-input {
-      width: 13% !important;
+      width: 12% !important;
   }
   .el-select{
-    width: 13% !important;
+    width: 12% !important;
   }
   .el-dropdown-menu--mini .el-dropdown-menu__item {
     line-height: 36px !important;
     font-size: 14px !important;
+  }
+  .button-class{
+    float: right;
   }
 </style>
