@@ -12,6 +12,7 @@
                       type="datetime"
                       placeholder="开始日期"
                       size="small"
+                      style="width: 13%;"
                       :picker-options="pickerOptions">
       </el-date-picker>
       <el-date-picker class="filter-item"
@@ -19,15 +20,15 @@
                       align="right"
                       type="datetime"
                       size="small"
+                      style="width: 13%;"
                       placeholder="结束日期"
                       :picker-options="pickerOptions">
       </el-date-picker>
 
       <el-input class="filter-item" size="small" clearable placeholder="最小金额" @change.native="checkNumber()" v-model="listQuery.minMoney" clearable></el-input>
-      -
       <el-input class="filter-item" size="small" clearable placeholder="最大金额" @change.native="checkNumber()" v-model="listQuery.maxMoney" clearable></el-input>
       <el-input class="filter-item" size="small" placeholder="代理账号" v-model="listQuery.agentAccount" clearable></el-input>
-      <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态" multiple>
+      <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="订单状态" style="width: 15%;" multiple>
         <el-option
             v-for="(item,key) in statusOptions"
             :key="item.id"
@@ -35,7 +36,7 @@
             :value="item.id">
         </el-option>
       </el-select>
-      <el-select class="filter-item" size="small" v-model="listQuery.notifyStatus" placeholder="通知状态">
+      <el-select class="filter-item" size="small" v-model="listQuery.notifyStatus" style="width: 15%;" placeholder="通知状态">
         <el-option
             v-for="(item,key) in notifyStatusOptions"
             :key="item.id"
@@ -43,7 +44,7 @@
             :value="item.id">
         </el-option>
       </el-select>
-      <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号" multiple>
+      <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" style="width: 15%;" placeholder="通道号" multiple>
         <el-option
             v-for="(item,key) in channelAccountOptions"
             :key="item.id"
@@ -51,7 +52,7 @@
             :value="item.id">
         </el-option>
       </el-select>
-      <el-select class="filter-item" size="small" v-model="listQuery.method" placeholder="支付类型" multiple>
+      <el-select class="filter-item" size="small" v-model="listQuery.method" style="width: 15%;" placeholder="支付类型" multiple>
         <el-option
             v-for="(item,key) in methodOptions"
             :key="item.id"
@@ -853,6 +854,9 @@
     }
   }
   .el-input {
-    width: 13%;
+      width: 13% !important;
+  }
+  .el-select{
+      width: 13% !important;
   }
 </style>

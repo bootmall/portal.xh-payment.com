@@ -1266,7 +1266,7 @@
   }
 </script>
 
-<style>
+<style rel="stylesheet/scss" lang="scss" scoped>
     .action-btns a {
         margin-left: 5px;
     }
@@ -1323,5 +1323,11 @@
     .el-dropdown-menu--mini .el-dropdown-menu__item {
         line-height: 36px !important;
         font-size: 14px !important;
+    }
+    .el-input {
+        width: 13% !important;
+    }
+    .el-select{
+        width: 13% !important;
     }
 </style>

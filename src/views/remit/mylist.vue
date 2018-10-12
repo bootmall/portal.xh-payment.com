@@ -269,7 +269,7 @@
   }
 </script>
 
-<style>
+<style rel="stylesheet/scss" lang="scss" scoped>
   .action-btns a {
     margin-left: 5px;
   }
@@ -278,6 +278,9 @@
     padding: 5px 0 !important;
   }
   .el-input {
-    width: 13%;
+    width: 13% !important;
+  }
+  .el-select{
+    width: 13% !important;
   }
 </style>

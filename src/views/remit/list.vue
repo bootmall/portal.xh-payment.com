@@ -36,18 +36,19 @@
                       align="right"
                       type="datetime"
                       placeholder="开始日期"
+                      style="width: 13%;"
                       :picker-options="pickerOptions">
       </el-date-picker>
       <el-date-picker class="filter-item" size="small"
                       v-model="listQuery.dateEnd"
                       align="right"
                       type="datetime"
+                      style="width: 13%;"
                       placeholder="结束日期"
                       :picker-options="pickerOptions">
       </el-date-picker>
-      <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="金额" clearable></el-input>
-      -
-      <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.maxMoney" clearable></el-input>
+      <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="最小金额" clearable></el-input>
+      <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.maxMoney" placeholder="最大金额" clearable></el-input>
       <!--<el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="持卡人" v-model="listQuery.bankAccount"></el-input>-->
       <!--<el-select @change='handleFilter' style="width: 120px" class="filter-item" v-model="listQuery.sort" placeholder="排序">-->
       <!--<el-option v-for="item in sortOptions" :key="item.label" :label="item.label" :value="item.key">-->
@@ -852,7 +853,10 @@
   }
 
   .el-input {
-      width: 13%;
+      width: 13% !important;
+  }
+  .el-select{
+    width: 13% !important;
   }
   .el-dropdown-menu--mini .el-dropdown-menu__item {
     line-height: 36px !important;
