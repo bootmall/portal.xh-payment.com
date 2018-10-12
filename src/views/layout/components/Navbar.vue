@@ -637,6 +637,19 @@
                 self.$message.error({message: '邮箱格式错误'})
                 return false;
             }
+            if(self.emailForm.code == null || self.emailForm.code.lenth == 0){
+                self.$message.error({message: '邮箱验证码错误'})
+                return false;
+            }
+            axios.post('/user/update-email',self.emailForm).then(
+                res => {
+                    if (res.code == 0 ) {
+                        self.$message.success({message:res.message})
+                    }else {
+                        self.$message.error({message:'操作失败'})
+                    }
+                }
+            );
         }
     }
   }

@@ -1293,9 +1293,9 @@
         padding: 12px 5px !important;
     }
 
-    .el-button + .el-button {
-        margin-left: 5px;
-    }
+    /*.el-button + .el-button {*/
+        /*margin-left: 5px;*/
+    /*}*/
 
     .dialog-footer {
         text-align: center;
