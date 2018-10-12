@@ -1,17 +1,14 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="收款订单号"
-                v-model="listQuery.orderNo" size="small"></el-input>
-      <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item"
-                placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
+      <el-input class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo" size="small" clearable></el-input>
+      <el-input size="small" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo" clearable></el-input>
       <el-date-picker class="filter-item"
                       v-model="listQuery.dateStart"
                       align="right"
                       type="datetime"
                       placeholder="开始日期"
                       size="small"
-                      style="width: 200px;"
                       :picker-options="pickerOptions"
       >
       </el-date-picker>
@@ -21,7 +18,6 @@
                       type="datetime"
                       placeholder="结束日期"
                       size="small"
-                      style="width: 200px;"
                       :picker-options="pickerOptions">
       </el-date-picker>
       <el-select class="filter-item" v-model="listQuery.status" placeholder="订单状态" size="small">
@@ -364,5 +360,8 @@
 
   .el-table td, .el-table th {
     padding: 5px 0 !important;
+  }
+  .el-input {
+    width: 13%;
   }
 </style>

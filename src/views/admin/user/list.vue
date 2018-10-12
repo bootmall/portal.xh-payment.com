@@ -3,12 +3,9 @@
         <div class="filter-container">
             <el-row>
                 <el-col :span="24">
-                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="商户号"
-                              v-model="listQuery.userId"></el-input>
-                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="商户帐号"
-                              v-model="listQuery.username"></el-input>
-                    <el-input @keyup.enter.native="handleFilter" class="filter-item" placeholder="父帐号"
-                              v-model="listQuery.parentUsername"></el-input>
+                    <el-input class="filter-item" placeholder="商户号" v-model="listQuery.userId" clearable></el-input>
+                    <el-input class="filter-item" placeholder="商户帐号" v-model="listQuery.username" clearable></el-input>
+                    <el-input class="filter-item" placeholder="父帐号" v-model="listQuery.parentUsername" clearable></el-input>
                     <el-select class="filter-item" v-model="listQuery.status" placeholder="状态" style="width: 100px;" filterable>
                         <el-option
                                 v-for="(item,key) in statusOptions"

@@ -1248,7 +1248,9 @@
           return false;
         }
         if (self.emailForm.oldEmail == self.emailForm.newEmail) {
-          return self.emailVisible = false;
+            self.emailVisible = false
+            self.$message.error({message: '邮箱地址没有变化'})
+          return false;
         }
         let data = {
           email: self.emailForm.newEmail,
@@ -1259,9 +1261,9 @@
             if (res.code != 0) {
               self.$message.error({message: res.message})
             } else {
-              self.$message.success({message: '修改状态成功'});
+              self.$message.success({message: '操作成功'});
               self.getInitData()
-              self.statusVisible = false;
+              self.emailVisible = false;
             }
           },
         )

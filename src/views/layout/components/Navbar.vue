@@ -86,6 +86,9 @@
           <el-dropdown-item divided>
             <span @click="handleBindLoginIp" style="display:block;">绑定登录IP</span>
           </el-dropdown-item>
+          <!--<el-dropdown-item divided>-->
+            <!--<span @click="emailVisible = true" style="display:block;">绑定邮箱</span>-->
+          <!--</el-dropdown-item>-->
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登录</span>
           </el-dropdown-item>
@@ -206,6 +209,28 @@
                 <el-button type="primary" @click="updateLoginIp">确 定</el-button>
             </span>
     </el-dialog>
+    <el-dialog
+            title="绑定邮箱"
+            :visible.sync="emailVisible"
+            @close="close"
+            width="40%">
+      <template>
+        <el-form :model="emailForm">
+          <p style="color: red;padding-left: 180px;">提示：请填写能正常使用的邮箱地址</p>
+          <el-form-item label="邮箱地址：" label-width="180px">
+            <el-input size="small" type="email" v-model="emailForm.email" style="width: 300px"></el-input>
+            <el-button type="primary" size="small" @click="getEmailCode">发送验证码</el-button>
+          </el-form-item>
+          <el-form-item label="验证码：" label-width="180px">
+            <el-input size="small" v-model="emailForm.code" style="width: 300px"></el-input>
+          </el-form-item>
+        </el-form>
+      </template>
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="close">取 消</el-button>
+                <el-button type="primary" @click="updateMail">确 定</el-button>
+            </span>
+    </el-dialog>
   </el-menu>
 
 </template>
@@ -279,7 +304,12 @@
         loginIpForm:{
           bind_login_ip:''
         },
-          add_login_ip:''
+          add_login_ip:'',
+          emailForm:{
+            email:null,
+              code:null,
+          },
+          emailVisible:false,
       }
     },
     computed: {
@@ -582,7 +612,32 @@
             }
           );
         }
-      }
+      },
+        getEmailCode(){
+            let self = this;
+            let regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+            if (self.emailForm.email != null && !regEmail.test(self.emailForm.email)) {
+                self.$message.error({message: '邮箱格式错误'})
+                return false;
+            }
+            axios.post('/user/email-code',{email:self.emailForm.email}).then(
+                res => {
+                    if (res.code == 0 ) {
+                        self.$message.success({message:res.message})
+                    }else {
+                        self.$message.error({message:'发送失败'})
+                    }
+                }
+            );
+        },
+        updateMail(){
+            let self = this;
+            let regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+            if (self.emailForm.email != null && !regEmail.test(self.emailForm.email)) {
+                self.$message.error({message: '邮箱格式错误'})
+                return false;
+            }
+        }
     }
   }
 </script>
