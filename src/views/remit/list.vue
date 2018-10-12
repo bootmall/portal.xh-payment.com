@@ -822,7 +822,7 @@
     word-break: break-all;
   }
 </style>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" >
   .action-btns a {
     margin-left: 5px;
   }

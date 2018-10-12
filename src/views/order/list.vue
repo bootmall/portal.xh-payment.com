@@ -825,7 +825,7 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" >
   .el-table td, .el-table th {
     padding: 5px 0 !important;
   }
