@@ -19,9 +19,8 @@
                       size="small"
                       :picker-options="pickerOptions">
       </el-date-picker>
-      <el-input class="filter-item" size="small" @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="金额" clearable></el-input>
-      -
-      <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.maxMoney" clearable></el-input>
+      <el-input class="filter-item" size="small" @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="最小金额" clearable></el-input>
+      <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.maxMoney" placeholder="最大金额" clearable></el-input>
       <el-input size="small" class="filter-item" placeholder="卡号" v-model="listQuery.bankNo" clearable></el-input>
       <el-select class="filter-item" size="small" v-model="listQuery.status" placeholder="状态">
         <el-option

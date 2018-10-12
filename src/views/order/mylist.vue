@@ -9,8 +9,7 @@
                       type="datetime"
                       placeholder="开始日期"
                       size="small"
-                      :picker-options="pickerOptions"
-      >
+                      :picker-options="pickerOptions">
       </el-date-picker>
       <el-date-picker class="filter-item"
                       v-model="listQuery.dateEnd"
@@ -28,7 +27,6 @@
             :value="key">
         </el-option>
       </el-select>
-      通知状态：
       <el-select class="filter-item" v-model="listQuery.notifyStatus" placeholder="通知状态" size="small">
         <el-option
             v-for="(item,key) in notifyStatusOptions"
