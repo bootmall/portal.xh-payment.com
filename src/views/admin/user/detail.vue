@@ -803,10 +803,10 @@
           axios.post('/admin/user/set-account-open-fee', data).then(
             res => {
               if (res.code == 0) {
-                this.$message.success({message: '开户费已设置'});
-                  this.getInitData()
+                  self.$message.success({message: '开户费已设置'});
+                  self.getInitData()
               } else {
-                this.$message.error({message: res.message});
+                  self.$message.error({message: res.message});
               }
             }
           )

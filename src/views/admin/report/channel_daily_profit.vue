@@ -39,12 +39,22 @@
             <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
 
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%">
+        <el-table
+                :key='tableKey'
+                :data="list"
+                v-loading="listLoading"
+                element-loading-text="数据加载中，请稍候..."
+                border
+                fit
+                highlight-current-row
+                @row-click="clickTable"
+                ref="refTable"
+                style="width: 100%">
 
             <el-table-column type="expand">
                 <template slot-scope="scope">
-                    <el-row class="demo-row" v-for="(item,key) in scope.row.list" :key="key">
-                        <el-col>
+                    <el-row :gutter="20" class="demo-row" v-for="(item,key) in scope.row.list" :key="key">
+                        <el-col >
                             <span class="demo-span">通道：{{item.channel_account_name}}</span>
                             <span class="demo-span">收款笔数：{{item.recharge_count}}</span>
                             <span class="demo-span">收款总额：{{item.recharge_total}}</span>
@@ -56,11 +66,6 @@
                     </el-row>
                 </template>
             </el-table-column>
-            <!--<el-table-column label="通道">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<span>{{scope.row.channel_account_name}}</span>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
             <el-table-column label="日期">
                 <template slot-scope="scope">
                     <span>{{scope.row.date}}</span>
@@ -220,6 +225,9 @@
         this.listQuery.page = val
         this.getInitData()
       },
+        clickTable(row,index,e){
+            this.$refs.refTable.toggleRowExpansion(row)
+        }
     }
   }
 </script>
@@ -229,6 +237,7 @@
         margin-top: 20px;
     }
     .demo-row {
+        width: 100%;
         margin: 10px 50px;
     }
     .demo-span {
