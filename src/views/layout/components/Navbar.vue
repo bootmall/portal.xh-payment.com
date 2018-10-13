@@ -86,9 +86,9 @@
           <el-dropdown-item divided>
             <span @click="handleBindLoginIp" style="display:block;">绑定登录IP</span>
           </el-dropdown-item>
-          <!--<el-dropdown-item divided>-->
-            <!--<span @click="emailVisible = true" style="display:block;">绑定邮箱</span>-->
-          <!--</el-dropdown-item>-->
+          <el-dropdown-item divided v-if="user.user.main_merchant_id == user.user.id">
+            <span @click="emailVisible = true" style="display:block;">变更邮箱</span>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登录</span>
           </el-dropdown-item>
