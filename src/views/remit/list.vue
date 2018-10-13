@@ -3,12 +3,12 @@
     <div class="filter-container">
       <el-row>
         <el-col :span="24">
-          <el-input size="small" class="filter-item" placeholder="结算订单号" v-model="listQuery.orderNo" clearable></el-input>
-          <el-input size="small" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo" clearable></el-input>
-          <el-input size="small" class="filter-item" placeholder="凭证" v-model="listQuery.channelOrderNo" clearable></el-input>
-          <el-input class="filter-item" size="small" v-model="listQuery.merchantNo" placeholder="商户编号" clearable></el-input>
-          <el-input class="filter-item" size="small" v-model="listQuery.merchantAccount" placeholder="商户账号" clearable></el-input>
-          <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号" multiple >
+          <el-input size="small" class="filter-item demo-class" placeholder="结算订单号" v-model="listQuery.orderNo" clearable></el-input>
+          <el-input size="small" class="filter-item demo-class" placeholder="商户订单号" v-model="listQuery.merchantOrderNo" clearable></el-input>
+          <el-input size="small" class="filter-item demo-class" placeholder="凭证" v-model="listQuery.channelOrderNo" clearable></el-input>
+          <el-input class="filter-item demo-class" size="small" v-model="listQuery.merchantNo" placeholder="商户编号" clearable></el-input>
+          <el-input class="filter-item demo-class" size="small" v-model="listQuery.merchantAccount" placeholder="商户账号" clearable></el-input>
+          <el-select class="filter-item demo-class" size="small" v-model="listQuery.channelAccount" placeholder="通道号" multiple >
             <el-option
                 v-for="(item,key) in channelAccountOptions"
                 :key="key"
@@ -16,7 +16,7 @@
                 :value="key">
             </el-option>
           </el-select>
-          <el-input size="small" class="filter-item" placeholder="卡号" v-model="listQuery.bankNo" clearable></el-input>
+          <el-input size="small" class="filter-item demo-class" placeholder="卡号" v-model="listQuery.bankNo" clearable></el-input>
           <el-select class="filter-item" v-model="listQuery.status" size="small" placeholder="状态" multiple >
             <el-option
                 v-for="(item,key) in statusOptions"
@@ -25,7 +25,7 @@
                 :value="key">
             </el-option>
           </el-select>
-          <el-select class="filter-item" v-model="listQuery.type" size="small" placeholder="类型" >
+          <el-select class="filter-item demo-class" v-model="listQuery.type" size="small" placeholder="类型" >
             <el-option
                 v-for="(item,key) in orderTypes"
                 :key="key"
@@ -33,7 +33,7 @@
                 :value="key">
             </el-option>
           </el-select>
-          <el-date-picker class="filter-item" size="small"
+          <el-date-picker class="filter-item demo-class" size="small"
                           v-model="listQuery.dateStart"
                           align="right"
                           type="datetime"
@@ -41,7 +41,7 @@
                           style="width: 13%;"
                           :picker-options="pickerOptions">
           </el-date-picker>
-          <el-date-picker class="filter-item" size="small"
+          <el-date-picker class="filter-item demo-class" size="small"
                           v-model="listQuery.dateEnd"
                           align="right"
                           type="datetime"
@@ -49,8 +49,8 @@
                           placeholder="结束日期"
                           :picker-options="pickerOptions">
           </el-date-picker>
-          <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="最小金额" clearable></el-input>
-          <el-input class="filter-item" size="small"  @change.native="checkNumber()" v-model="listQuery.maxMoney" placeholder="最大金额" clearable></el-input>
+          <el-input class="filter-item demo-class" size="small"  @change.native="checkNumber()" v-model="listQuery.minMoney" placeholder="最小金额" clearable></el-input>
+          <el-input class="filter-item demo-class" size="small"  @change.native="checkNumber()" v-model="listQuery.maxMoney" placeholder="最大金额" clearable></el-input>
           <el-button class="filter-item" size="small" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
         </el-col>
       </el-row>
@@ -853,11 +853,8 @@
     }
   }
 
-  .el-input {
+  .demo-class {
       width: 12% !important;
-  }
-  .el-select{
-    width: 12% !important;
   }
   .el-dropdown-menu--mini .el-dropdown-menu__item {
     line-height: 36px !important;
