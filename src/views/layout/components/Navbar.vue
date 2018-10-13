@@ -219,10 +219,10 @@
           <p style="color: red;padding-left: 180px;">提示：请填写能正常使用的邮箱地址</p>
           <el-form-item label="邮箱地址：" label-width="180px">
             <el-input size="small" type="email" v-model="emailForm.email" style="width: 300px"></el-input>
-            <el-button type="primary" size="small" @click="getEmailCode">发送验证码</el-button>
           </el-form-item>
           <el-form-item label="验证码：" label-width="180px">
-            <el-input size="small" v-model="emailForm.code" style="width: 300px"></el-input>
+            <el-input size="small" v-model="emailForm.code" style="width: 200px"></el-input>
+            <el-button type="primary" size="small" @click="getEmailCode">发送验证码</el-button>
           </el-form-item>
         </el-form>
       </template>
@@ -308,6 +308,7 @@
           emailForm:{
             email:null,
               code:null,
+              type:null,
           },
           emailVisible:false,
       }
@@ -439,6 +440,12 @@
             this.add_login_ip = ''
             this.loginIpForm.bind_login_ip = []
             this.loginIpFormVisible = false
+            this.emailVisible = false
+            this.emailForm = {
+                email:null,
+                code:null,
+                type:null
+            }
         },
       editPassHandle() {
         let self = this
@@ -620,7 +627,11 @@
                 self.$message.error({message: '邮箱格式错误'})
                 return false;
             }
-            axios.post('/user/email-code',{email:self.emailForm.email}).then(
+            let data = {
+                email:self.emailForm.email,
+                type:'updateEmail'
+            }
+            axios.post('/user/email-code',data).then(
                 res => {
                     if (res.code == 0 ) {
                         self.$message.success({message:res.message})
@@ -641,8 +652,10 @@
                 self.$message.error({message: '邮箱验证码错误'})
                 return false;
             }
+            self.emailForm.type = 'updateEmail'
             axios.post('/user/update-email',self.emailForm).then(
                 res => {
+                    self.close()
                     if (res.code == 0 ) {
                         self.$message.success({message:res.message})
                     }else {
