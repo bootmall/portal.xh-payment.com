@@ -86,8 +86,11 @@
           <el-dropdown-item divided>
             <span @click="handleBindLoginIp" style="display:block;">绑定登录IP</span>
           </el-dropdown-item>
-          <el-dropdown-item divided v-if="user.user.main_merchant_id == user.user.id">
-            <span @click="emailVisible = true" style="display:block;">变更邮箱</span>
+            <el-dropdown-item divided v-if="group_id == 30">
+                <span @click="handleBindIp" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">绑定API接口IP地址</span>
+            </el-dropdown-item>
+          <el-dropdown-item divided v-if="group_id == 30">
+            <span @click="emailVisible = true" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">变更邮箱</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登录</span>
@@ -222,7 +225,7 @@
           </el-form-item>
           <el-form-item label="验证码：" label-width="180px">
             <el-input size="small" v-model="emailForm.code" style="width: 200px"></el-input>
-            <el-button type="primary" size="small" @click="getEmailCode">发送验证码</el-button>
+            <el-button type="primary" size="small" @click="getEmailCode('updateEmail')">发送验证码</el-button>
           </el-form-item>
         </el-form>
       </template>
@@ -231,6 +234,27 @@
                 <el-button type="primary" @click="updateMail">确 定</el-button>
             </span>
     </el-dialog>
+      <el-dialog
+              title="绑定API接口IP"
+              :visible.sync="ipVisible"
+              width="40%">
+          <template>
+              <el-form :model="ipForm">
+                  <p style="color: red;padding-left: 180px;">提示：API接口IP有多个以英文符号分号(;) 分隔</p>
+                  <el-form-item label="API接口IP地址：" label-width="180px">
+                      <el-input size="small" type="textarea" :rows="3" v-model="ipForm.app_server_ips" style="width: 300px"></el-input>
+                  </el-form-item>
+                  <el-form-item label="验证码：" label-width="180px">
+                      <el-input size="small" v-model="ipForm.code" style="width: 200px"></el-input>
+                      <el-button type="primary" size="small" @click="getEmailCode('bindApiIp')">发送验证码</el-button>
+                  </el-form-item>
+              </el-form>
+          </template>
+          <span slot="footer" class="dialog-footer">
+                <el-button @click="ipVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateApiIps">确 定</el-button>
+            </span>
+      </el-dialog>
   </el-menu>
 
 </template>
@@ -310,7 +334,14 @@
               code:null,
               type:null,
           },
+          // email:null,
           emailVisible:false,
+          ipVisible: false,
+          ipForm: {
+              app_server_ips: null,
+              channel_account_id:null,
+              code: null
+          },
       }
     },
     computed: {
@@ -335,6 +366,7 @@
       }
     },
     mounted() {
+        // this.email = this.user.user.email
       //设置定时器，每30秒刷新一次
       setInterval(this.checkRemitStatus,10 * 1000)
       //资金等检测
@@ -446,6 +478,12 @@
                 code:null,
                 type:null
             }
+            this.ipVisible = false
+            this.ipForm = {
+                app_server_ips: null,
+                channel_account_id: null,
+                code: null
+            }
         },
       editPassHandle() {
         let self = this
@@ -531,11 +569,6 @@
       },
       editAuthKey() {
         let self = this
-        // let reg = /^.*(?=.{8,50})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
-        // if (!reg.test(self.auth_key)) {
-        //   self.$message.error({message: '商户Key值不符合规范'})
-        //   return
-        // }
         if (self.auth_key.length > 36) {
           self.$message.error({message: '商户Key值长度超过规定长度'})
           return
@@ -620,7 +653,7 @@
           );
         }
       },
-        getEmailCode(){
+        getEmailCode(type){
             let self = this;
             let regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
             if (self.emailForm.email != null && !regEmail.test(self.emailForm.email)) {
@@ -629,7 +662,7 @@
             }
             let data = {
                 email:self.emailForm.email,
-                type:'updateEmail'
+                type:type
             }
             axios.post('/user/email-code',data).then(
                 res => {
@@ -663,7 +696,47 @@
                     }
                 }
             );
-        }
+        },
+        handleBindIp() {
+            this.ipVisible = true;
+            // console.log(this.user.user)
+            this.ipForm.app_server_ips = this.user.user.app_server_ips;
+            this.ipForm.channel_account_id = this.user.user.channel_account_id;
+        },
+        updateApiIps() {
+            let self = this
+            let tmpIp = []
+            if (self.ipForm.app_server_ips.length > 0) {
+                tmpIp = self.ipForm.app_server_ips.split(';');
+                let regIp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+                for (let i = 0; i < tmpIp.length; i++) {
+                    if (!regIp.test(tmpIp[i])) {
+                        self.$message.error({message: '有IP地址格式不正确，请检查'});
+                        return false;
+                    }
+                }
+            }
+            if(self.ipForm.code == null || self.ipForm.code.lenth == 0){
+                self.$message.error({message: '邮箱验证码错误'})
+                return false;
+            }
+            let data = {
+                app_server_ips: tmpIp,
+                channel_account_id:self.ipForm.channel_account_id,
+                code:self.ipForm.code,
+                type:'bindApiIp'
+            }
+            axios.post('/user/update-bind-api-ips', data).then(
+                res => {
+                    self.close()
+                    if (res.code != 0) {
+                        self.$message.error({message:res.message })
+                    } else {
+                        self.$message.success({message: res.message});
+                    }
+                },
+            )
+        },
     }
   }
 </script>
