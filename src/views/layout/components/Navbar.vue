@@ -92,6 +92,12 @@
           <el-dropdown-item divided v-if="group_id == 30">
             <span @click="emailVisible = true" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">变更邮箱</span>
           </el-dropdown-item>
+          <el-dropdown-item divided v-if="group_id == 30">
+            <span @click="clearGoogleVisible = true" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">清空安全令牌</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided v-if="group_id == 30">
+            <span @click="clearFinancialVisible = true" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">清空资金密码</span>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登录</span>
           </el-dropdown-item>
@@ -251,10 +257,43 @@
               </el-form>
           </template>
           <span slot="footer" class="dialog-footer">
-                <el-button @click="ipVisible = false">取 消</el-button>
+                <el-button @click="close">取 消</el-button>
                 <el-button type="primary" @click="updateApiIps">确 定</el-button>
             </span>
       </el-dialog>
+    <el-dialog
+            title="清空安全令牌"
+            :visible.sync="clearGoogleVisible"
+            width="40%">
+      <template>
+        <el-form>
+          <el-form-item label="验证码：" label-width="180px">
+            <el-input size="small" v-model="clearGoogleCode" style="width: 200px"></el-input>
+            <el-button type="primary" size="small" @click="getEmailCode('clearGoogle')">发送验证码</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="close">取 消</el-button>
+                <el-button type="primary" @click="updateGoogle">确 定</el-button>
+            </span>
+    </el-dialog>
+    <el-dialog
+            title="清空资金密码"
+            :visible.sync="clearFinancialVisible"
+            width="40%">
+      <template>
+        <el-form>
+          <el-form-item label="安全令牌：" label-width="180px">
+            <el-input size="small" v-model="clearFinancialCode" style="width: 200px"></el-input>
+          </el-form-item>
+        </el-form>
+      </template>
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="close">取 消</el-button>
+                <el-button type="primary" @click="updateFinancial">确 定</el-button>
+            </span>
+    </el-dialog>
   </el-menu>
 
 </template>
@@ -342,6 +381,10 @@
               channel_account_id:null,
               code: null
           },
+          clearGoogleVisible:false,
+          clearGoogleCode:null,
+          clearFinancialVisible:false,
+          clearFinancialCode:null,
       }
     },
     computed: {
@@ -484,6 +527,10 @@
                 channel_account_id: null,
                 code: null
             }
+            this.clearGoogleCode = null
+            this.clearGoogleVisible = false
+            this.clearFinancialVisible = false
+            this.clearFinancialCode = null
         },
       editPassHandle() {
         let self = this
@@ -692,7 +739,7 @@
                     if (res.code == 0 ) {
                         self.$message.success({message:res.message})
                     }else {
-                        self.$message.error({message:'操作失败'})
+                        self.$message.error({message:res.message})
                     }
                 }
             );
@@ -737,6 +784,40 @@
                 },
             )
         },
+        updateGoogle(){
+            let self = this;
+            if(self.clearGoogleCode == null || self.clearGoogleCode.lenth == 0){
+                self.$message.error({message: '邮箱验证码错误'})
+                return false;
+            }
+            axios.post('/user/clear-google',{code:self.clearGoogleCode,type:'clearGoogle'}).then(
+                res => {
+                    self.close()
+                    if (res.code == 0 ) {
+                        self.$message.success({message:res.message})
+                    }else {
+                        self.$message.error({message:res.message})
+                    }
+                }
+            );
+        },
+        updateFinancial(){
+            let self = this;
+            if(self.clearFinancialCode == null || self.clearFinancialCode.lenth == 0){
+                self.$message.error({message: '安全令牌错误'})
+                return false;
+            }
+            axios.post('/user/clear-financial',{code:self.clearFinancialCode}).then(
+                res => {
+                    self.close()
+                    if (res.code == 0 ) {
+                        self.$message.success({message:res.message})
+                    }else {
+                        self.$message.error({message:res.message})
+                    }
+                }
+            );
+        }
     }
   }
 </script>
