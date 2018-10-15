@@ -111,15 +111,13 @@
                         }
                         self.dailyRechargeData = {name:[],data:[],x_data:[],title:''}
                         let tmps = {name:['充值'],data:[],x_data:[],title:''}
-                        for(let i in res.data){
-                            let tmp = {
-                                name:'充值',
-                                type: 'line',
-                                data:res.data[i],
-                                areaStyle: {normal: {}}
-                            }
-                            tmps.data.push(tmp)
+                        let tmp = {
+                            name:'充值',
+                            type: 'line',
+                            data:Object.values(res.data),
+                            areaStyle: {normal: {}}
                         }
+                        tmps.data.push(tmp)
                         tmps.title = "近" + Object.keys(res.data).length  + "天充值统计"
                         tmps.x_data = Object.keys(res.data)
                         self.$set(self,'dailyRechargeData',tmps);
