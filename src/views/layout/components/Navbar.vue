@@ -93,7 +93,7 @@
             <span @click="emailVisible = true" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">变更邮箱</span>
           </el-dropdown-item>
           <el-dropdown-item divided v-if="group_id == 30">
-            <span @click="clearGoogleVisible = true" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">清空安全令牌</span>
+            <span @click="clearGoogleVisible = true" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">解绑安全令牌</span>
           </el-dropdown-item>
           <el-dropdown-item divided v-if="group_id == 30">
             <span @click="clearFinancialVisible = true" style="display:block;" v-if="user.user.main_merchant_id == user.user.id">清空资金密码</span>
