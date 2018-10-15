@@ -22,7 +22,12 @@
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
         <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+
             <charge-trend-hour-chart :chart-data="lineChartData"></charge-trend-hour-chart>
+        </el-row>
+
+        <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+            <charge-trend-hour-chart :chart-data="dailyRechargeData"></charge-trend-hour-chart>
         </el-row>
     </div>
 </template>
@@ -51,6 +56,12 @@
                         return time.getTime() > Date.now()
                     }
                 },
+                dailyRechargeData:{
+                    name:[],
+                    data:[],
+                    x_data:[],
+                    title:''
+                }
             }
         },
         created() {
@@ -90,6 +101,27 @@
                             tmps.x_data.push(res.data.hour[i]+'时')
                         }
                         self.$set(self,'lineChartData',tmps);
+                    }
+                )
+                axios.post('/admin/echarts/recharge-trend-daily',self.listQuery).then(
+                    res => {
+                        if(res.data.length == 0 || res.data == null){
+                            self.$message.error({message: res.message})
+                            return false
+                        }
+                        self.dailyRechargeData = {name:[],data:[],x_data:[],title:''}
+                        let tmps = {name:['充值'],data:[],x_data:[],title:''}
+                        for(let i in res.data){
+                            let tmp = {
+                                name:i,
+                                type: 'line',
+                                data:res.data[i],
+                                areaStyle: {normal: {}}
+                            }
+                        }
+                        tmps.title = "近" + Object.keys(res.data).length  + "天充值统计"
+                        tmps.x_data = Object.keys(res.data)
+                        self.$set(self,'dailyRechargeData',tmps);
                     }
                 )
             },
