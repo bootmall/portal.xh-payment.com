@@ -118,6 +118,7 @@
                                 data:res.data[i],
                                 areaStyle: {normal: {}}
                             }
+                            tmps.data.push(tmp)
                         }
                         tmps.title = "近" + Object.keys(res.data).length  + "天充值统计"
                         tmps.x_data = Object.keys(res.data)
