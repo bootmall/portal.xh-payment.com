@@ -113,7 +113,7 @@
                         let tmps = {name:['充值'],data:[],x_data:[],title:''}
                         for(let i in res.data){
                             let tmp = {
-                                name:i,
+                                name:'充值',
                                 type: 'line',
                                 data:res.data[i],
                                 areaStyle: {normal: {}}
