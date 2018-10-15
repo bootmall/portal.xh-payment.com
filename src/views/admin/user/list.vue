@@ -6,6 +6,14 @@
                     <el-input class="filter-item select-class" placeholder="商户号" v-model="listQuery.userId" clearable></el-input>
                     <el-input class="filter-item select-class" placeholder="商户帐号" v-model="listQuery.username" clearable></el-input>
                     <el-input class="filter-item select-class" placeholder="父帐号" v-model="listQuery.parentUsername" clearable></el-input>
+                    <el-select class="filter-item select-class" v-if="listQuery.parentUsername.length > 0 " v-model="listQuery.child" placeholder="下级" filterable clearable>
+                        <el-option
+                                v-for="(item,key) in childOptions"
+                                :key="key"
+                                :label="item"
+                                :value="key">
+                        </el-option>
+                    </el-select>
                     <el-select class="filter-item select-class" v-model="listQuery.status" placeholder="状态" filterable>
                         <el-option
                                 v-for="(item,key) in statusOptions"
@@ -451,6 +459,7 @@
           tagId: '',
           sort: '',
           appIds: [],
+            child:null
         },
         switchPayChannelForm: {
           payMethodId: {},
@@ -527,7 +536,7 @@
           allow_manual_recharge:"1",
           allow_manual_remit:"1",
         },
-
+          childOptions:['直属下级','所有下级'],
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -606,7 +615,9 @@
         var self = this
 
         self.listLoading = true
-
+        if(self.listQuery.parentUsername == null || self.listQuery.parentUsername.length == 0){
+            self.listQuery.child = null
+        }
         axios.post('/admin/user/list', self.listQuery).then(
           res => {
             self.listLoading = false
