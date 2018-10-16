@@ -231,6 +231,19 @@ export const asyncRouterMap = [
       {path: 'operation', component: _import("admin/log/userLog"),view: "admin/log/userLog", name: 'vue_operation', meta: {title: '操作记录', icon: 'excel', role: ['admin'], noCache: true}},
       //订单协查
       {path: 'recharge_survey', component: _import("order/survey"),view: "order/survey", name: 'vue_recharge_survey', meta: {title: '充值协查', icon: 'excel', role: ['admin'], noCache: true}},
+      {
+          path: 'user_black_list',
+          component: _import("userBlack/list"),
+          view: "userBlack/list",
+          name: 'vue_user_black_list',
+          meta: {
+              title: '黑名单记录',
+              icon: 'excel',
+              role: ['admin'],
+              noCache: true
+          }
+      },
+
     ]
   },
   // 代理使用
