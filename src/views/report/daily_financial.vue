@@ -38,7 +38,7 @@
                 @sort-change="handleChangeSort"
                 style="width: 100%">
 
-            <el-table-column label="商户名" sortable="custom">
+            <el-table-column label="商户名" prop="username" sortable="custom">
                 <template slot-scope="scope">
                     <span>{{scope.row.username}}</span>
                 </template>
