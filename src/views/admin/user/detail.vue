@@ -392,12 +392,15 @@
                             :title=changeBalanceDialogNotice
                             type="warning">
                     </el-alert>
-                    <el-form-item label="调整金额：" label-width="120px" style="margin-top: 20px;width: 400px">
+                    <el-form-item label="调整金额：" label-width="150px" style="margin-top: 20px;width: 400px">
                         <el-input size="small" type="text" v-model="balanceChangeForm.amount"></el-input>
                         <span class="current-balance">当前余额:{{userInfo.balance}},已冻结余额{{userInfo.frozen_balance}}</span>
                     </el-form-item>
-                    <el-form-item label="调整原因：" label-width="120px">
-                        <el-input size="small" type="textarea" :rows="3" v-model="balanceChangeForm.bak" style="width: 400px"></el-input>
+                    <el-form-item label="调整原因：" label-width="150px" style="margin-top: 20px;width: 400px">
+                        <el-input size="small" type="textarea" :rows="3" v-model="balanceChangeForm.bak" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="操作员安全令牌：" label-width="150px" style="margin-top: 20px;width: 400px">
+                        <el-input size="small" type="text" v-model="googleCode" ></el-input>
                     </el-form-item>
                 </template>
             </el-form>
@@ -499,7 +502,7 @@
                 </template>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="colse">取 消</el-button>
+                <el-button @click="close">取 消</el-button>
                 <el-button type="primary" @click="handleUnbind">确 定</el-button>
             </span>
         </el-dialog>
@@ -798,11 +801,12 @@
           };
           axios.post('/admin/user/clear-unbind-update', data).then(
             res => {
+                self.close()
               if (res.code == 0) {
                   self.$message.success({message: '安全令牌已解绑'});
+                  self.getInitData()
               } else {
                   self.$message.error({message: res.message});
-                  self.getInitData()
               }
             }
           )
@@ -1193,12 +1197,16 @@
         self.balanceChangeForm.amount = parseFloat(self.balanceChangeForm.amount)
         self.userInfo.balance = parseFloat(self.userInfo.balance)
         self.userInfo.frozen_balance = parseFloat(self.userInfo.frozen_balance)
-
+          if(self.googleCode == null || self.googleCode.length == 0){
+              self.$message.error({message: '请输入安全令牌'});
+              return;
+          }
         let data = {
           merchantId: self.userInfo.id,
           amount: self.balanceChangeForm.amount,
           bak: self.balanceChangeForm.bak,
           type: self.balanceChangeForm.type,
+            googleCode:self.googleCode,
         };
         if (self.balanceChangeForm.amount == '' || self.balanceChangeForm.amount == 0) {
           // self.$message.error({message: '调整金额不能为0'})
@@ -1248,10 +1256,9 @@
           }
           axios.post('/admin/user/change-balance', data).then(
             res => {
-              self.changeBalanceBtnDisabled = false
+                self.close()
               if (res.code == 0) {
                 self.$message.success({message: '操作成功'})
-                self.changeBalanceDialogVisible = false
                 this.getInitData()
               } else {
                 self.$message.error({message: res.message})
@@ -1334,9 +1341,10 @@
         initMerchantId(){
             this.$set(this,'agentMerchantId',this.userInfo.id)
         },
-        colse(){
+        close(){
           this.googleCode = null
             this.clearGoogleVisible = false
+            this.changeBalanceBtnDisabled = false
         },
     }
 
