@@ -201,8 +201,8 @@
           allow_manual_recharge: '1',
           allow_api_remit: '1',
           allow_manual_remit: '1',
-          allow_api_fast_remit: '40000',
-          allow_manual_fast_remit: '1000',
+          allow_api_fast_remit: '0',
+          allow_manual_fast_remit: '0',
           account_open_fee: '',
         },
         rules: {
