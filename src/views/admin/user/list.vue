@@ -200,7 +200,7 @@
                         <el-dropdown-menu slot="dropdown" size="mini">
                             <el-dropdown-item @click.native="handleResetLoginPass(scope.row)">重置登录密码</el-dropdown-item>
                             <el-dropdown-item @click.native="handleClearPass(scope.row)">清除资金密码</el-dropdown-item>
-                            <el-dropdown-item @click.native="handleUnbind(scope.row)">解绑安全令牌</el-dropdown-item>
+                            <el-dropdown-item v-if="scope.row.key_2fa_len > 0" @click.native="handleUnbind(scope.row)">解绑安全令牌</el-dropdown-item>
                             <el-dropdown-item @click.native="handleSetRate(scope.row)">设置费率</el-dropdown-item>
                             <el-dropdown-item @click.native="handleSetApiStatus(scope.row)">接口开关</el-dropdown-item>
                             <el-dropdown-item @click.native="handleUserStatus(scope.row)">修改商户状态</el-dropdown-item>
@@ -1272,7 +1272,10 @@
       },
       handleDetail(row) {
         this.$router.push({name: 'vue_merchant_detail', query: {merchantId: row.id}});
-      }
+      },
+        showDetail(){
+
+        }
     }
   }
 </script>

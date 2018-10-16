@@ -141,7 +141,7 @@
         <el-row>
             <el-button type="primary" @click="handleResetLoginPass">重置登录密码</el-button>
             <el-button type="primary" @click="handleClearPass">清除资金密码</el-button>
-            <el-button type="primary" @click="handleUnbind">解绑安全令牌</el-button>
+            <el-button type="primary" @click="handleClearGoogle">解绑安全令牌</el-button>
             <el-button type="primary" @click="handleSetRate">设置费率</el-button>
             <el-button type="primary" @click="handleBindIp">绑定API接口IP</el-button>
             <el-button type="primary" @click="handleBindLoginIp">绑定登录IP</el-button>
@@ -493,16 +493,15 @@
                 :close-on-click-modal="false">
             <el-form>
                 <template>
-                    <el-form-item label="安全令牌：" label-width="180px" style="margin-top: 20px;width: 400px">
+                    <el-form-item label="操作员安全令牌：" label-width="180px" style="margin-top: 20px;width: 400px">
                         <el-input size="small" type="text" v-model="googleCode" style="width: 300px"></el-input>
                     </el-form-item>
                 </template>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                    <el-button @click="colse">取 消</el-button>
-                    <el-button type="primary" @click="handleUnbind">确 定</el-button>
-                </span>
-
+                <el-button @click="colse">取 消</el-button>
+                <el-button type="primary" @click="handleUnbind">确 定</el-button>
+            </span>
         </el-dialog>
     </div>
 
@@ -773,12 +772,19 @@
           });
         });
       },
+        handleClearGoogle(){
+            if (this.userInfo.key_2fa_len <= 0) {
+                this.$message.error({message: '该商户还没有绑定安全令牌'});
+                return;
+            }
+            this.clearGoogleVisible = true
+        },
       handleUnbind() {
-        if (this.userInfo.key_2fa_len <= 0) {
-          this.$message.error({message: '该商户还没有绑定安全令牌'});
-          return;
-        }
         let self = this
+          if(self.googleCode == null || self.googleCode.length == 0){
+              self.$message.error({message: '请输入安全令牌'});
+              return;
+          }
         self.$confirm('此操作将清解绑安全令牌, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -787,6 +793,7 @@
 
           let data = {
             merchantId: self.userInfo.id,
+            googleCode:self.googleCode,
             type: 2
           };
           axios.post('/admin/user/clear-unbind-update', data).then(

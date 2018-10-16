@@ -229,9 +229,10 @@
           <el-form-item label="邮箱地址：" label-width="180px">
             <el-input size="small" type="email" v-model="emailForm.email" style="width: 300px"></el-input>
           </el-form-item>
-          <el-form-item label="验证码：" label-width="180px">
+          <p style="padding-left: 180px;"> {{user.user.email}}</p>
+          <el-form-item label="邮箱验证码：" label-width="180px">
             <el-input size="small" v-model="emailForm.code" style="width: 200px"></el-input>
-            <el-button type="primary" size="small" @click="getEmailCode('updateEmail')">发送验证码</el-button>
+            <el-button type="primary" size="small" @click="getEmailCode('updateEmail')">发送邮箱验证码</el-button>
           </el-form-item>
         </el-form>
       </template>
@@ -250,9 +251,10 @@
                   <el-form-item label="API接口IP地址：" label-width="180px">
                       <el-input size="small" type="textarea" :rows="3" v-model="ipForm.app_server_ips" style="width: 300px"></el-input>
                   </el-form-item>
-                  <el-form-item label="验证码：" label-width="180px">
+                  <p style="padding-left: 180px;"> {{user.user.email}}</p>
+                  <el-form-item label="邮箱验证码：" label-width="180px">
                       <el-input size="small" v-model="ipForm.code" style="width: 200px"></el-input>
-                      <el-button type="primary" size="small" @click="getEmailCode('bindApiIp')">发送验证码</el-button>
+                      <el-button type="primary" size="small" @click="getEmailCode('bindApiIp')">发送邮箱验证码</el-button>
                   </el-form-item>
               </el-form>
           </template>
@@ -267,9 +269,10 @@
             width="40%">
       <template>
         <el-form>
-          <el-form-item label="验证码：" label-width="180px">
+          <p style="padding-left: 180px;"> {{user.user.email}}</p>
+          <el-form-item label="邮箱验证码：" label-width="180px">
             <el-input size="small" v-model="clearGoogleCode" style="width: 200px"></el-input>
-            <el-button type="primary" size="small" @click="getEmailCode('clearGoogle')">发送验证码</el-button>
+            <el-button type="primary" size="small" @click="getEmailCode('clearGoogle')">发送邮箱验证码</el-button>
           </el-form-item>
         </el-form>
       </template>
