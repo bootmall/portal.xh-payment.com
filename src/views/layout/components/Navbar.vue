@@ -705,13 +705,7 @@
       },
         getEmailCode(type){
             let self = this;
-            let regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-            if (self.emailForm.email != null && !regEmail.test(self.emailForm.email)) {
-                self.$message.error({message: '邮箱格式错误'})
-                return false;
-            }
             let data = {
-                email:self.emailForm.email,
                 type:type
             }
             axios.post('/user/email-code',data).then(
