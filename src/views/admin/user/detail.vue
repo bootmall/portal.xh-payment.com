@@ -1344,7 +1344,7 @@
         close(){
           this.googleCode = null
             this.clearGoogleVisible = false
-            this.changeBalanceBtnDisabled = false
+            this.changeBalanceDialogVisible = false
         },
     }
 
