@@ -18,7 +18,15 @@
                             <el-input v-model="commonForm.account_open_fee"></el-input>
                         </el-form-item>
                         <el-form-item label="上级商户帐号" prop="parentMerchantAccount" class="el-form-item-input">
-                            <el-input v-model="commonForm.parentMerchantAccount"></el-input>
+                            <el-select v-model="commonForm.parentMerchantAccount" placeholder="代理" size="mini" clearable>
+                                <el-option
+                                        v-for="(item,key) in agentList"
+                                        :key="key"
+                                        :label="item.username"
+                                        :value="item.username">
+                                </el-option>
+                            </el-select>
+                            <!--<el-input v-model="commonForm.parentMerchantAccount"></el-input>-->
                         </el-form-item>
 
                         <el-form-item label="登录名" prop="username" class="el-form-item-input">
@@ -232,6 +240,7 @@
         rechargeFeeCanBeZero:0,
         settlementType: {},
         settlementTypeOptions: [],
+          agentList:[],
       }
     },
     computed: {},
@@ -421,11 +430,20 @@
             return false;
           }
         });
-      }
+      },
+        getAgentList(){
+            var self = this
+            axios.post('/admin/user/get-agent-list').then((res) => {
+                if (res.code == 0) {
+                    self.agentList = res.data
+                }
+            })
+        },
     },
     created() {
       this.getFormOptions();
       this.getChannelList()
+        this.getAgentList()
 
       if (typeof this.$route.params.id !== 'undefined') {
         this.commonForm.id = this.$route.params.id
