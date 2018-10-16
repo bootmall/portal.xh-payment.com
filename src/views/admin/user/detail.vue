@@ -98,11 +98,11 @@
                         <span>安全令牌绑定：</span><span>{{userInfo.is_key_2fa}}</span>
                     </div>
                 </el-col>
-                <el-col :span="8">
-                    <div class="grid-content">
-                        <span>商户key：</span><span>{{userInfo.merchant_key}}</span>
-                    </div>
-                </el-col>
+                <!--<el-col :span="8">-->
+                    <!--<div class="grid-content">-->
+                        <!--<span>商户key：</span><span>{{userInfo.merchant_key}}</span>-->
+                    <!--</div>-->
+                <!--</el-col>-->
             </el-row>
           <el-row :gutter="20" v-if="accountOpenInfo.fee>0">
             <el-col :span="8">
@@ -485,6 +485,25 @@
                 <el-button @click="closeChildList">关 闭</el-button>
             </span>
         </el-dialog>
+        <el-dialog
+                title="解绑商户安全令牌"
+                :visible.sync="clearGoogleVisible"
+                width="600px"
+                @close="close"
+                :close-on-click-modal="false">
+            <el-form>
+                <template>
+                    <el-form-item label="安全令牌：" label-width="180px" style="margin-top: 20px;width: 400px">
+                        <el-input size="small" type="text" v-model="googleCode" style="width: 300px"></el-input>
+                    </el-form-item>
+                </template>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                    <el-button @click="colse">取 消</el-button>
+                    <el-button type="primary" @click="handleUnbind">确 定</el-button>
+                </span>
+
+        </el-dialog>
     </div>
 
 </template>
@@ -593,6 +612,8 @@
         merchantRemitCheckFormVisible:false,
         apiResponseFormatFormVisible:false,
           childListVisible:false,
+          googleCode:null,
+          clearGoogleVisible:false,
       }
     },
     created() {
@@ -757,7 +778,6 @@
           this.$message.error({message: '该商户还没有绑定安全令牌'});
           return;
         }
-
         let self = this
         self.$confirm('此操作将清解绑安全令牌, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -1306,7 +1326,11 @@
         },
         initMerchantId(){
             this.$set(this,'agentMerchantId',this.userInfo.id)
-        }
+        },
+        colse(){
+          this.googleCode = null
+            this.clearGoogleVisible = false
+        },
     }
 
   }

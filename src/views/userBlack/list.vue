@@ -51,6 +51,7 @@
                 title="添加黑名单"
                 :visible.sync="addVisible"
                 width="600px"
+                @close="close"
                 :close-on-click-modal="false" >
             <el-form>
                 <template>

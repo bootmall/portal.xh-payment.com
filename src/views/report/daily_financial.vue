@@ -3,6 +3,8 @@
         <div class="filter-container">
             <el-input style="width: 100px;" class="filter-item" v-model="listQuery.user_id" placeholder="商户编号" clearable></el-input>
             <el-input style="width: 200px;" class="filter-item" v-model="listQuery.username" placeholder="商户账户" clearable></el-input>
+            <el-input style="width: 100px;" class="filter-item" v-model="listQuery.parent_user_id" placeholder="父账户编号" clearable></el-input>
+            <el-input style="width: 200px;" class="filter-item" v-model="listQuery.parent_username" placeholder="父账户名称" clearable></el-input>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
@@ -156,6 +158,8 @@
           limit: 20,
           user_id: '',
           username: '',
+            parent_user_id:null,
+            parent_username:null,
           sort: '',
           dateStart: new Date(new Date((new Date()).getTime() - 86400000*3).setHours(0, 0, 0, 0)),//.getDateStr(-1),
           dateEnd: null,//.getDateStr(-1),
