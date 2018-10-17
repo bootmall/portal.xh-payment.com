@@ -6,7 +6,7 @@
                 <el-col :span="22" :offset="1">
                     <div class="grid-content bg-purple">
                         <el-form-item label="金额" prop="amount" class="el-form-item-input">
-                            <el-input v-model="commonForm.amount" :disabled="commonForm.amountDisabled"></el-input>
+                            <el-input v-model="commonForm.amount" :disabled="commonForm.amountDisabled" style="width: 200px"></el-input>
                         </el-form-item>
                         <!--<el-form-item label="请选择支付类型" prop="method" class="el-form-item-input">-->
                             <!--<el-select class="filter-item" v-model="commonForm.method" label="支付类型" placeholder="支付类型">-->
@@ -153,7 +153,7 @@
   }
 </script>
 
-<style>
+<style scoped>
     .grid-content{
         width: 100%;
         padding-top: 10px;
