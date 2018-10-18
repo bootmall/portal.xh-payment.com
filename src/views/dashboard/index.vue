@@ -15,7 +15,7 @@
                         <div class="card-panel-text" ><span style="float: left" >今日充值</span><span style="float: left;margin-left: 50px">{{rechargeToday.amount}}</span></div>
                         <div class="card-panel-num">
                             <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{rechargeToday.total}}</p></span>
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>手续费</p><p>{{rechargeToday.fee_amount}}</p></span>
+                            <!--<span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>手续费</p><p>{{rechargeToday.fee_amount}}</p></span>-->
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                             <div class="card-panel-text" ><span style="float: left" >昨日充值</span><span style="float: left;margin-left: 50px">{{rechargeYesterday.amount}}</span></div>
                             <div class="card-panel-num">
                                 <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{rechargeYesterday.total}}</p></span>
-                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>手续费</p><p>{{rechargeYesterday.fee_amount}}</p></span>
+                                <!--<span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>手续费</p><p>{{rechargeYesterday.fee_amount}}</p></span>-->
                             </div>
                         </div>
                     </div>
@@ -173,10 +173,28 @@
               days:[],
               title:''
           },
-          rechargeToday:null,
-          rechargeYesterday:null,
-          remitToday:null,
-          remitYesterday:null,
+          rechargeToday:{
+              amount:null,
+              total:null,
+              fee_amount:null,
+          },
+          rechargeYesterday:{
+              amount:null,
+              total:null,
+              fee_amount:null,
+          },
+          remitToday:{
+              amount_success:null,
+              total_success:null,
+              total_fail:null,
+              amount_fail:null,
+          },
+          remitYesterday:{
+              amount_success:null,
+              total_success:null,
+              total_fail:null,
+              amount_fail:null,
+          },
       }
     },
     methods: {
