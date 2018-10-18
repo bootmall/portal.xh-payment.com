@@ -12,10 +12,10 @@
                         <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
                     </div>
                     <div class="card-panel-description">
-                        <div class="card-panel-text" ><span style="float: left" >今日充值</span><span style="float: left;margin-left: 50px">{{user.order_today_amount}}</span></div>
+                        <div class="card-panel-text" ><span style="float: left" >今日充值</span><span style="float: left;margin-left: 50px">{{rechargeToday.amount}}</span></div>
                         <div class="card-panel-num">
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{user.order_today_total}}</p></span>
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>待结算金额</p><p>{{user.order_today_paid_total}}</p></span>
+                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{rechargeToday.total}}</p></span>
+                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>手续费</p><p>{{rechargeToday.fee_amount}}</p></span>
                         </div>
                     </div>
                 </div>
@@ -26,11 +26,11 @@
                         <svg-icon icon-class="money" class-name="card-panel-icon" />
                     </div>
                     <div class="card-panel-description">
-                        <div class="card-panel-text" ><span style="float: left" >今日代付</span><span style="float: left;margin-left: 50px">{{user.remit_today_amount}}</span></div>
+                        <div class="card-panel-text" ><span style="float: left" >今日代付</span><span style="float: left;margin-left: 50px">{{remitToday.amount_success}}</span></div>
                         <div class="card-panel-num">
-                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{user.remit_today_total_success}}</p></span>
-                            <span style="float: left;margin-top: 15px; text-align: center;margin-right: 50px"><p>失败笔数</p><p>{{user.remit_today_total_fail}}</p></span>
-                            <span style="float: left;margin-top: 15px; text-align: center"><p>失败金额</p><p>{{user.remit_today_amount_fail}}</p></span>
+                            <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{remitToday.total_success}}</p></span>
+                            <span style="float: left;margin-top: 15px; text-align: center;margin-right: 50px"><p>失败笔数</p><p>{{remitToday.total_fail}}</p></span>
+                            <span style="float: left;margin-top: 15px; text-align: center"><p>失败金额</p><p>{{remitToday.amount_fail}}</p></span>
                         </div>
                     </div>
                 </div>
@@ -43,10 +43,10 @@
                             <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
                         </div>
                         <div class="card-panel-description">
-                            <div class="card-panel-text" ><span style="float: left" >昨日充值</span><span style="float: left;margin-left: 50px">{{user.order_yesterday_amount}}</span></div>
+                            <div class="card-panel-text" ><span style="float: left" >昨日充值</span><span style="float: left;margin-left: 50px">{{rechargeYesterday.amount}}</span></div>
                             <div class="card-panel-num">
-                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{user.order_yesterday_total}}</p></span>
-                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>待结算金额</p><p>{{user.order_yesterday_paid_total}}</p></span>
+                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{rechargeYesterday.total}}</p></span>
+                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>手续费</p><p>{{rechargeYesterday.fee_amount}}</p></span>
                             </div>
                         </div>
                     </div>
@@ -59,12 +59,12 @@
                         <div class="card-panel-description">
                             <div class="card-panel-text" >
                                 <span style="float: left" >昨日代付</span>
-                                <span style="float: left;margin-left: 50px">{{user.remit_yesterday_amount}}</span>
+                                <span style="float: left;margin-left: 50px">{{remitYesterday.amount_success}}</span>
                             </div>
                             <div class="card-panel-num">
-                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{user.remit_yesterday_total_success}}</p></span>
-                                <span style="float: left;margin-top: 15px; text-align: center;margin-right: 50px"><p>失败笔数</p><p>{{user.remit_yesterday_total_fail}}</p></span>
-                                <span style="float: left;margin-top: 15px; text-align: center"><p>失败金额</p><p>{{user.remit_yesterday_amount_fail}}</p></span>
+                                <span style="float: left;margin-top: 15px;text-align: center;margin-right: 50px"><p>成功笔数</p><p>{{remitYesterday.total_success}}</p></span>
+                                <span style="float: left;margin-top: 15px; text-align: center;margin-right: 50px"><p>失败笔数</p><p>{{remitYesterday.total_fail}}</p></span>
+                                <span style="float: left;margin-top: 15px; text-align: center"><p>失败金额</p><p>{{remitYesterday.amount_fail}}</p></span>
                             </div>
                         </div>
                     </div>
@@ -172,7 +172,11 @@
               chartsData:[],
               days:[],
               title:''
-          }
+          },
+          rechargeToday:null,
+          rechargeYesterday:null,
+          remitToday:null,
+          remitYesterday:null,
       }
     },
     methods: {
@@ -220,6 +224,58 @@
             self.$message.error({message:res.message})
           }
         )
+          axios.post('/dashboard/recharge-total',{times:'today'}).then(
+              res => {
+                  self.listLoading = false
+                  if (res.code != 0) {
+                      self.$message.error({message: res.message})
+                  } else {
+                      self.rechargeToday = res.data
+                  }
+              },
+              res => {
+                  self.$message.error({message:res.message})
+              }
+          )
+          axios.post('/dashboard/recharge-total',{times:'yesterday'}).then(
+              res => {
+                  self.listLoading = false
+                  if (res.code != 0) {
+                      self.$message.error({message: res.message})
+                  } else {
+                      self.rechargeYesterday = res.data
+                  }
+              },
+              res => {
+                  self.$message.error({message:res.message})
+              }
+          )
+          axios.post('/dashboard/remit-total',{times:'today'}).then(
+              res => {
+                  self.listLoading = false
+                  if (res.code != 0) {
+                      self.$message.error({message: res.message})
+                  } else {
+                      self.remitToday = res.data
+                  }
+              },
+              res => {
+                  self.$message.error({message:res.message})
+              }
+          )
+          axios.post('/dashboard/remit-total',{times:'yesterday'}).then(
+              res => {
+                  self.listLoading = false
+                  if (res.code != 0) {
+                      self.$message.error({message: res.message})
+                  } else {
+                      self.remitYesterday = res.data
+                  }
+              },
+              res => {
+                  self.$message.error({message:res.message})
+              }
+          )
       },
         getChartData(){
           var self = this
