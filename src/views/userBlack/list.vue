@@ -102,8 +102,8 @@
                 listQuery: {
                     page: 1,
                     limit: 10,
-                    dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
-                    dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
+                    dateStart: null,
+                    dateEnd: null,
                     type: null,
                     val: null,
                 },
