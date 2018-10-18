@@ -1,24 +1,6 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            <!--<el-date-picker class="filter-item"-->
-                            <!--v-model="listQuery.dateStart"-->
-                            <!--align="right"-->
-                            <!--type="date"-->
-                            <!--placeholder="开始日期"-->
-                            <!--size="small"-->
-                            <!--style="width: 200px;"-->
-                            <!--:picker-options="pickerOptions">-->
-            <!--</el-date-picker>-->
-            <!--<el-date-picker class="filter-item"-->
-                            <!--v-model="listQuery.dateEnd"-->
-                            <!--align="right"-->
-                            <!--type="date"-->
-                            <!--size="small"-->
-                            <!--style="width: 200px;"-->
-                            <!--placeholder="结束日期"-->
-                            <!--:picker-options="pickerOptions">-->
-            <!--</el-date-picker>-->
             <el-select class="filter-item" v-model="listQuery.month" placeholder="月份" filterable>
                 <el-option
                         v-for="(item,key) in monthOptions"
@@ -29,7 +11,16 @@
             </el-select>
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
-        <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%">
+        <el-table
+                :key='tableKey'
+                :data="list"
+                v-loading="listLoading"
+                element-loading-text="数据加载中，请稍候..."
+                border
+                fit
+                highlight-current-row
+                show-summary
+                style="width: 100%">
             <el-table-column label="商户ID" align="center" prop="merchant_id"></el-table-column>
             <el-table-column label="商户名" align="center" prop="username"></el-table-column>
             <el-table-column label="开户数" align="center" prop="total"></el-table-column>
@@ -78,7 +69,7 @@
                 listLoading: true,
                 listQuery: {
                     page: 1,
-                    limit: 20,
+                    limit: 10,
                     month:new Date().getMonth(),
                     agent_merchant_id:null,
                     agent_merchant_name:null,
