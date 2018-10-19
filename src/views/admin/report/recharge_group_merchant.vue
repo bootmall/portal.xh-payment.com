@@ -76,7 +76,7 @@
                     dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
                     dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
                     page: 1,
-                    limit: 10,
+                    limit: 20,
                     merchant_id:null,
                     merchant_account:null,
                 },
