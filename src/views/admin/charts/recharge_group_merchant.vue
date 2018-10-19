@@ -21,7 +21,7 @@
             </el-date-picker>
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
-        <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+        <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;height: 100%">
             <chart-bar :chart-data="rechargeGroupMerchantData"></chart-bar>
         </el-row>
     </div>
@@ -67,36 +67,11 @@
                             self.$message.error({message: res.message})
                             return false
                         }
-                        self.rechargeGroupMerchantData = {
-                            title:'',
-                            legend:[],
-                            y_data:[],
-                            series:[],
-                        }
-                        let tmps = {
-                            title:'',
-                            legend:[],
-                            y_data:[],
-                            series:[],
-                        };
-                        let tmpLength = Object.keys(res.data).length
-                        let number = 0;
+                        self.rechargeGroupMerchantData = {title:'', legend:[], y_data:[], series:[{name: '充值',type: 'bar',data:[]}]}
+                        let tmps = {title:'', legend:['充值'], y_data:[], series:[{name: '充值',type: 'bar',data:[]}]};
                         for (let i in res.data) {
-                            let tmp = {
-                                name: i,
-                                type: 'bar',
-                                data: res.data[i],
-                                // label: seriesLabel,
-                            }
-                            tmps.legend.push(i)
                             tmps.y_data.push(i)
-                            for (let j=1;j<tmpLength ;j++){
-                                if(j/10 == 0){
-                                    tmps.legend.push('')
-                                }
-                            }
-                            tmps.series.push(tmp)
-                            number++;
+                            tmps.series[0].data.push(res.data[i])
                         }
                         tmps.title = "商户充值统计"
                         self.$set(self, 'rechargeGroupMerchantData', tmps);

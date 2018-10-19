@@ -1,5 +1,5 @@
 <template>
-    <div :class="className" :style="{height:height,width:width}"/>
+    <div :class="className" :style="{height:height,width:width}"> </div>
 </template>
 
 <script>
@@ -7,13 +7,6 @@
     import echarts from 'echarts'
     require('echarts/theme/macarons') // echarts 主题
     import { debounce } from '@/utils'
-    const seriesLabel = {
-        normal: {
-            show: true,
-            textBorderColor: '#333',
-            textBorderWidth: 2
-        }
-    }
     const defaultEchartOption = {
         title: {
             text: ''
@@ -47,23 +40,11 @@
             type: 'category',
             inverse: true,
             data: [],
-            axisLabel: {
-                formatter: function (value) {
-                    return '{' + value + '| }\n{value|' + value + '}';
-                },
-                margin: 20,
-                rich: {
-                    value: {
-                        lineHeight: 30,
-                        align: 'center'
-                    },
-                }
-            }
         },
         series: []
     }
     export default {
-        name: "ChartBar",
+        // name: "ChartBar",
         props: {
             className: {
                 type: String,
@@ -71,15 +52,11 @@
             },
             width: {
                 type: String,
-                default: '95%'
+                default: '100%'
             },
             height: {
                 type: String,
-                default: 'auto'
-            },
-            autoResize: {
-                type: Boolean,
-                default: true
+                default: '900px'
             },
             chartData: {
                 type: Object,
@@ -95,13 +72,14 @@
             chartData: {
                 deep: true,
                 handler(val) {
+                    console.log(val)
                     let option = defaultEchartOption;
                     option.legend.data = val.legend
                     option.series = val.series
                     option.yAxis.data = val.y_data
                     option.title.text = val.title
                     this.chart.clear();// 重绘之前清理画布
-                    this.chart.setOption(option)
+                    this.chart.setOption(option,true)
                 }
             },
         },
@@ -115,7 +93,7 @@
                 option.series = val.series
                 option.yAxis.data = val.y_data
                 option.title.text = val.title
-                this.chart.setOption(option)
+                this.chart.setOption(option,true)
             },
             initChart() {
                 this.chart = echarts.init(this.$el, 'macarons')
