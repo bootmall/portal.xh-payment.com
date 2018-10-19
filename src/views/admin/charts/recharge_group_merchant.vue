@@ -86,7 +86,7 @@
                                 name: i,
                                 type: 'bar',
                                 data: res.data[i],
-                                label: seriesLabel,
+                                // label: seriesLabel,
                             }
                             tmps.legend.push(i)
                             tmps.y_data.push(i)
