@@ -34,13 +34,16 @@
                 style="width: 100%">
             <el-table-column label="商户ID" align="center" prop="merchant_id"></el-table-column>
             <el-table-column label="商户名" align="center" prop="merchant_account"></el-table-column>
-            <el-table-column label="笔数" align="center" prop="total"></el-table-column>
-            <el-table-column label="金额" align="center" prop="amount"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column align="center" v-for="(item,key) in statusOptions" :label="item" :key="key">
                 <template slot-scope="scope">
-                    <el-button @click.native="showInfo(scope.row)"  type="primary" size="mini">详情</el-button>
+                    {{scope.row.status[key]}}
                 </template>
             </el-table-column>
+            <!--<el-table-column label="操作" align="center">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<el-button @click.native="showInfo(scope.row)"  type="primary" size="mini">详情</el-button>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
         </el-table>
         <div v-show="!listLoading" class="pagination-container">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
@@ -86,6 +89,7 @@
                 listLoading:false,
                 list:null,
                 total:null,
+                statusOptions:null,
             }
         },
         created() {
@@ -100,6 +104,7 @@
                         self.listLoading = false
                         self.list = res.data.list
                         self.total = res.data.total
+                        self.statusOptions = res.data.statusOptions
                         // self.rechargeGroupMerchantData = {title:'', legend:[], y_data:[], series:[{name: '充值',type: 'bar',data:[]}]}
                         // let tmps = {title:'', legend:['充值'], y_data:[], series:[{name: '充值',type: 'bar',data:[]}]};
                         // for (let i in res.data) {
