@@ -16,7 +16,7 @@
     }
     const defaultEchartOption = {
         title: {
-            text: 'Wheater Statistics'
+            text: ''
         },
         tooltip: {
             trigger: 'axis',
@@ -25,7 +25,7 @@
             }
         },
         legend: {
-            data: ['City Alpha', 'City Beta', 'City Gamma']
+            data: []
         },
         grid: {
             left: 100
@@ -38,7 +38,7 @@
         },
         xAxis: {
             type: 'value',
-            name: 'Days',
+            name: '金额(元)',
             axisLabel: {
                 formatter: '{value}'
             }
@@ -46,7 +46,7 @@
         yAxis: {
             type: 'category',
             inverse: true,
-            data: ['Sunny', 'Cloudy', 'Showers'],
+            data: [],
             axisLabel: {
                 formatter: function (value) {
                     return '{' + value + '| }\n{value|' + value + '}';
@@ -57,50 +57,10 @@
                         lineHeight: 30,
                         align: 'center'
                     },
-                    Sunny: {
-                        height: 40,
-                        align: 'center',
-                        backgroundColor: {
-                            image: weatherIcons.Sunny
-                        }
-                    },
-                    Cloudy: {
-                        height: 40,
-                        align: 'center',
-                        backgroundColor: {
-                            image: weatherIcons.Cloudy
-                        }
-                    },
-                    Showers: {
-                        height: 40,
-                        align: 'center',
-                        backgroundColor: {
-                            image: weatherIcons.Showers
-                        }
-                    }
                 }
             }
         },
-        series: [
-            {
-                name: 'City Alpha',
-                type: 'bar',
-                data: [165, 170, 30],
-                label: seriesLabel,
-            },
-            {
-                name: 'City Beta',
-                type: 'bar',
-                label: seriesLabel,
-                data: [150, 105, 110]
-            },
-            {
-                name: 'City Gamma',
-                type: 'bar',
-                label: seriesLabel,
-                data: [220, 82, 63]
-            }
-        ]
+        series: []
     }
     export default {
         name: "ChartBar",
@@ -135,11 +95,10 @@
             chartData: {
                 deep: true,
                 handler(val) {
-                    // console.log(val)
                     let option = defaultEchartOption;
-                    option.legend.data = val.name
-                    option.series = val.data
-                    option.xAxis[0].data = val.x_data
+                    option.legend.data = val.legend
+                    option.series = val.series
+                    option.yAxis.data = val.y_data
                     option.title.text = val.title
                     this.chart.clear();// 重绘之前清理画布
                     this.chart.setOption(option)
@@ -150,17 +109,16 @@
             this.initChart()
         },
         methods: {
-            setOptions(value) {
+            setOptions(val) {
                 let option = defaultEchartOption;
-                option.legend.data = value.name
-                option.series = value.data
-                option.xAxis[0].data = value.x_data
-                option.title.text = value.title
+                option.legend.data = val.legend
+                option.series = val.series
+                option.yAxis.data = val.y_data
+                option.title.text = val.title
                 this.chart.setOption(option)
             },
             initChart() {
                 this.chart = echarts.init(this.$el, 'macarons')
-                // console.log(this.chartData)
                 this.setOptions(this.chartData)
             }
         }
