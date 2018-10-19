@@ -9,7 +9,7 @@
                             <el-input v-model="commonForm.username"></el-input>
                         </el-form-item>
                         <el-form-item label="邮件地址" prop="email" class="el-form-item-input el_item_2col">
-                            <el-input v-model="commonForm.email"></el-input>
+                            <el-input type="email" v-model="commonForm.email"></el-input>
                         </el-form-item>
                         <el-form-item label="账户类型" prop="group_id">
                             <el-radio-group v-model="commonForm.group_id" size="small">
@@ -249,10 +249,15 @@
       },
 
       onSubmit() {
-        self = this
+        var self = this
         self.submitBtnDisableStatus = true
         this.$refs['commonForm'].validate((valid) => {
           if (valid) {
+              let regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+              if (self.commonForm.email != null && !regEmail.test(self.commonForm.email)) {
+                  self.$message.error({message: '邮箱格式错误'})
+                  return false;
+              }
             var formData = self.commonForm
 
             // formData.pay_method=[{id:self.commonForm.channel,rate:self.commonForm.recharge_rate}]

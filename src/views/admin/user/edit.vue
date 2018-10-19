@@ -54,7 +54,7 @@
                                     <el-input v-model="commonForm.nickname"></el-input>
                                 </el-form-item>
                                 <el-form-item label="邮件地址" prop="email" class="el-form-item-input el_item_2col">
-                                    <el-input v-model="commonForm.email"></el-input>
+                                    <el-input type="email" v-model="commonForm.email"></el-input>
                                 </el-form-item>
                                 <el-form-item label="收款单笔限额" prop="remit_quota_pertime" class="el_item_2col el-form-item-input">
                                     <el-input placeholder="0或不填表示以渠道为准" v-model="commonForm.remit_quota_pertime"></el-input>
@@ -390,10 +390,14 @@
       },
 
       onSubmit() {
-        self = this
-
+        var self = this
         this.$refs['commonForm'].validate((valid) => {
           if (valid) {
+              let regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+              if (self.commonForm.email != null && !regEmail.test(self.commonForm.email)) {
+                  self.$message.error({message: '邮箱格式错误'})
+                  return false;
+              }
             var formData = self.commonForm
             let payMethods = []
             for (let i in formData.recharge_rate) {
@@ -408,6 +412,7 @@
               self.$message.error('商户帐号必须指定上级代理！');
               return;
             }
+
             if (formData.remit_fee > self.remitMaxFee) {
               this.$message.error({message: '结算手续费不能大于系统设置最大结算手续费:' + self.remitMaxFee})
               return;
