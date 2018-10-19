@@ -56,7 +56,7 @@
             },
             height: {
                 type: String,
-                default: '2000px'
+                default: '5000px'
             },
             chartData: {
                 type: Object,
