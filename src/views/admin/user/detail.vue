@@ -98,11 +98,11 @@
                         <span>安全令牌绑定：</span><span>{{userInfo.is_key_2fa}}</span>
                     </div>
                 </el-col>
-                <!--<el-col :span="8">-->
-                    <!--<div class="grid-content">-->
-                        <!--<span>商户key：</span><span>{{userInfo.merchant_key}}</span>-->
-                    <!--</div>-->
-                <!--</el-col>-->
+                <el-col :span="8">
+                    <div class="grid-content">
+                        <span>商户key：</span><span>{{userInfo.merchant_key}}</span>
+                    </div>
+                </el-col>
             </el-row>
           <el-row :gutter="20" v-if="accountOpenInfo.fee>0">
             <el-col :span="8">
