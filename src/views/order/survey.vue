@@ -3,8 +3,8 @@
         <div class="filter-container">
             <el-input @keyup.enter.native="handleFilter" @focus="showParsteTxt('orderNo')" size="small" style="width: 200px" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
-            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="渠道订单号" v-model="listQuery.channelOrderNo"></el-input>
+            <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName"></el-input>
             <el-input @keyup.enter.native="handleFilter" @focus="showParsteTxt('client_ip')" size="small" style="width: 200px;" class="filter-item" placeholder="IP" v-model="listQuery.client_ip"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" @focus="showParsteTxt('client_id')" style="width: 200px;" class="filter-item" placeholder="设备号" v-model="listQuery.client_id"></el-input>
@@ -227,8 +227,10 @@
           page: 1,
           limit: 10,
           importance: undefined,
-            dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
-            dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
+            dateStart: null,
+            dateEnd: null,
+            // dateStart: new Date(new Date().setHours(0, 0, 0, 0)),
+            // dateEnd: new Date(new Date().setHours(23, 59, 59, 0)),
           orderNo: null,
           merchantNo: null,
           merchantOrderNo: null,
@@ -298,7 +300,7 @@
     },
     filters: {},
     created() {
-      this.getList()
+      // this.getList()
     },
     mounted() {
       // console.log('mounted',this.$route.path)
