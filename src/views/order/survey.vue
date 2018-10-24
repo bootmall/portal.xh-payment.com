@@ -220,7 +220,7 @@
         rules: {},
         list: null,
         total: null,
-        listLoading: false,
+        listLoading: true,
         trackOptions: [],
         uploadUrl: common.pageMap.baseDomain + '/upload/upload',
         listQuery: {
@@ -300,7 +300,7 @@
     },
     filters: {},
     created() {
-      // this.getList()
+      this.getList()
     },
     mounted() {
       // console.log('mounted',this.$route.path)
@@ -440,8 +440,12 @@
         self.listQuery.exportType = type
         let url = common.pageMap.baseDomain + '/order/list?access-token=' + common.getToken()
 
+
         let params = JSON.parse(JSON.stringify(self.listQuery))
-          console.log(params)
+          params['expot_status'] = JSON.stringify(self.listQuery.status)
+          params['expot_channel_account'] = JSON.stringify(self.listQuery.channelAccount)
+          params['expot_method'] = JSON.stringify(self.listQuery.method)
+          params['expot_id_list'] = JSON.stringify(self.listQuery.idList)
         common.downloadFile(url,params)
         self.$message.success({message: '文件已导出'})
         self.listQuery.export = 0
