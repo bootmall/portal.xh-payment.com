@@ -220,7 +220,7 @@
         rules: {},
         list: null,
         total: null,
-        listLoading: true,
+        listLoading: false,
         trackOptions: [],
         uploadUrl: common.pageMap.baseDomain + '/upload/upload',
         listQuery: {
