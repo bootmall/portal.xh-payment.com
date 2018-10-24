@@ -442,10 +442,10 @@
 
 
         let params = JSON.parse(JSON.stringify(self.listQuery))
-          params['expot_status'] = JSON.stringify(self.listQuery.status)
-          params['expot_channel_account'] = JSON.stringify(self.listQuery.channelAccount)
-          params['expot_method'] = JSON.stringify(self.listQuery.method)
-          params['expot_id_list'] = JSON.stringify(self.listQuery.idList)
+          params['export_status'] = JSON.stringify(self.listQuery.status)
+          params['export_channel_account'] = JSON.stringify(self.listQuery.channelAccount)
+          params['export_method'] = JSON.stringify(self.listQuery.method)
+          params['export_id_list'] = JSON.stringify(self.listQuery.idList)
         common.downloadFile(url,params)
         self.$message.success({message: '文件已导出'})
         self.listQuery.export = 0
