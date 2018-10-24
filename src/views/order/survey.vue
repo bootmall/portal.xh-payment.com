@@ -435,7 +435,7 @@
         });
       },
       exportResult(type) {
-        self = this
+        var self = this
         self.listQuery.export = 1
         self.listQuery.exportType = type
         let url = common.pageMap.baseDomain + '/order/list?access-token=' + common.getToken()
