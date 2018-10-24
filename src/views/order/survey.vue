@@ -300,7 +300,7 @@
     },
     filters: {},
     created() {
-      this.getList()
+      this.getList(1)
     },
     mounted() {
       // console.log('mounted',this.$route.path)
@@ -351,7 +351,7 @@
         this.parsteTxtField = ''
         this.parsteTxtVisible = false
       },
-      getList() {
+      getList(num) {
         var self = this
 
         self.listLoading = true
@@ -365,8 +365,10 @@
             if (res.code != 0) {
               self.$message.error({message: res.message})
             } else {
-              self.list = res.data.data
-              self.summery = res.data.summery
+                if(num != 1){
+                    self.list = res.data.data
+                    self.summery = res.data.summery
+                }
               self.total = res.data.pagination.total
               self.statusOptions = (res.data.condition.statusOptions)
               self.notifyStatusOptions = (res.data.condition.notifyStatusOptions)

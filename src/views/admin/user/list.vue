@@ -930,7 +930,7 @@
         )
       },
       getFormOptions() {
-        self = this
+        var self = this
 
         axios.post('/admin/user/form-option-list').then(
           res => {
