@@ -441,6 +441,7 @@
         let url = common.pageMap.baseDomain + '/order/list?access-token=' + common.getToken()
 
         let params = JSON.parse(JSON.stringify(self.listQuery))
+          console.log(params)
         common.downloadFile(url,params)
         self.$message.success({message: '文件已导出'})
         self.listQuery.export = 0
