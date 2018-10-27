@@ -1,5 +1,8 @@
 <template>
     <div class="components-container" v-loading="listLoading">
+        <div class="filter-container">
+            <el-button class="filter-item" type="primary" @click="refresh">刷新余额</el-button>
+        </div>
         <el-alert v-if="balaneUpdateMsg!=''"
                 :title="balaneUpdateMsg"
                 type="warning">
@@ -97,6 +100,9 @@
           }
         )
       },
+        refresh(){
+            this.getInitData()
+        }
     }
   }
 </script>
