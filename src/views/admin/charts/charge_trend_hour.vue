@@ -19,6 +19,14 @@
                             placeholder="结束日期"
                             :picker-options="pickerOptions">
             </el-date-picker>
+            <el-select class="filter-item select-class" v-model="listQuery.channel_merchant_id" placeholder="渠道号" filterable clearable multiple>
+                <el-option
+                        v-for="(item,key) in channelMerchantOptions"
+                        :key="key"
+                        :label="item.channel_name"
+                        :value="item.channel_merchant_id">
+                </el-option>
+            </el-select>
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
         <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
@@ -49,6 +57,7 @@
                 listQuery: {
                     dateStart: new Date(new Date().setDate(new Date().getDate()-14)),
                     dateEnd: new Date(),
+                    channel_merchant_id:[]
                 },
                 pickerOptions: {
                     disabledDate(time) {
@@ -60,7 +69,8 @@
                     data:[],
                     x_data:[],
                     title:''
-                }
+                },
+                channelMerchantOptions:null,
             }
         },
         created() {
@@ -76,6 +86,7 @@
                             self.$message.error({message: res.message})
                             return false
                         }
+                        self.channelMerchantOptions = res.data.channelMerchantOptions
                         self.lineChartData = {name:[],data:[],x_data:[],title:''}
                         let tmps = {name:[],data:[],x_data:[],title:''};
                         let tmpLength = Object.keys(res.data.chart).length
