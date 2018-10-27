@@ -527,7 +527,6 @@
             }
             this.ipVisible = false
             this.ipForm = {
-                app_server_ips: null,
                 channel_account_id: null,
                 code: null
             }
@@ -745,7 +744,9 @@
         handleBindIp() {
             this.ipVisible = true;
             // console.log(this.user.user)
-            this.ipForm.app_server_ips = this.user.user.app_server_ips;
+            if(this.ipForm.app_server_ips.length == 0){
+                this.ipForm.app_server_ips = this.user.user.app_server_ips;
+            }
             this.ipForm.channel_account_id = this.user.user.channel_account_id;
         },
         updateApiIps() {
