@@ -76,9 +76,7 @@
                 var self = this
                 axios.post('/admin/user/merchant-web-detail', {merchant_id:self.merchantId}).then(
                     res => {
-                        if (res.code != 0) {
-                            self.$message.error({message: res.message})
-                        } else {
+                        if (res.code == 0) {
                             self.addFrom.login_username = res.data.login_username
                             self.addFrom.login_password = res.data.login_password
                             self.addFrom.url = res.data.url
