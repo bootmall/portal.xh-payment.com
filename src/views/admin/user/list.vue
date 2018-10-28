@@ -204,7 +204,7 @@
                             <el-dropdown-item @click.native="handleSetRate(scope.row)">设置费率</el-dropdown-item>
                             <el-dropdown-item @click.native="handleSetApiStatus(scope.row)">接口开关</el-dropdown-item>
                             <el-dropdown-item @click.native="handleUserStatus(scope.row)">修改商户状态</el-dropdown-item>
-                            <el-dropdown-item @click.native="handleMerchantWeb(scope.row)">添加商户扩展资料</el-dropdown-item>
+                            <el-dropdown-item v-if="scope.row.group_id == 30" @click.native="handleMerchantWeb(scope.row)">添加/编辑扩展资料</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>

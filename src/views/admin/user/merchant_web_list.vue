@@ -11,7 +11,11 @@
             <el-table-column prop="merchant_name" align="center" label="商户账户"></el-table-column>
             <el-table-column prop="login_username" align="center" label="用户名"></el-table-column>
             <el-table-column prop="login_password" align="center" label="登陆密码"></el-table-column>
-            <el-table-column prop="url" align="center" label="商户平台网址"></el-table-column>
+            <el-table-column prop="url" align="center" label="商户平台网址">
+                <template slot-scope="scope">
+                    <a :href="scope.row.url" target="_blank" class="link-type">{{scope.row.url}}</a>
+                </template>
+            </el-table-column>
             <el-table-column prop="created_at" align="center" label="创建时间"></el-table-column>
             <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
@@ -35,10 +39,10 @@
             <el-form v-model="editFrom">
                 <template>
                     <el-form-item label="商户编号：" label-width="180px" style="margin-top: 20px;width: 400px">
-                        {{merchantId}}
+                        {{editFrom.merchant_id}}
                     </el-form-item>
                     <el-form-item label="商户名称：" label-width="180px" style="margin-top: 20px;width: 400px">
-                        {{merchantName}}
+                        {{editFrom.merchant_name}}
                     </el-form-item>
                     <el-form-item label="商户平台地址：" label-width="180px" style="margin-top: 20px;width: 400px">
                         <el-input size="small" v-model="editFrom.url" style="width: 300px"></el-input>
@@ -53,7 +57,7 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
-            <el-button type="primary" @click="handleEdit">确 定</el-button>
+            <el-button type="primary" @click="handleUpdate">确 定</el-button>
         </span>
         </el-dialog>
     </div>
@@ -111,7 +115,6 @@
                         } else {
                             self.list = res.data.list
                             self.total = res.data.total
-                            self.typeOptions = (res.data.typeOptions)
                         }
 
                     },
@@ -133,9 +136,24 @@
                 this.listQuery.page = val
                 this.getList()
             },
-            handleEdit(){
+            handleEdit(row){
+                this.editMerchantWebVisible = true
+                this.editFrom = {
+                    merchant_id:row.merchant_id,
+                    merchant_name:row.merchant_name,
+                    login_username:row.login_username,
+                    login_password:row.login_password,
+                    url:row.url
+                }
+            },
+            handleUpdate(){
                 let self = this
-                axios.post('/admin/user/add_merchant_web', self.editFrom).then(
+                let url = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+                if(!url.test(self.editFrom.url)){
+                    self.$message.error({message: 'url格式不正确'});
+                    return false
+                }
+                axios.post('/admin/user/add-merchant-web', self.editFrom).then(
                     res => {
                         self.close()
                         if (res.code == 0) {
@@ -161,5 +179,8 @@
 </script>
 
 <style scoped>
+    .select-class{
+        width: 13% !important;
+    }
 
 </style>

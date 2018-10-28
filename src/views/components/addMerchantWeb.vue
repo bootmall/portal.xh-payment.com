@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-            title="添加商户扩展资料"
+            title="添加/编辑商户扩展资料"
             :visible.sync="addMerchantWebVisible"
             width="600px"
             @close="close"
@@ -56,6 +56,7 @@
                 this.addFrom.merchant_id = val
                 this.addFrom.merchant_name = this.merchantName
                 this.addMerchantWebVisible = true
+                this.getDetail()
             },
         },
         data() {
@@ -71,9 +72,28 @@
             }
         },
         methods:{
+            getDetail(){
+                var self = this
+                axios.post('/admin/user/merchant-web-detail', {merchant_id:self.merchantId}).then(
+                    res => {
+                        if (res.code != 0) {
+                            self.$message.error({message: res.message})
+                        } else {
+                            self.addFrom.login_username = res.data.login_username
+                            self.addFrom.login_password = res.data.login_password
+                            self.addFrom.url = res.data.url
+                        }
+                    },
+                )
+            },
             handleAdd(){
                 let self = this
-                axios.post('/admin/user/add_merchant_web', self.addFrom).then(
+                let url = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+                if(!url.test(self.addFrom.url)){
+                    self.$message.error({message: 'url格式不正确'});
+                    return false
+                }
+                axios.post('/admin/user/add-merchant-web', self.addFrom).then(
                     res => {
                         self.close()
                         if (res.code == 0) {
