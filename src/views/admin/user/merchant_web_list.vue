@@ -66,7 +66,7 @@
     import axios from '@/utils/http'
     import {mapGetters} from 'vuex'
     export default {
-        name: "vue_user_black_list",
+        name: "vue_merchant_web_list",
         directives: {
             waves
         },
