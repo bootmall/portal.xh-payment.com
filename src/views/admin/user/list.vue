@@ -204,6 +204,7 @@
                             <el-dropdown-item @click.native="handleSetRate(scope.row)">设置费率</el-dropdown-item>
                             <el-dropdown-item @click.native="handleSetApiStatus(scope.row)">接口开关</el-dropdown-item>
                             <el-dropdown-item @click.native="handleUserStatus(scope.row)">修改商户状态</el-dropdown-item>
+                            <el-dropdown-item @click.native="handleMerchantWeb(scope.row)">添加商户风控账号</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
@@ -444,9 +445,8 @@
                 <el-button type="primary" @click="PasteTxt">提交</el-button>
             </div>
         </el-dialog>
-
+        <add-merchant-web :merchant-id="web_merchant_id" :merchant-name="web_merchant_name" @initMerchantIdEvent="initMerchantId"></add-merchant-web>
     </div>
-
 </template>
 
 <script>
@@ -455,13 +455,16 @@
   import common from '@/utils/common'
   import axios from '@/utils/http'
   import {mapGetters} from 'vuex'
+  import addMerchantWeb from '@/views/components/addMerchantWeb'
 
   export default {
     name: 'vue_merchant_list_nocache',
     directives: {
       waves
     },
-    components: {},
+    components: {
+        addMerchantWeb
+    },
     data() {
       return {
         rules: {},
@@ -596,6 +599,8 @@
           PasteTxtVal:'',
           PasteTxtField:'',
           PasteTxtTitle:'请先选择粘贴内容',
+          web_merchant_id:null,
+          web_merchant_name:null,
           // {0:'全部'},
       }
     },
@@ -1350,8 +1355,14 @@
             this.clearGoogleVisible = true
             this.merchant_id = row.id
         },
-        showDetail(){
-
+        showDetail(){},
+        handleMerchantWeb(row){
+            this.$set(this,'web_merchant_id',row.id)
+            this.$set(this,'web_merchant_name',row.username)
+        },
+        initMerchantId(){
+            this.$set(this,'web_merchant_id',null)
+            this.$set(this,'web_merchant_name',null)
         }
     }
   }

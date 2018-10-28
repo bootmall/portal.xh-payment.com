@@ -245,7 +245,18 @@ export const asyncRouterMap = [
               noCache: true
           }
       },
-
+        {
+            path: 'merchant_web_list',
+            component: _import("admin/user/merchant_web_list"),
+            view: "admin/user/merchant_web_list",
+            name: 'vue_merchant_web_list',
+            meta: {
+                title: '商户平台风控账户',
+                icon: 'excel',
+                role: ['admin'],
+                noCache: true
+            }
+        },
     ]
   },
   // 代理使用

@@ -18,9 +18,10 @@
                 </template>
             </el-table-column>
             <el-table-column prop="server_ips" label="服务器IP"></el-table-column>
-            <el-table-column align="center" label="操作" class="action-btns">
+            <el-table-column align="center" label="操作" class="action-btns" fixed="right">
                 <template slot-scope="scope">
                     <el-button class="filter-item" size="mini" type="warning" v-waves @click="showEditDialog(scope.row)">设置IP</el-button>
+                    <el-button class="filter-item" size="mini" type="warning" v-waves @click="handelBank(scope.row)">银行设置</el-button>
                 </template>
             </el-table-column>
         </el-table>
