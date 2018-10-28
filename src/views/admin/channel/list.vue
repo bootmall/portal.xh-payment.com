@@ -18,10 +18,10 @@
                 </template>
             </el-table-column>
             <el-table-column prop="server_ips" label="服务器IP"></el-table-column>
-            <el-table-column align="center" label="操作" class="action-btns" fixed="right">
+            <el-table-column align="center" label="操作" class="action-btns" width="200px;" fixed="right">
                 <template slot-scope="scope">
                     <el-button class="filter-item" size="mini" type="warning" v-waves @click="showEditDialog(scope.row)">设置IP</el-button>
-                    <el-button class="filter-item" size="mini" type="warning" v-waves @click="handelBank(scope.row)">银行设置</el-button>
+                    <el-button class="filter-item" size="mini" type="primary" v-waves @click="handelBank(scope.row)">银行设置</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -45,6 +45,44 @@
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="edit">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                title="渠道银行列表"
+                :visible.sync="channelBankVisible"
+                width="60%">
+            <el-table :key='tableKey' :data="channelBankList" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row
+                      style="font-size: 12px" stripe>
+                <el-table-column prop="channel_id" label="渠道号"></el-table-column>
+                <el-table-column prop="channel_name" label="渠道名称"></el-table-column>
+                <el-table-column prop="channel_bank_code" label="三方渠道银行代码	"></el-table-column>
+                <el-table-column prop="platform_bank_code" label="平台银行代码"></el-table-column>
+                <el-table-column prop="bank_name" label="银行名称"></el-table-column>
+                <el-table-column align="center" label="是否支持收款" class="action-btns">
+                    <template slot-scope="scope">
+                        <el-switch v-model="scope.row.can_recharge"
+                                   active-color = "#13ce66"
+                                   inactive-color = "#ff4949"
+                                   active-value = "1"
+                                   inactive-value = "0"
+                                   @change="handleChange(scope.row,'recharge')">
+                        </el-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="是否支持代付" class="action-btns">
+                    <template slot-scope="scope">
+                        <el-switch v-model="scope.row.can_remit"
+                                   active-color = "#13ce66"
+                                   inactive-color = "#ff4949"
+                                   active-value = "1"
+                                   inactive-value = "0"
+                                   @change="handleChange(scope.row,'remit')">
+                        </el-switch>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="channelBankVisible =false">关闭</el-button>
             </span>
         </el-dialog>
     </div>
@@ -78,6 +116,8 @@
         },
         payMethodsOptions: {},
         tableKey: 0,
+          channelBankList:null,
+          channelBankVisible:false,
       }
     },
     created() {
@@ -126,8 +166,34 @@
         this.getList()
       },
       handelBank(row) {
-
-      }
+          var self = this
+          self.listLoading = true
+          axios.post('/admin/channel/channel-bank-list', {channel_id:row.id}).then(
+              res => {
+                  self.listLoading = false
+                  self.channelBankVisible = true
+                  self.channelBankList = res.data;
+              }
+          )
+      },
+        handleChange(row,type){
+            var self = this
+            var data = {
+                id:row.id,
+                type:type,
+                can_recharge:row.can_recharge,
+                can_remit:row.can_remit
+            }
+            axios.post('/admin/channel/update-channel-bank', data).then(
+                res => {
+                    if (res.code != 0) {
+                        self.$message.error({message: res.message})
+                    } else {
+                        self.$message.success({message: res.message})
+                    }
+                }
+            )
+        },
     },
   }
 </script>
