@@ -4,7 +4,7 @@
             <el-row>
                 <el-col :span="24">
                     <el-input class="filter-item select-class" placeholder="商户号" v-model="listQuery.userId" clearable></el-input>
-                    <el-input class="filter-item select-class" placeholder="商户帐号" v-model="listQuery.username" clearable></el-input>
+                    <el-input class="filter-item select-class" placeholder="商户帐号" @focus="showParsteTxt('username')" v-model="listQuery.username" clearable></el-input>
                     <el-input class="filter-item select-class" placeholder="父帐号" v-model="listQuery.parentUsername" clearable></el-input>
                     <el-select class="filter-item select-class" v-if="listQuery.parentUsername.length > 0 " v-model="listQuery.child" placeholder="下级" filterable clearable>
                         <el-option
@@ -436,6 +436,15 @@
                 <el-button type="primary" @click="handleUnbind">确 定</el-button>
             </span>
         </el-dialog>
+
+        <el-dialog :title="parsteTxtTitle" :visible.sync="parsteTxtVisible" width="40%">
+            <el-input placeholder="请粘贴要搜索的内容,多个以英文逗号或换行分割都可以" type="textarea" :rows="3" style="width: 100%" v-model="parsteTxtVal"></el-input>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="parsteTxtVisible = false">取 消</el-button>
+                <el-button type="primary" @click="parsteTxt">提交</el-button>
+            </div>
+        </el-dialog>
+
     </div>
 
 </template>
@@ -583,6 +592,11 @@
           googleCode:null,
           clearGoogleVisible:false,
           merchant_id:null,
+          parsteTxtVisible:false,
+          parsteTxtVal:'',
+          parsteTxtField:'',
+          parsteTxtTitle:'请先选择粘贴内容',
+          // {0:'全部'},
       }
     },
     filters: {
@@ -1299,6 +1313,34 @@
       handleDetail(row) {
         this.$router.push({name: 'vue_merchant_detail', query: {merchantId: row.id}});
       },
+        showParsteTxt(filed){
+            let title = ''
+            switch (filed){
+                case 'orderNo':
+                    title = '请粘贴订单号';
+                    break;
+                case 'username':
+                    title = '请粘贴商户账号';
+                    break;
+                case 'client_ip':
+                    title = '请粘贴IP';
+                    break;
+                default:
+                    break;
+            }
+
+            this.parsteTxtVal = this.listQuery[filed]
+            this.parsteTxtTitle = title
+            this.parsteTxtField = filed
+            this.parsteTxtVisible = true
+        },
+        parsteTxt(){
+            let val = this.parsteTxtVal.replace(/\n/g,',').replace(/\r/g,'')
+            this.listQuery[this.parsteTxtField]=val
+            this.parsteTxtVal = ''
+            this.parsteTxtField = ''
+            this.parsteTxtVisible = false
+        },
         close(){
             this.googleCode = null
             this.clearGoogleVisible = false
