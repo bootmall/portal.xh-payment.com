@@ -1,13 +1,13 @@
 <template>
     <div class="app-container calendar-list-container">
         <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" @focus="showParsteTxt('orderNo')" size="small" style="width: 200px" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
+            <el-input @keyup.enter.native="handleFilter" @focus="showPasteTxt('orderNo')" size="small" style="width: 200px" class="filter-item" placeholder="收款订单号" v-model="listQuery.orderNo"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户订单号" v-model="listQuery.merchantOrderNo"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="渠道订单号" v-model="listQuery.channelOrderNo"></el-input>
             <el-input class="filter-item" size="small" style="width: 200px;" v-model="listQuery.merchantNo" placeholder="商户编号"></el-input>
             <el-input @keyup.enter.native="handleFilter" size="small" style="width: 200px;" class="filter-item" placeholder="商户账号" v-model="listQuery.merchantUserName"></el-input>
-            <el-input @keyup.enter.native="handleFilter" @focus="showParsteTxt('client_ip')" size="small" style="width: 200px;" class="filter-item" placeholder="IP" v-model="listQuery.client_ip"></el-input>
-            <el-input @keyup.enter.native="handleFilter" size="small" @focus="showParsteTxt('client_id')" style="width: 200px;" class="filter-item" placeholder="设备号" v-model="listQuery.client_id"></el-input>
+            <el-input @keyup.enter.native="handleFilter" @focus="showPasteTxt('client_ip')" size="small" style="width: 200px;" class="filter-item" placeholder="IP" v-model="listQuery.client_ip"></el-input>
+            <el-input @keyup.enter.native="handleFilter" size="small" @focus="showPasteTxt('client_id')" style="width: 200px;" class="filter-item" placeholder="设备号" v-model="listQuery.client_id"></el-input>
             <el-select class="filter-item" size="small" v-model="listQuery.channelAccount" placeholder="通道号" multiple >
                 <el-option
                     v-for="(item,key) in channelAccountOptions"
@@ -55,8 +55,8 @@
             <el-button class="filter-item"  size="small" type="info" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
             <el-button class="filter-item"  size="small" type="danger" @click="setFrozen()">批量冻结</el-button>
 
-            <!--<el-button class="filter-item"  size="small" type="primary" icon="el-icon-tickets" @click="showParsteTxt('client_ip')">贴IP</el-button>-->
-            <!--<el-button class="filter-item"  size="small" type="primary" icon="el-icon-tickets" @click="showParsteTxt('client_id')">贴设备</el-button>-->
+            <!--<el-button class="filter-item"  size="small" type="primary" icon="el-icon-tickets" @click="showPasteTxt('client_ip')">贴IP</el-button>-->
+            <!--<el-button class="filter-item"  size="small" type="primary" icon="el-icon-tickets" @click="showPasteTxt('client_id')">贴设备</el-button>-->
         </div>
 
         <el-table stripe :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="数据加载中，请稍候..." border fit highlight-current-row style="width: 100%" :summary-method="getSummaries" show-summary @selection-change="handleSelectionChange">
@@ -186,11 +186,11 @@
             </div>
         </el-dialog>
 
-        <el-dialog :title="parsteTxtTitle" :visible.sync="parsteTxtVisible" width="40%">
-                <el-input placeholder="请粘贴要搜索的内容,多个以英文逗号或换行分割都可以" type="textarea" :rows="3" style="width: 100%" v-model="parsteTxtVal"></el-input>
+        <el-dialog :title="PasteTxtTitle" :visible.sync="PasteTxtVisible" width="40%">
+                <el-input placeholder="请粘贴要搜索的内容,多个以英文逗号或换行分割都可以" type="textarea" :rows="3" style="width: 100%" v-model="PasteTxtVal"></el-input>
                 <div slot="footer" class="dialog-footer">
-                <el-button @click="parsteTxtVisible = false">取 消</el-button>
-                <el-button type="primary" @click="parsteTxt">提交</el-button>
+                <el-button @click="PasteTxtVisible = false">取 消</el-button>
+                <el-button type="primary" @click="PasteTxt">提交</el-button>
             </div>
         </el-dialog>
 
@@ -266,10 +266,10 @@
         methodOptions: [],
         channelAccountOptions: [],
         multipleSelection:[],
-        parsteTxtVisible:false,
-        parsteTxtVal:'',
-        parsteTxtField:'',
-        parsteTxtTitle:'请先选择粘贴内容',
+        PasteTxtVisible:false,
+        PasteTxtVal:'',
+        PasteTxtField:'',
+        PasteTxtTitle:'请先选择粘贴内容',
         // {0:'全部'},
         pickerOptions: {
           disabledDate(time) {
@@ -323,7 +323,7 @@
         })
 
       },
-      showParsteTxt(filed){
+      showPasteTxt(filed){
         let title = ''
         switch (filed){
           case 'orderNo':
@@ -339,17 +339,17 @@
             break;
         }
 
-        this.parsteTxtVal = this.listQuery[filed]
-        this.parsteTxtTitle = title
-        this.parsteTxtField = filed
-        this.parsteTxtVisible = true
+        this.PasteTxtVal = this.listQuery[filed]
+        this.PasteTxtTitle = title
+        this.PasteTxtField = filed
+        this.PasteTxtVisible = true
       },
-      parsteTxt(){
-        let val = this.parsteTxtVal.replace(/\n/g,',').replace(/\r/g,'')
-        this.listQuery[this.parsteTxtField]=val
-        this.parsteTxtVal = ''
-        this.parsteTxtField = ''
-        this.parsteTxtVisible = false
+      PasteTxt(){
+        let val = this.PasteTxtVal.replace(/\n/g,',').replace(/\r/g,'')
+        this.listQuery[this.PasteTxtField]=val
+        this.PasteTxtVal = ''
+        this.PasteTxtField = ''
+        this.PasteTxtVisible = false
       },
       getList(num) {
         var self = this
