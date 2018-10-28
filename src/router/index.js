@@ -251,7 +251,7 @@ export const asyncRouterMap = [
             view: "admin/user/merchant_web_list",
             name: 'vue_merchant_web_list',
             meta: {
-                title: '商户平台风控账户',
+                title: '商户扩展资料',
                 icon: 'excel',
                 role: ['admin'],
                 noCache: true

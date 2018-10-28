@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-            title="添加商户风控账号"
+            title="添加商户扩展资料"
             :visible.sync="addMerchantWebVisible"
             width="600px"
             @close="close"

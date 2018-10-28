@@ -27,7 +27,7 @@
             </el-pagination>
         </div>
         <el-dialog
-                title="编辑商户风控账号"
+                title="编辑商户扩展资料"
                 :visible.sync="editMerchantWebVisible"
                 width="600px"
                 @close="close"
