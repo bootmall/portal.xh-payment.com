@@ -77,6 +77,8 @@
             <el-table-column prop="orderStatus" label="订单状态" width="100"></el-table-column>
             <el-table-column prop="trackType" label="调单类型" width="80"></el-table-column>
             <el-table-column prop="trackStatus" label="调单状态" width="80"></el-table-column>
+            <el-table-column prop="op_uid" label="操作员ID" width="80"></el-table-column>
+            <el-table-column prop="op_username" label="操作员名称" width="80"></el-table-column>
             <el-table-column prop="created_at" label="创建时间" width="160"></el-table-column>
             <el-table-column align="center" label="操作" class="action-btns" fixed="right" width="250px">
                 <template slot-scope="scope" >
@@ -104,6 +106,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column property="note" label="备注"></el-table-column>
+                <el-table-column property="op_uid" label="操作员ID"></el-table-column>
+                <el-table-column property="op_username" label="操作员名称"></el-table-column>
                 <el-table-column property="created_at" width="160" label="创建时间"></el-table-column>
             </el-table>
         </el-dialog>
