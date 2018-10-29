@@ -248,6 +248,7 @@
           <template>
               <el-form :model="ipForm">
                   <p style="color: red;padding-left: 180px;">提示：API接口IP有多个以英文符号分号;分隔</p>
+                  <p style="color: red;padding-left: 180px;">如：127.0.0.1;127.0.0.2</p>
                   <el-form-item label="API接口IP地址：" label-width="180px">
                       <el-input size="small" type="textarea" :rows="3" v-model="ipForm.app_server_ips" style="width: 300px"></el-input>
                   </el-form-item>
