@@ -119,10 +119,10 @@
                             :action=uploadUrl
                             :show-file-list="false"
                             multiple
-                            :limit="3"
+                            :limit="10"
                             ref="track_upload"
                             :on-success="handleUpload">
-                        <img  v-if="trackForm.upload_url.length > 0" v-for="item in trackForm.upload_url" :src="item" class="avatar">
+                        <img  v-if="trackForm.upload_url.length > 0" v-for="item in trackForm.upload_url" :src="item" class="avatar img-demo">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                 </el-form-item>
@@ -345,8 +345,8 @@
                 )
             },
             handleUpload(response,file,fileList) {
-                this.trackForm.upload.push(response.data.filepath);
-                this.trackForm.upload_url.push(response.data.host+response.data.filepath);
+                this.trackForm.upload.push(response.data.url.filepath);
+                this.trackForm.upload_url.push(response.data.url.host+response.data.url.filepath);
             },
             handleEdit(row){
                 this.editForm.status = row.status;
@@ -381,5 +381,8 @@
 </script>
 
 <style scoped>
-
+    .img-demo{
+        width: 50px;
+        height: 50px;
+    }
 </style>

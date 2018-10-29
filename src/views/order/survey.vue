@@ -168,10 +168,10 @@
                             :action=uploadUrl
                             :show-file-list="false"
                             multiple
-                            :limit="3"
+                            :limit="10"
                             ref="track_upload"
                             :on-success="handleUpload">
-                        <img v-if="trackForm.upload_url.length > 0" v-for="item in trackForm.upload_url" :src="item" class="avatar" width="200px;">
+                        <img v-if="trackForm.upload_url.length > 0" v-for="item in trackForm.upload_url" :src="item" class="avatar img-demo">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                 </el-form-item>
@@ -368,8 +368,8 @@
                 if(num != 1){
                     self.list = res.data.data
                     self.summery = res.data.summery
+                    self.total = res.data.pagination.total
                 }
-              self.total = res.data.pagination.total
               self.statusOptions = (res.data.condition.statusOptions)
               self.notifyStatusOptions = (res.data.condition.notifyStatusOptions)
               self.channelAccountOptions = (res.data.condition.channelAccountOptions)
@@ -651,5 +651,9 @@
         .el-tag  + .el-tag{
             margin-left: 10px;
         }
+    }
+    .img-demo{
+        width: 50px;
+        height: 50px;
     }
 </style>
