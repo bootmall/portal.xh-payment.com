@@ -109,31 +109,29 @@
 
 <style scoped>
     .list li {
-        list-style:none;
-        float:left;
-        padding: 5px 10px;
-        border: 1px solid #eee;
-        width: 25%;
-        line-height: 30px;
+        list-style:none !important;
+        float:left !important;
+        padding: 5px 10px !important;
+        border: 1px solid #eee !important;
+        width: 25% !important;
+        line-height: 30px !important;
     }
     .grid-content{
-        line-height: 30px;
-       
+        line-height: 30px !important;
     }
     .grid-content-label{
-        text-align: right;
-        padding-right: 2px;
+        text-align: right !important;
+        padding-right: 2px !important;
     }
     .grid-content-value{
-        text-align: left;
-        text-align: 2px;
-        color: #f56c6c;
-        font-weight: bolder;
+        text-align: left !important;
+        color: #f56c6c !important;
+        font-weight: bolder !important;
     }
     .c-name{
-        color: #e6a23c;
+        color: #e6a23c !important;
     }
     .c-num{
-        color: #f56c6c;
+        color: #f56c6c !important;
     }
 </style>
