@@ -32,6 +32,14 @@
                     :value="item.id">
                 </el-option>
             </el-select>
+            <el-select class="filter-item" size="small" v-model="listQuery.track_type" placeholder="冻结类型" multiple clearable>
+                <el-option
+                        v-for="(item,key) in trackTypeOptions"
+                        :key="key"
+                        :label="item"
+                        :value="key">
+                </el-option>
+            </el-select>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
@@ -53,7 +61,7 @@
 
             <el-button class="filter-item"  size="small" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
             <el-button class="filter-item"  size="small" type="info" v-waves icon="search" @click="exportResult('csv')">导出CSV</el-button>
-            <el-button class="filter-item"  size="small" type="danger" @click="setFrozen()">批量冻结</el-button>
+            <el-button class="filter-item"  size="small" type="danger" @click="handleFrozen('','add')">批量冻结</el-button>
 
             <!--<el-button class="filter-item"  size="small" type="primary" icon="el-icon-tickets" @click="showPasteTxt('client_ip')">贴IP</el-button>-->
             <!--<el-button class="filter-item"  size="small" type="primary" icon="el-icon-tickets" @click="showPasteTxt('client_id')">贴设备</el-button>-->
@@ -138,6 +146,15 @@
                     <span>{{scope.row.client_id}}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="center" width="180" label="冻结类型">
+                <template slot-scope="scope">
+                    <el-tooltip v-if="scope.row.track_note!=''" class="item" effect="light" placement="top">
+                        <span class="link-type">{{scope.row.track_type_str}}</span>
+                        <span slot="content" v-html="scope.row.track_note"></span>
+                    </el-tooltip>
+                    <span  v-if="scope.row.track_note==''">{{scope.row.track_type_str}}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" width="180" label="创建时间">
                 <template slot-scope="scope">
                     <span>{{scope.row.created_at}}</span>
@@ -147,8 +164,9 @@
                 <template slot-scope="scope">
                     <el-button slot="reference" v-if="scope.row.track == 0" class="filter-item" size="mini" type="danger" @click="handleTrack(scope.row)" v-waves>录入</el-button>
                     <el-button class="filter-item" size="mini" type="info" v-if="scope.row.inBlackList == 0" @click="addToBlackList(scope.row)" circle>拉黑</el-button>
-                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="setFrozen(scope.row)">冻结</el-button>
+                    <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 60" v-waves @click="handleFrozen(scope.row,'add')">冻结</el-button>
                     <el-button class="filtr-item" size="mini" type="warning" v-if="scope.row.status == 30" v-waves @click="setUnFrozen(scope.row)">解冻</el-button>
+                    <el-button class="filtr-item" size="mini" type="primary" v-if="scope.row.status == 30" v-waves @click="handleFrozen(scope.row,'edit')">编辑冻结类型</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -193,6 +211,19 @@
                 <el-button type="primary" @click="PasteTxt">提交</el-button>
             </div>
         </el-dialog>
+        <el-dialog title="冻结" :visible.sync="frozenVisible" width="40%">
+            <el-form>
+                <el-form-item label="冻结类型：">
+                    <el-radio-group v-model="track_type">
+                        <el-radio-button v-for="(item,key) in trackTypeOptions" :label="key" :key="key">{{item}}</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="frozenVisible = false">取 消</el-button>
+                <el-button type="primary" @click="setFrozen">提交</el-button>
+            </div>
+        </el-dialog>
 
         <div v-show="!listLoading" class="pagination-container">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
@@ -221,7 +252,7 @@
         list: null,
         total: null,
         listLoading: true,
-        trackOptions: [],
+          trackTypeOptions: [],
         uploadUrl: common.pageMap.baseDomain + '/upload/upload',
         listQuery: {
           page: 1,
@@ -243,6 +274,7 @@
           client_id: '',
           idList: [],
           checkInBlackList: 1,
+            track_type:[],
         },
         trackVisible: false,
         trackForm: {
@@ -270,6 +302,10 @@
         PasteTxtVal:'',
         PasteTxtField:'',
         PasteTxtTitle:'请先选择粘贴内容',
+          order_id:null,
+          frozenVisible:false,
+          track_type:null,
+          type:null,
         // {0:'全部'},
         pickerOptions: {
           disabledDate(time) {
@@ -374,7 +410,7 @@
               self.notifyStatusOptions = (res.data.condition.notifyStatusOptions)
               self.channelAccountOptions = (res.data.condition.channelAccountOptions)
               self.methodOptions = (res.data.condition.methodOptions)
-              self.trackOptions = (res.data.trackOptions)
+              self.trackTypeOptions = (res.data.condition.trackTypeOptions)
             }
 
           },
@@ -453,7 +489,16 @@
         self.listQuery.export = 0
         self.listQuery.exportType = ''
       },
-      setFrozen(row) {
+        handleFrozen(row,type){
+            this.order_id = ''
+            if(row) {
+                this.order_id = row.id
+                this.track_type = row.track_type
+            }
+            this.frozenVisible = true
+            this.type = type
+        },
+      setFrozen() {
         let self = this
         self.$confirm('此操作将订单设置为冻结状态并冻结余额, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -461,13 +506,14 @@
           type: 'warning'
         }).then(() => {
           let idList = []
-          if(row){
-            idList = [row.id]
+          if(self.order_id){
+            idList = [self.order_id]
           }else{
             idList = self.listQuery.idList
           }
+            self.frozenVisible = false
           self.listLoading = true
-          axios.post('/admin/order/frozen', {idList: idList}).then(
+          axios.post('/admin/order/frozen', {idList: idList,track_type:self.track_type,type:self.type}).then(
             res => {
               self.listLoading = false
               if (res.code != 0) {
