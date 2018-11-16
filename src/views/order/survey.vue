@@ -304,7 +304,7 @@
         PasteTxtTitle:'请先选择粘贴内容',
           order_id:null,
           frozenVisible:false,
-          track_type:null,
+          track_type:'1',
           type:null,
         // {0:'全部'},
         pickerOptions: {
