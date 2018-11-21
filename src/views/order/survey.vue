@@ -40,6 +40,14 @@
                         :value="key">
                 </el-option>
             </el-select>
+            <el-select class="filter-item" size="small" v-model="listQuery.category" placeholder="订单类型" multiple clearable>
+                <el-option
+                        v-for="(item,key) in categoryOptions"
+                        :key="key"
+                        :label="item"
+                        :value="key">
+                </el-option>
+            </el-select>
             <el-date-picker class="filter-item"
                             v-model="listQuery.dateStart"
                             align="right"
@@ -155,6 +163,7 @@
                     <span  v-if="scope.row.track_note==''">{{scope.row.track_type_str}}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="center" label="订单类型" prop="category_str"></el-table-column>
             <el-table-column align="center" width="180" label="创建时间">
                 <template slot-scope="scope">
                     <span>{{scope.row.created_at}}</span>
@@ -218,6 +227,11 @@
                         <el-radio-button v-for="(item,key) in trackTypeOptions" :label="key" :key="key">{{item}}</el-radio-button>
                     </el-radio-group>
                 </el-form-item>
+                <el-form-item label="订单类型：">
+                    <el-radio-group v-model="category">
+                        <el-radio-button v-for="(item,key) in categoryOptions" :label="key" :key="key">{{item}}</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="frozenVisible = false">取 消</el-button>
@@ -275,6 +289,7 @@
           idList: [],
           checkInBlackList: 1,
             track_type:[],
+            category:[],
         },
         trackVisible: false,
         trackForm: {
@@ -305,7 +320,9 @@
           order_id:null,
           frozenVisible:false,
           track_type:'1',
+          category:'1',
           type:null,
+          categoryOptions:null,
         // {0:'全部'},
         pickerOptions: {
           disabledDate(time) {
@@ -411,6 +428,7 @@
               self.channelAccountOptions = (res.data.condition.channelAccountOptions)
               self.methodOptions = (res.data.condition.methodOptions)
               self.trackTypeOptions = (res.data.condition.trackTypeOptions)
+              self.categoryOptions = res.data.condition.categoryOptions
             }
 
           },
@@ -494,6 +512,7 @@
             if(row) {
                 this.order_id = row.id
                 this.track_type = row.track_type
+                this.category = row.category
             }
             this.frozenVisible = true
             this.type = type
@@ -513,7 +532,13 @@
           }
             self.frozenVisible = false
           self.listLoading = true
-          axios.post('/admin/order/frozen', {idList: idList,track_type:self.track_type,type:self.type}).then(
+            let data = {
+                idList: idList,
+                track_type:self.track_type,
+                type:self.type,
+                category:self.category,
+            }
+          axios.post('/admin/order/frozen', data).then(
             res => {
               self.listLoading = false
               if (res.code != 0) {
