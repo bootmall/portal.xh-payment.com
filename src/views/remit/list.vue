@@ -144,12 +144,12 @@
               </el-button>
               <el-dropdown-menu slot="dropdown" size="mini">
                 <el-dropdown-item ><el-button @click.native="setSuccess(scope.row)" style="width: 100%" type="success" size="mini">成功</el-button></el-dropdown-item>
-                <el-dropdown-item ><el-button @click.native="reSubmit(scope.row.id)" style="width: 100%" type="danger" size="mini">重提</el-button></el-dropdown-item>
+                <el-dropdown-item ><el-button @click.native="reSubmit(scope.row.id)" v-if="[-10,-20,10,20,30,40,60].indexOf(scope.row.status) !== -1" style="width: 100%" type="danger" size="mini">重提</el-button></el-dropdown-item>
                 <el-dropdown-item ><el-button @click.native="handleTrack(scope.row)" style="width: 100%" type="primary" size="mini">录入</el-button></el-dropdown-item>
                 <el-dropdown-item >
                   <el-button
                           class="filter-item"
-                          size="mini" v-if="[-10,-20,10,20,30,40,60].indexOf(scope.row.status) !== -1"
+                          size="mini" v-if="[-10,-20,0,10,20,30,40,60].indexOf(scope.row.status) !== -1"
                           type="warning"
                           style="width: 100%"
                           @click="setFail(scope.row)"
